@@ -3,12 +3,7 @@ dist/
 cloudflared_out.txt
 cloudflared_err.txt
 graphify-out/
-test-output.txt
-test-output2.txt
-test-output3.txt
-test-output4.txt
-test-output5.txt
-test-output6.txt
+test-output*.txt
 tunnel_output.txt
 tsconfig.tsbuildinfo
 *.local

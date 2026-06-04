@@ -1,4 +1,4 @@
-import { goodsImage } from '../assets'
+import { goodsImage } from '../lib/assets'
 
 export type GoodsKey = 'electronics' | 'furniture' | 'containers' | 'parcels'
 

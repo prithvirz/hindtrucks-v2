@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Phone, ShieldCheck } from 'lucide-react'
 import Button from '../components/Button'
-import { images } from '../assets'
+import { images } from '../lib/assets'
 import { useShell } from '../state/ShellContext'
 
 export default function Login() {

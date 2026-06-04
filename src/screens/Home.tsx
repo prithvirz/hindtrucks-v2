@@ -8,7 +8,7 @@ import { useProfile } from '../state/ProfileContext'
 import { useTrip } from '../state/TripContext'
 import { MOCK_LOADS } from '../data/mockLoads'
 import { inr } from '../lib/format'
-import { images } from '../assets'
+import { images } from '../lib/assets'
 
 const BFC_MEMBERS = [
   { name: 'Rajbir Singh', isCurrent: true, rating: 4.8, truck: 'PB10 AB 4521' },
@@ -177,12 +177,10 @@ export default function Home() {
                           const isCurrent = trip.step === stepNum
                           return (
                             <div key={st} className="flex-1 flex flex-col items-center">
-                              <div className={`h-2.5 w-full rounded-full transition-colors ${
-                                isCurrent ? 'bg-accent animate-pulse' : isDone ? 'bg-success' : 'bg-ink/10'
-                              }`} />
-                              <span className={`text-[9px] font-black mt-1 leading-none ${
-                                isCurrent ? 'text-accent' : isDone ? 'text-success' : 'text-ink-faint'
-                              }`}>
+                              <div className={`h-2.5 w-full rounded-full transition-colors ${isCurrent ? 'bg-accent animate-pulse' : isDone ? 'bg-success' : 'bg-ink/10'
+                                }`} />
+                              <span className={`text-[9px] font-black mt-1 leading-none ${isCurrent ? 'text-accent' : isDone ? 'text-success' : 'text-ink-faint'
+                                }`}>
                                 {st}
                               </span>
                             </div>
