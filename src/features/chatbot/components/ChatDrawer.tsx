@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { X, Send, Bot, Mic, MicOff, Volume2, VolumeX } from 'lucide-react'
 import { useShell } from '../../../state/ShellContext'
@@ -11,9 +11,8 @@ import { ChatMessage } from './ChatMessage'
 // FAB trigger + slide-up drawer with header, messages, quick questions, and input.
 
 export function ChatDrawer() {
+    const containerRef = useRef<HTMLDivElement>(null)
     const { isTourActive } = useShell()
-    const { t } = useTranslation()
-    const { speak, cancel: cancelTts } = useTTS()
 
     const {
         messages,
@@ -22,6 +21,18 @@ export function ChatDrawer() {
         toggleChat,
         sendMessage,
     } = useChatContext()
+
+    // Auto scroll to bottom when new messages arrive or when chat is opened
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollTo({
+                top: containerRef.current.scrollHeight,
+                behavior: 'smooth'
+            })
+        }
+    }, [messages, isOpen])
+    const { t } = useTranslation()
+    const { speak, cancel: cancelTts } = useTTS()
 
     const [inputValue, setInputValue] = useState('')
     const [isMuted, setIsMuted] = useState(() => {
@@ -141,7 +152,7 @@ export function ChatDrawer() {
                         </div>
 
                         {/* Chat Body Messages */}
-                        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar">
+                        <div ref={containerRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar">
                             {messages.map((msg) => (
                                 <ChatMessage
                                     key={msg.id}

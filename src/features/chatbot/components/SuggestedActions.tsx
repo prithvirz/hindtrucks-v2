@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import type { SuggestedAction } from '../types'
+import { useChatContext } from '../../../state/ChatContext'
 
 // ─── SuggestedActions: Tappable Action Chips ───
 // Enhanced replacement for RedirectBubble. Supports navigation,
@@ -12,6 +13,7 @@ interface SuggestedActionsProps {
 
 export function SuggestedActions({ actions, onAction }: SuggestedActionsProps) {
     const nav = useNavigate()
+    const { closeChat } = useChatContext()
 
     function handleAction(action: SuggestedAction) {
         if (onAction) {
@@ -23,20 +25,25 @@ export function SuggestedActions({ actions, onAction }: SuggestedActionsProps) {
             case 'navigate':
                 if (action.payload?.route) {
                     nav(action.payload.route)
+                    closeChat()
                 }
                 break
             case 'accept_load':
             case 'view_load':
                 nav('/loads')
+                closeChat()
                 break
             case 'start_trip':
                 nav('/trip')
+                closeChat()
                 break
             case 'view_earnings':
                 nav('/earnings')
+                closeChat()
                 break
             case 'update_profile':
                 nav('/profile')
+                closeChat()
                 break
             case 'call_support':
                 if (action.payload?.phoneNumber) {
