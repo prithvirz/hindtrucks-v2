@@ -13,8 +13,8 @@ const DEFAULT_DRIVER = {
         permit: { id: 'NP-2026-PB-8841', validity: '31-12-2030' },
     },
     trucks: [
-        { id: '1', regNumber: 'PB10 AB 4521', type: '19 ft Container', capacity: '9 Ton' },
-        { id: '2', regNumber: 'HR55 CX 8812', type: '32 ft Container', capacity: '15 Ton' },
+        { id: '1', regNumber: 'PB10 AB 4521', type: '19 ft Container', capacity: '9 Ton', isActive: true },
+        { id: '2', regNumber: 'HR55 CX 8812', type: '32 ft Container', capacity: '15 Ton', isActive: true },
     ],
 }
 
@@ -35,18 +35,30 @@ interface ProfileState {
     addTruck: (truck: { regNumber: string; type: string; capacity: string }) => void
     removeTruck: (truckId: string) => void
     setActiveTruck: (truckId: string) => void
+    toggleTruckActive: (truckId: string) => void
     role: UserRole
     setRole: (role: UserRole) => void
     drivers: Driver[]
     addDriver: (driver: { name: string; phone: string; licenseNumber: string }) => void
     removeDriver: (driverId: string) => void
     assignDriverToTruck: (driverId: string, truckId: string | null) => void
+    initializeProfile: (params: {
+        name: string
+        role: UserRole
+        licenseNumber?: string
+        companyName?: string
+        truck: {
+            regNumber: string
+            type: string
+            capacity: string
+        }
+    }) => void
 }
 
 const ProfileCtx = createContext<ProfileState | null>(null)
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
-    const { isLoggedIn } = useAuth()
+    const { isLoggedIn, phone } = useAuth()
     const [isOnline, setOnlineState] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<ApiError | null>(null)
@@ -163,9 +175,6 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                 if (d.id === driverId) {
                     return { ...d, assignedTruckId: truckId }
                 }
-                if (truckId && d.assignedTruckId === truckId) {
-                    return { ...d, assignedTruckId: null }
-                }
                 return d
             })
         )
@@ -201,6 +210,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
             const truckWithId = {
                 ...newTruck,
                 id: String(Date.now()),
+                isActive: true,
             }
             return {
                 ...prev,
@@ -244,6 +254,67 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         })
     }
 
+    const toggleTruckActive = (truckId: string) => {
+        setDriver((prev) => ({
+            ...prev,
+            trucks: prev.trucks.map((t) => {
+                if (t.id === truckId) {
+                    return { ...t, isActive: !t.isActive }
+                }
+                return t
+            }),
+        }))
+    }
+
+    const initializeProfile = (params: {
+        name: string
+        role: UserRole
+        licenseNumber?: string
+        companyName?: string
+        truck: {
+            regNumber: string
+            type: string
+            capacity: string
+        }
+    }) => {
+        const newProfile: DriverWithExtras = {
+            ...DEFAULT_DRIVER,
+            name: params.name,
+            phone: phone,
+            rating: 5.0,
+            tripsToday: 0,
+            earningsToday: 0,
+            walletBalance: 0,
+            truck: {
+                regNumber: params.truck.regNumber.toUpperCase(),
+                type: params.truck.type,
+                capacity: params.truck.capacity,
+            },
+            trucks: [
+                {
+                    id: '1',
+                    regNumber: params.truck.regNumber.toUpperCase(),
+                    type: params.truck.type,
+                    capacity: params.truck.capacity,
+                    isActive: true,
+                }
+            ],
+            documents: {
+                license: { id: params.licenseNumber || 'PENDING', validity: '15-08-2035' },
+                rc: { id: params.truck.regNumber.toUpperCase(), validity: '12-10-2031' },
+                permit: { id: 'NP-' + Date.now().toString().slice(-6), validity: '31-12-2030' },
+            }
+        }
+        setDriver(newProfile)
+        setRoleState(params.role)
+        if (params.role === 'owner') {
+            setDrivers([]) // Starts with empty fleet drivers
+        } else {
+            setDrivers(DEFAULT_DRIVERS)
+        }
+        localStorage.setItem('ht_registered_' + phone, '1')
+    }
+
     return (
         <ProfileCtx.Provider
             value={{
@@ -256,12 +327,14 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                 addTruck,
                 removeTruck,
                 setActiveTruck,
+                toggleTruckActive,
                 role,
                 setRole,
                 drivers,
                 addDriver,
                 removeDriver,
                 assignDriverToTruck,
+                initializeProfile,
             }}
         >
             {children}

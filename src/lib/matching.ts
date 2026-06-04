@@ -5,6 +5,7 @@ export interface TruckItem {
   regNumber: string
   type: string      // e.g. "19 ft Container", "32 ft Container"
   capacity: string  // e.g. "9 Ton", "21 Ton"
+  isActive?: boolean
 }
 
 /**

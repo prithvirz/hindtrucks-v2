@@ -24,6 +24,7 @@ import { useProfile } from '../state/ProfileContext'
 import { useShell } from '../state/ShellContext'
 import { LANGUAGES, type LangCode } from '../i18n/languages'
 import { NotificationCenter } from '../features/notifications/components/NotificationCenter'
+import Toggle from '../components/Toggle'
 
 // Unsplash helper for high-fidelity images
 const u = (id: string, w = 240) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`
@@ -44,6 +45,7 @@ export default function Profile() {
     addDriver,
     removeDriver,
     assignDriverToTruck,
+    toggleTruckActive,
   } = useProfile()
   const {
     startTour,
@@ -178,46 +180,76 @@ export default function Profile() {
           {/* List of Registered Fleet */}
           <div className="divide-y divide-hairline">
             {driver.trucks.map((tk) => {
-              const isActive = tk.regNumber === driver.truck.regNumber
-              return (
-                <div key={tk.id} className="py-3 flex items-center justify-between gap-3 text-left">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-black text-ink nums tracking-wide">{tk.regNumber}</p>
-                      {isActive && (
-                        <span className="text-[9px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success select-none">
-                          {t('profile.activeTruck')}
+              if (role === 'owner') {
+                const isTruckActive = tk.isActive !== false
+                return (
+                  <div key={tk.id} className="py-3 flex items-center justify-between gap-3 text-left">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-black text-ink nums tracking-wide">{tk.regNumber}</p>
+                        {isTruckActive && (
+                          <span className="text-[9px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success select-none">
+                            Active
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-ink-faint font-semibold mt-0.5">{tk.type} ({tk.capacity})</p>
+                    </div>
+
+                    <div className="flex items-center gap-3 shrink-0">
+                      <Toggle on={isTruckActive} onChange={() => toggleTruckActive(tk.id)} />
+                      <button
+                        onClick={() => removeTruck(tk.id)}
+                        className="p-1.5 text-ink-faint hover:text-red-500 bg-white hover:bg-red-50 border border-hairline hover:border-red-200 rounded-lg active:scale-95 transition-all shadow-sm flex items-center justify-center shrink-0"
+                        title={t('profile.removeTruck')}
+                      >
+                        <X size={14} strokeWidth={3} />
+                      </button>
+                    </div>
+                  </div>
+                )
+              } else {
+                const isActive = tk.regNumber === driver.truck.regNumber
+                return (
+                  <div key={tk.id} className="py-3 flex items-center justify-between gap-3 text-left">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-black text-ink nums tracking-wide">{tk.regNumber}</p>
+                        {isActive && (
+                          <span className="text-[9px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success select-none">
+                            {t('profile.activeTruck')}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-ink-faint font-semibold mt-0.5">{tk.type} ({tk.capacity})</p>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      {!isActive ? (
+                        <>
+                          <button
+                            onClick={() => setActiveTruck(tk.id)}
+                            className="px-2.5 py-1 bg-white hover:bg-surface-grey text-xs font-black text-ink border border-hairline rounded-lg active:scale-95 transition-all shadow-sm"
+                          >
+                            {t('profile.selectActive')}
+                          </button>
+                          <button
+                            onClick={() => removeTruck(tk.id)}
+                            className="p-1.5 text-ink-faint hover:text-red-500 bg-white hover:bg-red-50 border border-hairline hover:border-red-200 rounded-lg active:scale-95 transition-all shadow-sm flex items-center justify-center shrink-0"
+                            title={t('profile.removeTruck')}
+                          >
+                            <X size={14} strokeWidth={3} />
+                          </button>
+                        </>
+                      ) : (
+                        <span className="h-7 w-7 rounded-full bg-success/15 text-success flex items-center justify-center select-none">
+                          <Check size={15} strokeWidth={3.5} />
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-ink-faint font-semibold mt-0.5">{tk.type} ({tk.capacity})</p>
                   </div>
-
-                  <div className="flex items-center gap-2 shrink-0">
-                    {!isActive ? (
-                      <>
-                        <button
-                          onClick={() => setActiveTruck(tk.id)}
-                          className="px-2.5 py-1 bg-white hover:bg-surface-grey text-xs font-black text-ink border border-hairline rounded-lg active:scale-95 transition-all shadow-sm"
-                        >
-                          {t('profile.selectActive')}
-                        </button>
-                        <button
-                          onClick={() => removeTruck(tk.id)}
-                          className="p-1.5 text-ink-faint hover:text-red-500 bg-white hover:bg-red-50 border border-hairline hover:border-red-200 rounded-lg active:scale-95 transition-all shadow-sm flex items-center justify-center shrink-0"
-                          title={t('profile.removeTruck')}
-                        >
-                          <X size={14} strokeWidth={3} />
-                        </button>
-                      </>
-                    ) : (
-                      <span className="h-7 w-7 rounded-full bg-success/15 text-success flex items-center justify-center select-none">
-                        <Check size={15} strokeWidth={3.5} />
-                      </span>
-                    )}
-                  </div>
-                </div>
-              )
+                )
+              }
             })}
           </div>
         </Section>
@@ -275,7 +307,7 @@ export default function Profile() {
                         </select>
                         {assignedTruck && (
                           <span className="text-[10px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success">
-                            Active
+                            Assigned
                           </span>
                         )}
                       </div>
@@ -817,6 +849,7 @@ function AddDriverSheet({
   onClose: () => void
   onAdd: (drv: { name: string; phone: string; licenseNumber: string }) => void
 }) {
+  const { driver } = useProfile()
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [license, setLicense] = useState('')
@@ -845,6 +878,19 @@ function AddDriverSheet({
         </div>
 
         <div className="space-y-4 text-left">
+          {/* Add Myself Helper */}
+          <button
+            type="button"
+            onClick={() => {
+              setName(driver.name)
+              setPhone(driver.phone)
+              setLicense(driver.documents.license.id)
+            }}
+            className="w-full py-2.5 bg-accent-soft hover:bg-[#ffe8d6] border border-dashed border-accent rounded-xl text-xs font-black text-accent transition-colors flex items-center justify-center gap-1.5 active:scale-[0.99]"
+          >
+            <Users size={14} /> Add Myself as Driver
+          </button>
+
           {/* Driver Name */}
           <div>
             <label className="block text-xs font-black uppercase text-ink-muted mb-1.5 font-bold">

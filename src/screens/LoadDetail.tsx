@@ -40,7 +40,10 @@ export default function LoadDetail() {
     )
   }
 
-  const compatibleTrucks = getCompatibleTrucks(load, driver.trucks || [])
+  const compatibleTrucks = getCompatibleTrucks(load, driver.trucks || []).filter((t) => {
+    if (role === 'owner') return t.isActive !== false
+    return true
+  })
 
   function accept() {
     setAssignOpen(true)

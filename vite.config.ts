@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     VitePWA({
@@ -28,6 +28,10 @@ export default defineConfig({
       },
     }),
   ],
+  define: {
+    'import.meta.env.VITE_API_MODE': JSON.stringify(process.env.VITE_API_MODE || 'mock'),
+    'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL || '/api'),
+  },
   server: { host: true, allowedHosts: true },
   build: {
     rollupOptions: {
@@ -40,4 +44,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))

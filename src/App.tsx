@@ -23,13 +23,35 @@ const LoadDetail = lazy(() => import('./screens/LoadDetail'))
 const ActiveTrip = lazy(() => import('./screens/ActiveTrip'))
 const Earnings = lazy(() => import('./screens/Earnings'))
 const Profile = lazy(() => import('./screens/Profile'))
+const Register = lazy(() => import('./screens/Register'))
 
 // Tabs that should show the bottom navigation bar.
 const TAB_ROUTES = ['/home', '/loads', '/earnings', '/profile']
 
 function RequireAuth({ children }: { children: JSX.Element }) {
-  const { isLoggedIn } = useAuth()
-  return isLoggedIn ? children : <Navigate to="/language" replace />
+  const { isLoggedIn, phone } = useAuth()
+  const isRegistered = phone === '98765 43210' || phone === '9876543210' || localStorage.getItem('ht_registered_' + phone) === '1'
+  
+  if (!isLoggedIn) {
+    return <Navigate to="/language" replace />
+  }
+  if (!isRegistered) {
+    return <Navigate to="/register" replace />
+  }
+  return children
+}
+
+function RequireRegistration({ children }: { children: JSX.Element }) {
+  const { isLoggedIn, phone } = useAuth()
+  const isRegistered = phone === '98765 43210' || phone === '9876543210' || localStorage.getItem('ht_registered_' + phone) === '1'
+  
+  if (!isLoggedIn) {
+    return <Navigate to="/language" replace />
+  }
+  if (isRegistered) {
+    return <Navigate to="/home" replace />
+  }
+  return children
 }
 
 function Shell() {
@@ -66,7 +88,7 @@ function Shell() {
   }, [isLoggedIn, pushPermissionState.needsPrompt])
 
   // Only render the chatbot and tour on actual app dashboard screens, not setup/login flows
-  const isAppScreen = !['/', '/language', '/login', '/otp'].includes(pathname)
+  const isAppScreen = !['/', '/language', '/login', '/otp', '/register'].includes(pathname)
 
   return (
     <PhoneFrame>
@@ -127,6 +149,7 @@ function Shell() {
             <Route path="/language" element={<LanguagePicker />} />
             <Route path="/login" element={<Login />} />
             <Route path="/otp" element={<Otp />} />
+            <Route path="/register" element={<RequireRegistration><Register /></RequireRegistration>} />
 
             <Route path="/home" element={<RequireAuth><Home /></RequireAuth>} />
             <Route path="/loads" element={<RequireAuth><Loads /></RequireAuth>} />

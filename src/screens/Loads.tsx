@@ -11,7 +11,7 @@ import { isTruckCompatible } from '../lib/matching'
 export default function Loads() {
   const nav = useNavigate()
   const { t } = useTranslation()
-  const { driver } = useProfile()
+  const { driver, role } = useProfile()
   const [loading, setLoading] = useState(true)
   const [selectedTruckId, setSelectedTruckId] = useState<string>('all')
 
@@ -22,11 +22,21 @@ export default function Loads() {
 
   // Filter loads based on chosen truck pill
   const filteredLoads = MOCK_LOADS.filter((load) => {
-    if (selectedTruckId === 'all') return true
+    if (selectedTruckId === 'all') {
+      if (role === 'owner') {
+        const activeTrucks = (driver.trucks || []).filter((t) => t.isActive !== false)
+        return activeTrucks.some((truck) => isTruckCompatible(load, truck))
+      }
+      return true
+    }
     const truck = (driver.trucks || []).find((t) => t.id === selectedTruckId)
     if (!truck) return true
     return isTruckCompatible(load, truck)
   })
+
+  const visibleTrucks = role === 'owner'
+    ? (driver.trucks || []).filter((t) => t.isActive !== false)
+    : (driver.trucks || [])
 
   return (
     <div className="h-full flex flex-col">
@@ -43,7 +53,7 @@ export default function Loads() {
         >
           {t('common.all') || 'All'}
         </button>
-        {(driver.trucks || []).map((truck) => {
+        {visibleTrucks.map((truck) => {
           const isSelected = selectedTruckId === truck.id
           const isActive = truck.regNumber === driver.truck.regNumber
           return (
@@ -55,7 +65,7 @@ export default function Loads() {
                   : 'bg-white text-ink-muted border-hairline hover:bg-surface-grey'
                 }`}
             >
-              {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] animate-pulse" />}
+              {isActive && role !== 'owner' && <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] animate-pulse" />}
               {truck.regNumber} ({parseFloat(truck.capacity)}T)
             </button>
           )
