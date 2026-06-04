@@ -13,3 +13,5 @@ Thumbs.db
 .playwright-mcp/
 .claude/
 .agents/
+playwright-report/
+test-results/
