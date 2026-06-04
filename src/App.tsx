@@ -1,3 +1,4 @@
+// HindTrucks v2 - deployed via Cloudflare Pages Git integration
 import { Suspense, lazy, useState, useCallback, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { AppProviders } from './state/AppProviders'
