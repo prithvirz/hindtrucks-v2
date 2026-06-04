@@ -1,7 +1,7 @@
 {
   "config": {
-    "configFile": "C:\\Projects\\hindtrucks\\playwright.config.ts",
-    "rootDir": "C:/Projects/hindtrucks/e2e",
+    "configFile": "c:\\Projects\\hindtrucks\\playwright.config.ts",
+    "rootDir": "c:/Projects/hindtrucks/e2e",
     "forbidOnly": false,
     "fullyParallel": false,
     "globalSetup": null,
@@ -16,7 +16,7 @@
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "C:/Projects/hindtrucks/test-results",
+        "outputDir": "c:/Projects/hindtrucks/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -24,7 +24,7 @@
         },
         "id": "chromium",
         "name": "chromium",
-        "testDir": "C:/Projects/hindtrucks/e2e",
+        "testDir": "c:/Projects/hindtrucks/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -35,20 +35,7 @@
     "quiet": false,
     "reporter": [
       [
-        "list",
-        null
-      ],
-      [
-        "html",
-        {
-          "open": "never"
-        }
-      ],
-      [
-        "json",
-        {
-          "outputFile": "e2e-results.json"
-        }
+        "json"
       ]
     ],
     "reportSlowTests": {
@@ -93,12 +80,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1620,
+                      "duration": 1829,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:15.227Z",
+                      "startTime": "2026-06-04T16:57:28.675Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -127,12 +114,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2424,
+                      "duration": 2345,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:16.951Z",
+                      "startTime": "2026-06-04T16:57:30.589Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -161,12 +148,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2404,
+                      "duration": 2294,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:19.388Z",
+                      "startTime": "2026-06-04T16:57:32.943Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -195,12 +182,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2455,
+                      "duration": 2435,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:21.808Z",
+                      "startTime": "2026-06-04T16:57:35.248Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -229,12 +216,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3542,
+                      "duration": 3437,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:24.285Z",
+                      "startTime": "2026-06-04T16:57:37.693Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -263,12 +250,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3480,
+                      "duration": 3439,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:27.851Z",
+                      "startTime": "2026-06-04T16:57:41.141Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -283,7 +270,7 @@
             },
             {
               "title": "close button dismisses chat drawer",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -296,58 +283,18 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 13188,
-                      "error": {
-                        "message": "TimeoutError: locator.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button').filter({ has: locator('svg') }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"h-8 px-3.5 flex items-center gap-1.5 bg-accent text-white text-xs font-bold rounded-lg active:scale-95 transition-all duration-100 shrink-0\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <input value=\"\" type=\"text\" placeholder=\"Type message or tap Mic...\" class=\"flex-1 boxed-border boxed-rounded bg-surface-grey px-4 py-2.5 text-sm outline-none font-bold text-ink focus:bg-white focus:shadow-[2px_2px_0px_0px_#0B0B0F] transition-all placeholder:font-semibold placeholder:text-ink-faint disabled:opacity-50\"/> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    4 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <input value=\"\" type=\"text\" placeholder=\"Type message or tap Mic...\" class=\"flex-1 boxed-border boxed-rounded bg-surface-grey px-4 py-2.5 text-sm outline-none font-bold text-ink focus:bg-white focus:shadow-[2px_2px_0px_0px_#0B0B0F] transition-all placeholder:font-semibold placeholder:text-ink-faint disabled:opacity-50\"/> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <input value=\"\" type=\"text\" placeholder=\"Type message or tap Mic...\" class=\"flex-1 boxed-border boxed-rounded bg-surface-grey px-4 py-2.5 text-sm outline-none font-bold text-ink focus:bg-white focus:shadow-[2px_2px_0px_0px_#0B0B0F] transition-all placeholder:font-semibold placeholder:text-ink-faint disabled:opacity-50\"/> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n",
-                        "stack": "TimeoutError: locator.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button').filter({ has: locator('svg') }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"h-8 px-3.5 flex items-center gap-1.5 bg-accent text-white text-xs font-bold rounded-lg active:scale-95 transition-all duration-100 shrink-0\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <input value=\"\" type=\"text\" placeholder=\"Type message or tap Mic...\" class=\"flex-1 boxed-border boxed-rounded bg-surface-grey px-4 py-2.5 text-sm outline-none font-bold text-ink focus:bg-white focus:shadow-[2px_2px_0px_0px_#0B0B0F] transition-all placeholder:font-semibold placeholder:text-ink-faint disabled:opacity-50\"/> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    4 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <input value=\"\" type=\"text\" placeholder=\"Type message or tap Mic...\" class=\"flex-1 boxed-border boxed-rounded bg-surface-grey px-4 py-2.5 text-sm outline-none font-bold text-ink focus:bg-white focus:shadow-[2px_2px_0px_0px_#0B0B0F] transition-all placeholder:font-semibold placeholder:text-ink-faint disabled:opacity-50\"/> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <input value=\"\" type=\"text\" placeholder=\"Type message or tap Mic...\" class=\"flex-1 boxed-border boxed-rounded bg-surface-grey px-4 py-2.5 text-sm outline-none font-bold text-ink focus:bg-white focus:shadow-[2px_2px_0px_0px_#0B0B0F] transition-all placeholder:font-semibold placeholder:text-ink-faint disabled:opacity-50\"/> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\chatbot.spec.ts:75:24",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\chatbot.spec.ts",
-                          "column": 24,
-                          "line": 75
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 73 |\u001b[39m         \u001b[90m// Find close button in the drawer header\u001b[39m\n \u001b[90m 74 |\u001b[39m         \u001b[36mconst\u001b[39m closeBtn \u001b[33m=\u001b[39m closeBtns\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 75 |\u001b[39m         \u001b[36mawait\u001b[39m closeBtn\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 76 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 77 |\u001b[39m         \u001b[90m// Chat drawer should be hidden\u001b[39m\n \u001b[90m 78 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/hindtrucks ai|ai support/i\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\chatbot.spec.ts",
-                            "column": 24,
-                            "line": 75
-                          },
-                          "message": "TimeoutError: locator.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button').filter({ has: locator('svg') }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"h-8 px-3.5 flex items-center gap-1.5 bg-accent text-white text-xs font-bold rounded-lg active:scale-95 transition-all duration-100 shrink-0\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <input value=\"\" type=\"text\" placeholder=\"Type message or tap Mic...\" class=\"flex-1 boxed-border boxed-rounded bg-surface-grey px-4 py-2.5 text-sm outline-none font-bold text-ink focus:bg-white focus:shadow-[2px_2px_0px_0px_#0B0B0F] transition-all placeholder:font-semibold placeholder:text-ink-faint disabled:opacity-50\"/> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    4 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <input value=\"\" type=\"text\" placeholder=\"Type message or tap Mic...\" class=\"flex-1 boxed-border boxed-rounded bg-surface-grey px-4 py-2.5 text-sm outline-none font-bold text-ink focus:bg-white focus:shadow-[2px_2px_0px_0px_#0B0B0F] transition-all placeholder:font-semibold placeholder:text-ink-faint disabled:opacity-50\"/> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div class=\"flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar\"></div> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <input value=\"\" type=\"text\" placeholder=\"Type message or tap Mic...\" class=\"flex-1 boxed-border boxed-rounded bg-surface-grey px-4 py-2.5 text-sm outline-none font-bold text-ink focus:bg-white focus:shadow-[2px_2px_0px_0px_#0B0B0F] transition-all placeholder:font-semibold placeholder:text-ink-faint disabled:opacity-50\"/> from <div class=\"chatbot-container\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\n\n  73 |         // Find close button in the drawer header\n  74 |         const closeBtn = closeBtns.first();\n> 75 |         await closeBtn.click();\n     |                        ^\n  76 |         await page.waitForTimeout(500);\n  77 |         // Chat drawer should be hidden\n  78 |         await expect(page.getByText(/hindtrucks ai|ai support/i)).not.toBeVisible({ timeout: 3000 });\n    at C:\\Projects\\hindtrucks\\e2e\\chatbot.spec.ts:75:24"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 2848,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:31.352Z",
+                      "startTime": "2026-06-04T16:57:44.602Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\chatbot-AI-Chatbot-close-button-dismisses-chat-drawer-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\chatbot-AI-Chatbot-close-button-dismisses-chat-drawer-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\chatbot-AI-Chatbot-close-button-dismisses-chat-drawer-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\chatbot.spec.ts",
-                        "column": 24,
-                        "line": 75
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "bb815ea5b54c56c6a91b-7e655fa296fb97194e9e",
@@ -368,15 +315,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1549,
+                      "duration": 1342,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:46.607Z",
+                      "startTime": "2026-06-04T16:57:47.467Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -386,7 +333,7 @@
               ],
               "id": "bb815ea5b54c56c6a91b-1e1c390fff148e184416",
               "file": "chatbot.spec.ts",
-              "line": 81,
+              "line": 78,
               "column": 5
             },
             {
@@ -402,15 +349,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1495,
+                      "duration": 1409,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:48.255Z",
+                      "startTime": "2026-06-04T16:57:48.818Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -420,7 +367,7 @@
               ],
               "id": "bb815ea5b54c56c6a91b-fbf92d1adeb2864073d7",
               "file": "chatbot.spec.ts",
-              "line": 87,
+              "line": 84,
               "column": 5
             },
             {
@@ -436,15 +383,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1450,
+                      "duration": 1392,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:49.764Z",
+                      "startTime": "2026-06-04T16:57:50.235Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -454,7 +401,7 @@
               ],
               "id": "bb815ea5b54c56c6a91b-2c8d077140e0814da8e7",
               "file": "chatbot.spec.ts",
-              "line": 93,
+              "line": 90,
               "column": 5
             },
             {
@@ -470,15 +417,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2310,
+                      "duration": 2330,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:51.224Z",
+                      "startTime": "2026-06-04T16:57:51.636Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -488,7 +435,7 @@
               ],
               "id": "bb815ea5b54c56c6a91b-2b87d41d9aaec755a63e",
               "file": "chatbot.spec.ts",
-              "line": 99,
+              "line": 96,
               "column": 5
             }
           ]
@@ -521,15 +468,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1441,
+                      "duration": 1385,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:53.576Z",
+                      "startTime": "2026-06-04T16:57:53.991Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -555,15 +502,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1373,
+                      "duration": 1306,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:55.026Z",
+                      "startTime": "2026-06-04T16:57:55.384Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -589,15 +536,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1453,
+                      "duration": 1396,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:56.408Z",
+                      "startTime": "2026-06-04T16:57:56.698Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -623,15 +570,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2536,
+                      "duration": 2468,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:32:57.872Z",
+                      "startTime": "2026-06-04T16:57:58.102Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -657,15 +604,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2892,
+                      "duration": 2875,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:00.416Z",
+                      "startTime": "2026-06-04T16:58:00.579Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -691,15 +638,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1572,
+                      "duration": 1380,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:03.319Z",
+                      "startTime": "2026-06-04T16:58:03.462Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -725,15 +672,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5077,
+                      "duration": 4928,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:04.899Z",
+                      "startTime": "2026-06-04T16:58:04.850Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -776,15 +723,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1440,
+                      "duration": 1343,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:10.013Z",
+                      "startTime": "2026-06-04T16:58:09.815Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -810,15 +757,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3520,
+                      "duration": 3509,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:11.462Z",
+                      "startTime": "2026-06-04T16:58:11.167Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -844,15 +791,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5855,
+                      "duration": 5806,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:14.990Z",
+                      "startTime": "2026-06-04T16:58:14.683Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -878,15 +825,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2622,
+                      "duration": 2578,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:20.856Z",
+                      "startTime": "2026-06-04T16:58:20.497Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -912,15 +859,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6290,
+                      "duration": 4990,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:23.487Z",
+                      "startTime": "2026-06-04T16:58:23.084Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -946,15 +893,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2292,
+                      "duration": 2076,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:29.786Z",
+                      "startTime": "2026-06-04T16:58:28.082Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -980,15 +927,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4232,
+                      "duration": 4110,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:32.086Z",
+                      "startTime": "2026-06-04T16:58:30.164Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1031,15 +978,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1423,
+                      "duration": 1345,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:36.358Z",
+                      "startTime": "2026-06-04T16:58:34.312Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1065,15 +1012,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1468,
+                      "duration": 1324,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:37.789Z",
+                      "startTime": "2026-06-04T16:58:35.666Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1099,15 +1046,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2091,
+                      "duration": 1972,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:39.266Z",
+                      "startTime": "2026-06-04T16:58:36.998Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1133,15 +1080,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1415,
+                      "duration": 1395,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:41.366Z",
+                      "startTime": "2026-06-04T16:58:38.981Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1156,7 +1103,7 @@
             },
             {
               "title": "displays BFC leaderboard section",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -1167,60 +1114,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 4531,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#bfc-leaderboard').locator('.bfc-member, #bfc-leaderboard').locator('[class*=\"bfc\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('#bfc-leaderboard').locator('.bfc-member, #bfc-leaderboard').locator('[class*=\"bfc\"]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#bfc-leaderboard').locator('.bfc-member, #bfc-leaderboard').locator('[class*=\"bfc\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('#bfc-leaderboard').locator('.bfc-member, #bfc-leaderboard').locator('[class*=\"bfc\"]').first()\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\home.spec.ts:42:43",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\home.spec.ts",
-                          "column": 43,
-                          "line": 42
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 40 |\u001b[39m         \u001b[90m// Should have leaderboard entries\u001b[39m\n \u001b[90m 41 |\u001b[39m         \u001b[36mconst\u001b[39m leaderItems \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'#bfc-leaderboard >> .bfc-member, #bfc-leaderboard >> [class*=\"bfc\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 42 |\u001b[39m         \u001b[36mawait\u001b[39m expect(leaderItems\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 43 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 44 |\u001b[39m\n \u001b[90m 45 |\u001b[39m     test(\u001b[32m'displays refer card'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\home.spec.ts",
-                            "column": 43,
-                            "line": 42
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#bfc-leaderboard').locator('.bfc-member, #bfc-leaderboard').locator('[class*=\"bfc\"]').first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for locator('#bfc-leaderboard').locator('.bfc-member, #bfc-leaderboard').locator('[class*=\"bfc\"]').first()\u001b[22m\n\n\n  40 |         // Should have leaderboard entries\n  41 |         const leaderItems = page.locator('#bfc-leaderboard >> .bfc-member, #bfc-leaderboard >> [class*=\"bfc\"]');\n> 42 |         await expect(leaderItems.first()).toBeVisible({ timeout: 3000 });\n     |                                           ^\n  43 |     });\n  44 |\n  45 |     test('displays refer card', async ({ page }) => {\n    at C:\\Projects\\hindtrucks\\e2e\\home.spec.ts:42:43"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 1410,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:42.791Z",
+                      "startTime": "2026-06-04T16:58:40.382Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\home-Home-Screen-displays-BFC-leaderboard-section-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\home-Home-Screen-displays-BFC-leaderboard-section-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\home-Home-Screen-displays-BFC-leaderboard-section-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\home.spec.ts",
-                        "column": 43,
-                        "line": 42
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "d318381359a9b96acb1e-79f700e638ff8867aaef",
@@ -1241,15 +1148,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1553,
+                      "duration": 1373,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:48.915Z",
+                      "startTime": "2026-06-04T16:58:41.800Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1264,7 +1171,7 @@
             },
             {
               "title": "displays nearby loads section",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -1275,60 +1182,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 6486,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/nearby loads|available loads/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/nearby loads|available loads/i)\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/nearby loads|available loads/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/nearby loads|available loads/i)\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\home.spec.ts:50:71",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\home.spec.ts",
-                          "column": 71,
-                          "line": 50
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 48 |\u001b[39m\n \u001b[90m 49 |\u001b[39m     test(\u001b[32m'displays nearby loads section'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 50 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/nearby loads|available loads/i\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 51 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 52 |\u001b[39m\n \u001b[90m 53 |\u001b[39m     test(\u001b[32m'shows active trips section when trips exist'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\home.spec.ts",
-                            "column": 71,
-                            "line": 50
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/nearby loads|available loads/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/nearby loads|available loads/i)\u001b[22m\n\n\n  48 |\n  49 |     test('displays nearby loads section', async ({ page }) => {\n> 50 |         await expect(page.getByText(/nearby loads|available loads/i)).toBeVisible({ timeout: 5000 });\n     |                                                                       ^\n  51 |     });\n  52 |\n  53 |     test('shows active trips section when trips exist', async ({ page }) => {\n    at C:\\Projects\\hindtrucks\\e2e\\home.spec.ts:50:71"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 1327,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:50.567Z",
+                      "startTime": "2026-06-04T16:58:43.181Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\home-Home-Screen-displays-nearby-loads-section-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\home-Home-Screen-displays-nearby-loads-section-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\home-Home-Screen-displays-nearby-loads-section-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\home.spec.ts",
-                        "column": 71,
-                        "line": 50
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "d318381359a9b96acb1e-3ee704179e88da8986da",
@@ -1349,15 +1216,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2673,
+                      "duration": 2359,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:33:58.716Z",
+                      "startTime": "2026-06-04T16:58:44.515Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1383,15 +1250,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1421,
+                      "duration": 1376,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:01.512Z",
+                      "startTime": "2026-06-04T16:58:46.882Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1423,7 +1290,7 @@
           "specs": [
             {
               "title": "language picker shows all 5 languages",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -1434,60 +1301,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 2970,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/english/i)\nExpected: visible\nError: strict mode violation: getByText(/english/i) resolved to 2 elements:\n    1) <p class=\"text-[18px] font-bold text-ink leading-tight\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n    2) <p class=\"text-xs text-ink-muted mt-0.5 font-bold\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/english/i)\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/english/i)\nExpected: visible\nError: strict mode violation: getByText(/english/i) resolved to 2 elements:\n    1) <p class=\"text-[18px] font-bold text-ink leading-tight\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n    2) <p class=\"text-xs text-ink-muted mt-0.5 font-bold\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/english/i)\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\language.spec.ts:17:50",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\language.spec.ts",
-                          "column": 50,
-                          "line": 17
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 15 |\u001b[39m\n \u001b[90m 16 |\u001b[39m         \u001b[90m// All 5 languages should be visible\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 17 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/english/i\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 18 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/hindi|हिन्दी/i\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/tamil|தமிழ்/i\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/punjabi|ਪੰਜਾਬੀ/i\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\language.spec.ts",
-                            "column": 50,
-                            "line": 17
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/english/i)\nExpected: visible\nError: strict mode violation: getByText(/english/i) resolved to 2 elements:\n    1) <p class=\"text-[18px] font-bold text-ink leading-tight\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n    2) <p class=\"text-xs text-ink-muted mt-0.5 font-bold\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/english/i)\u001b[22m\n\n\n  15 |\n  16 |         // All 5 languages should be visible\n> 17 |         await expect(page.getByText(/english/i)).toBeVisible({ timeout: 3000 });\n     |                                                  ^\n  18 |         await expect(page.getByText(/hindi|हिन्दी/i)).toBeVisible({ timeout: 3000 });\n  19 |         await expect(page.getByText(/tamil|தமிழ்/i)).toBeVisible({ timeout: 3000 });\n  20 |         await expect(page.getByText(/punjabi|ਪੰਜਾਬੀ/i)).toBeVisible({ timeout: 3000 });\n    at C:\\Projects\\hindtrucks\\e2e\\language.spec.ts:17:50"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 2817,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:02.970Z",
+                      "startTime": "2026-06-04T16:58:48.294Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\language-Language-Switchin-2261c-icker-shows-all-5-languages-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\language-Language-Switchin-2261c-icker-shows-all-5-languages-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\language-Language-Switchin-2261c-icker-shows-all-5-languages-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\language.spec.ts",
-                        "column": 50,
-                        "line": 17
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "49def915946a04ed21ee-7cf92ac5807e37b563fe",
@@ -1508,15 +1335,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3118,
+                      "duration": 3143,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:07.434Z",
+                      "startTime": "2026-06-04T16:58:51.118Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1531,7 +1358,7 @@
             },
             {
               "title": "continue button navigates to login with selected language",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -1542,60 +1369,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 4,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 2956,
-                      "error": {
-                        "message": "Error: locator.click: Error: strict mode violation: getByText(/english/i) resolved to 2 elements:\n    1) <p class=\"text-[18px] font-bold text-ink leading-tight\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n    2) <p class=\"text-xs text-ink-muted mt-0.5 font-bold\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n\nCall log:\n\u001b[2m  - waiting for getByText(/english/i)\u001b[22m\n",
-                        "stack": "Error: locator.click: Error: strict mode violation: getByText(/english/i) resolved to 2 elements:\n    1) <p class=\"text-[18px] font-bold text-ink leading-tight\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n    2) <p class=\"text-xs text-ink-muted mt-0.5 font-bold\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n\nCall log:\n\u001b[2m  - waiting for getByText(/english/i)\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\language.spec.ts:47:42",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\language.spec.ts",
-                          "column": 42,
-                          "line": 47
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m         \u001b[90m// Select a language and continue\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByText(\u001b[35m/english/i\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m300\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 49 |\u001b[39m         \u001b[36mconst\u001b[39m continueBtn \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/continue/i\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 50 |\u001b[39m         \u001b[36mawait\u001b[39m expect(continueBtn)\u001b[33m.\u001b[39mtoBeEnabled({ timeout\u001b[33m:\u001b[39m \u001b[35m2000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\language.spec.ts",
-                            "column": 42,
-                            "line": 47
-                          },
-                          "message": "Error: locator.click: Error: strict mode violation: getByText(/english/i) resolved to 2 elements:\n    1) <p class=\"text-[18px] font-bold text-ink leading-tight\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n    2) <p class=\"text-xs text-ink-muted mt-0.5 font-bold\">English</p> aka getByRole('button', { name: 'English English Suggested for' })\n\nCall log:\n\u001b[2m  - waiting for getByText(/english/i)\u001b[22m\n\n\n  45 |\n  46 |         // Select a language and continue\n> 47 |         await page.getByText(/english/i).click();\n     |                                          ^\n  48 |         await page.waitForTimeout(300);\n  49 |         const continueBtn = page.getByRole('button', { name: /continue/i });\n  50 |         await expect(continueBtn).toBeEnabled({ timeout: 2000 });\n    at C:\\Projects\\hindtrucks\\e2e\\language.spec.ts:47:42"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 2919,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:10.641Z",
+                      "startTime": "2026-06-04T16:58:54.269Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\language-Language-Switchin-f0a8d-ogin-with-selected-language-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\language-Language-Switchin-f0a8d-ogin-with-selected-language-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\language-Language-Switchin-f0a8d-ogin-with-selected-language-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\language.spec.ts",
-                        "column": 42,
-                        "line": 47
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "49def915946a04ed21ee-62dbaff9535d8894bee5",
@@ -1616,15 +1403,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2402,
+                      "duration": 2265,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:15.143Z",
+                      "startTime": "2026-06-04T16:58:57.194Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1650,15 +1437,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3593,
+                      "duration": 3473,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:17.645Z",
+                      "startTime": "2026-06-04T16:58:59.467Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1701,15 +1488,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2966,
+                      "duration": 2959,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:21.276Z",
+                      "startTime": "2026-06-04T16:59:02.971Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1735,15 +1522,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2939,
+                      "duration": 2941,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:24.253Z",
+                      "startTime": "2026-06-04T16:59:05.937Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1758,7 +1545,7 @@
             },
             {
               "title": "displays shipper information",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -1769,60 +1556,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 8219,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/shipper|sender|from/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/shipper|sender|from/i).first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/shipper|sender|from/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/shipper|sender|from/i).first()\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts:39:31",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts",
-                          "column": 31,
-                          "line": 39
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 37 |\u001b[39m     test(\u001b[32m'displays shipper information'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 38 |\u001b[39m         \u001b[36mconst\u001b[39m shipper \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByText(\u001b[35m/shipper|sender|from/i\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 39 |\u001b[39m         \u001b[36mawait\u001b[39m expect(shipper)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 40 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 41 |\u001b[39m\n \u001b[90m 42 |\u001b[39m     test(\u001b[32m'displays accept load button'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts",
-                            "column": 31,
-                            "line": 39
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/shipper|sender|from/i).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/shipper|sender|from/i).first()\u001b[22m\n\n\n  37 |     test('displays shipper information', async ({ page }) => {\n  38 |         const shipper = page.getByText(/shipper|sender|from/i).first();\n> 39 |         await expect(shipper).toBeVisible({ timeout: 5000 });\n     |                               ^\n  40 |     });\n  41 |\n  42 |     test('displays accept load button', async ({ page }) => {\n    at C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts:39:31"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 2945,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:27.203Z",
+                      "startTime": "2026-06-04T16:59:08.885Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\load-detail-Load-Detail-Screen-displays-shipper-information-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\load-detail-Load-Detail-Screen-displays-shipper-information-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\load-detail-Load-Detail-Screen-displays-shipper-information-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts",
-                        "column": 31,
-                        "line": 39
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "348193972ebfc4bb70bf-279e96859946db4c98b0",
@@ -1832,7 +1579,7 @@
             },
             {
               "title": "displays accept load button",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -1843,60 +1590,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 8175,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /accept|confirm|take load/i })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /accept|confirm|take load/i })\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /accept|confirm|take load/i })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /accept|confirm|take load/i })\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts:44:33",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts",
-                          "column": 33,
-                          "line": 44
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 42 |\u001b[39m     test(\u001b[32m'displays accept load button'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 43 |\u001b[39m         \u001b[36mconst\u001b[39m acceptBtn \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/accept|confirm|take load/i\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 44 |\u001b[39m         \u001b[36mawait\u001b[39m expect(acceptBtn)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 45 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 46 |\u001b[39m\n \u001b[90m 47 |\u001b[39m     test(\u001b[32m'clicking accept opens confirmation sheet'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts",
-                            "column": 33,
-                            "line": 44
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /accept|confirm|take load/i })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /accept|confirm|take load/i })\u001b[22m\n\n\n  42 |     test('displays accept load button', async ({ page }) => {\n  43 |         const acceptBtn = page.getByRole('button', { name: /accept|confirm|take load/i });\n> 44 |         await expect(acceptBtn).toBeVisible({ timeout: 5000 });\n     |                                 ^\n  45 |     });\n  46 |\n  47 |     test('clicking accept opens confirmation sheet', async ({ page }) => {\n    at C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts:44:33"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 2973,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:37.188Z",
+                      "startTime": "2026-06-04T16:59:11.839Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\load-detail-Load-Detail-Screen-displays-accept-load-button-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\load-detail-Load-Detail-Screen-displays-accept-load-button-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\load-detail-Load-Detail-Screen-displays-accept-load-button-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts",
-                        "column": 33,
-                        "line": 44
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "348193972ebfc4bb70bf-9a26d461e9aacffedb23",
@@ -1906,7 +1613,7 @@
             },
             {
               "title": "clicking accept opens confirmation sheet",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -1917,60 +1624,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 7,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 8164,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /accept|confirm|take load/i })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /accept|confirm|take load/i })\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /accept|confirm|take load/i })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /accept|confirm|take load/i })\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts:49:33",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts",
-                          "column": 33,
-                          "line": 49
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 47 |\u001b[39m     test(\u001b[32m'clicking accept opens confirmation sheet'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 48 |\u001b[39m         \u001b[36mconst\u001b[39m acceptBtn \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/accept|confirm|take load/i\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 49 |\u001b[39m         \u001b[36mawait\u001b[39m expect(acceptBtn)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 50 |\u001b[39m         \u001b[36mawait\u001b[39m acceptBtn\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 51 |\u001b[39m         \u001b[90m// Should show confirmation bottom sheet\u001b[39m\n \u001b[90m 52 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts",
-                            "column": 33,
-                            "line": 49
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /accept|confirm|take load/i })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /accept|confirm|take load/i })\u001b[22m\n\n\n  47 |     test('clicking accept opens confirmation sheet', async ({ page }) => {\n  48 |         const acceptBtn = page.getByRole('button', { name: /accept|confirm|take load/i });\n> 49 |         await expect(acceptBtn).toBeVisible({ timeout: 5000 });\n     |                                 ^\n  50 |         await acceptBtn.click();\n  51 |         // Should show confirmation bottom sheet\n  52 |         await page.waitForTimeout(1000);\n    at C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts:49:33"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 3985,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:47.161Z",
+                      "startTime": "2026-06-04T16:59:14.820Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\load-detail-Load-Detail-Sc-f5cb1-pt-opens-confirmation-sheet-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\load-detail-Load-Detail-Sc-f5cb1-pt-opens-confirmation-sheet-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\load-detail-Load-Detail-Sc-f5cb1-pt-opens-confirmation-sheet-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\load-detail.spec.ts",
-                        "column": 33,
-                        "line": 49
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "348193972ebfc4bb70bf-5bd9cbfbe43adc0da6e6",
@@ -1991,15 +1658,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2974,
+                      "duration": 2901,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:34:57.074Z",
+                      "startTime": "2026-06-04T16:59:18.812Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2042,15 +1709,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2424,
+                      "duration": 2322,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:35:00.178Z",
+                      "startTime": "2026-06-04T16:59:21.750Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2076,15 +1743,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2979,
+                      "duration": 2858,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:35:02.613Z",
+                      "startTime": "2026-06-04T16:59:24.080Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2110,15 +1777,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1830,
+                      "duration": 1759,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:35:05.603Z",
+                      "startTime": "2026-06-04T16:59:26.945Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2144,15 +1811,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2876,
+                      "duration": 2860,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:35:07.448Z",
+                      "startTime": "2026-06-04T16:59:28.711Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2167,7 +1834,7 @@
             },
             {
               "title": "shows empty state when no loads match filter",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -2178,60 +1845,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 2477,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Projects\\hindtrucks\\e2e\\loads.spec.ts:60:38",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\loads.spec.ts",
-                          "column": 38,
-                          "line": 60
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 58 |\u001b[39m         \u001b[36mconst\u001b[39m hasEmpty \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m emptyState\u001b[33m.\u001b[39misVisible()\u001b[33m.\u001b[39m\u001b[36mcatch\u001b[39m(() \u001b[33m=>\u001b[39m \u001b[36mfalse\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 59 |\u001b[39m         \u001b[90m// One of the two should be true\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m         expect(hasCards \u001b[33m||\u001b[39m hasEmpty)\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 62 |\u001b[39m\n \u001b[90m 63 |\u001b[39m     test(\u001b[32m'clicking a load card navigates to load detail'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\loads.spec.ts",
-                            "column": 38,
-                            "line": 60
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n  58 |         const hasEmpty = await emptyState.isVisible().catch(() => false);\n  59 |         // One of the two should be true\n> 60 |         expect(hasCards || hasEmpty).toBeTruthy();\n     |                                      ^\n  61 |     });\n  62 |\n  63 |     test('clicking a load card navigates to load detail', async ({ page }) => {\n    at C:\\Projects\\hindtrucks\\e2e\\loads.spec.ts:60:38"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 2860,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:35:10.334Z",
+                      "startTime": "2026-06-04T16:59:31.578Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\loads-Loads-Screen-shows-e-74238--when-no-loads-match-filter-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\loads-Loads-Screen-shows-e-74238--when-no-loads-match-filter-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\loads-Loads-Screen-shows-e-74238--when-no-loads-match-filter-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\loads.spec.ts",
-                        "column": 38,
-                        "line": 60
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "8d53cb4ba3fa5f5c3ad3-d27990cd7b1e243de4b8",
@@ -2252,15 +1879,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 9,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2938,
+                      "duration": 2919,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:35:14.358Z",
+                      "startTime": "2026-06-04T16:59:34.445Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2292,7 +1919,7 @@
           "specs": [
             {
               "title": "complete login flow: splash → language → login → otp → home",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -2303,60 +1930,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 9,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 10964,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\nExpected: visible\nTimeout: 8000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 8000ms\u001b[22m\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\nExpected: visible\nTimeout: 8000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 8000ms\u001b[22m\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts:25:34",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                          "column": 34,
-                          "line": 25
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         \u001b[90m// 3. Enter phone number\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mconst\u001b[39m phoneInput \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(phoneInput)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m phoneInput\u001b[33m.\u001b[39mfill(\u001b[32m'9876543210'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m phoneInput\u001b[33m.\u001b[39mblur()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                            "column": 34,
-                            "line": 25
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\nExpected: visible\nTimeout: 8000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 8000ms\u001b[22m\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n\n\n  23 |         // 3. Enter phone number\n  24 |         const phoneInput = page.locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first();\n> 25 |         await expect(phoneInput).toBeVisible();\n     |                                  ^\n  26 |         await phoneInput.fill('9876543210');\n  27 |         await phoneInput.blur();\n  28 |\n    at C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts:25:34"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 3146,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:35:17.420Z",
+                      "startTime": "2026-06-04T16:59:37.389Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-comp-f9a70-nguage-→-login-→-otp-→-home-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-comp-f9a70-nguage-→-login-→-otp-→-home-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-comp-f9a70-nguage-→-login-→-otp-→-home-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                        "column": 34,
-                        "line": 25
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "970e73a7df9c19f55b5b-07078c971f2ec775b9e8",
@@ -2366,7 +1953,7 @@
             },
             {
               "title": "phone input validation: rejects short numbers",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -2377,70 +1964,30 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 10,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 11383,
-                      "error": {
-                        "message": "TimeoutError: locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n",
-                        "stack": "TimeoutError: locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts:67:26",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                          "column": 26,
-                          "line": 67
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 65 |\u001b[39m\n \u001b[90m 66 |\u001b[39m         \u001b[36mconst\u001b[39m phoneInput \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 67 |\u001b[39m         \u001b[36mawait\u001b[39m phoneInput\u001b[33m.\u001b[39mfill(\u001b[32m'12345'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 68 |\u001b[39m         \u001b[36mawait\u001b[39m phoneInput\u001b[33m.\u001b[39mblur()\u001b[33m;\u001b[39m\n \u001b[90m 69 |\u001b[39m\n \u001b[90m 70 |\u001b[39m         \u001b[90m// Send OTP button should be disabled\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                            "column": 26,
-                            "line": 67
-                          },
-                          "message": "TimeoutError: locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n\n\n  65 |\n  66 |         const phoneInput = page.locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first();\n> 67 |         await phoneInput.fill('12345');\n     |                          ^\n  68 |         await phoneInput.blur();\n  69 |\n  70 |         // Send OTP button should be disabled\n    at C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts:67:26"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 1109,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:35:29.874Z",
+                      "startTime": "2026-06-04T16:59:40.543Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-phon-1ef93-ation-rejects-short-numbers-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-phon-1ef93-ation-rejects-short-numbers-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-phon-1ef93-ation-rejects-short-numbers-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                        "column": 26,
-                        "line": 67
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "970e73a7df9c19f55b5b-ea096e30b0e81fb00001",
               "file": "login-flow.spec.ts",
-              "line": 58,
+              "line": 62,
               "column": 5
             },
             {
               "title": "phone input validation: accepts valid 10-digit number",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -2451,70 +1998,30 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 11,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 11434,
-                      "error": {
-                        "message": "TimeoutError: locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n",
-                        "stack": "TimeoutError: locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts:84:26",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                          "column": 26,
-                          "line": 84
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 82 |\u001b[39m\n \u001b[90m 83 |\u001b[39m         \u001b[36mconst\u001b[39m phoneInput \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 84 |\u001b[39m         \u001b[36mawait\u001b[39m phoneInput\u001b[33m.\u001b[39mfill(\u001b[32m'9876543210'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 85 |\u001b[39m         \u001b[36mawait\u001b[39m phoneInput\u001b[33m.\u001b[39mblur()\u001b[33m;\u001b[39m\n \u001b[90m 86 |\u001b[39m\n \u001b[90m 87 |\u001b[39m         \u001b[36mconst\u001b[39m sendOtp \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/send otp|get otp|continue/i\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                            "column": 26,
-                            "line": 84
-                          },
-                          "message": "TimeoutError: locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n\n\n  82 |\n  83 |         const phoneInput = page.locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first();\n> 84 |         await phoneInput.fill('9876543210');\n     |                          ^\n  85 |         await phoneInput.blur();\n  86 |\n  87 |         const sendOtp = page.getByRole('button', { name: /send otp|get otp|continue/i });\n    at C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts:84:26"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 1218,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:35:42.885Z",
+                      "startTime": "2026-06-04T16:59:41.659Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-phon-e1164-cepts-valid-10-digit-number-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-phon-e1164-cepts-valid-10-digit-number-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-phon-e1164-cepts-valid-10-digit-number-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                        "column": 26,
-                        "line": 84
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "970e73a7df9c19f55b5b-d2ab08f5ca5ad2cefbd8",
               "file": "login-flow.spec.ts",
-              "line": 75,
+              "line": 79,
               "column": 5
             },
             {
               "title": "navigates to registration for new user phone",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -2525,65 +2032,25 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 12,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 11629,
-                      "error": {
-                        "message": "TimeoutError: locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n",
-                        "stack": "TimeoutError: locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts:101:26",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                          "column": 26,
-                          "line": 101
-                        },
-                        "snippet": "\u001b[0m \u001b[90m  99 |\u001b[39m\n \u001b[90m 100 |\u001b[39m         \u001b[36mconst\u001b[39m phoneInput \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m         \u001b[36mawait\u001b[39m phoneInput\u001b[33m.\u001b[39mfill(\u001b[32m'9999999999'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m         \u001b[36mawait\u001b[39m phoneInput\u001b[33m.\u001b[39mblur()\u001b[33m;\u001b[39m\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m         \u001b[36mconst\u001b[39m sendOtp \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/send otp|get otp|continue/i\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                            "column": 26,
-                            "line": 101
-                          },
-                          "message": "TimeoutError: locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first()\u001b[22m\n\n\n   99 |\n  100 |         const phoneInput = page.locator('input[type=\"tel\"], input[placeholder*=\"phone\" i], input[placeholder*=\"mobile\" i], input[placeholder*=\"number\" i]').first();\n> 101 |         await phoneInput.fill('9999999999');\n      |                          ^\n  102 |         await phoneInput.blur();\n  103 |\n  104 |         const sendOtp = page.getByRole('button', { name: /send otp|get otp|continue/i });\n    at C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts:101:26"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 1369,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:35:56.351Z",
+                      "startTime": "2026-06-04T16:59:42.884Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-navi-f48fe-stration-for-new-user-phone-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-navi-f48fe-stration-for-new-user-phone-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\login-flow-Login-Flow-navi-f48fe-stration-for-new-user-phone-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\login-flow.spec.ts",
-                        "column": 26,
-                        "line": 101
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "970e73a7df9c19f55b5b-eff8dd97727eb374137d",
               "file": "login-flow.spec.ts",
-              "line": 91,
+              "line": 95,
               "column": 5
             },
             {
@@ -2599,15 +2066,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1477,
+                      "duration": 1112,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:09.139Z",
+                      "startTime": "2026-06-04T16:59:44.261Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2617,7 +2084,7 @@
               ],
               "id": "970e73a7df9c19f55b5b-d8c7c46352dec50978e3",
               "file": "login-flow.spec.ts",
-              "line": 126,
+              "line": 135,
               "column": 5
             }
           ]
@@ -2650,15 +2117,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1526,
+                      "duration": 1382,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:10.738Z",
+                      "startTime": "2026-06-04T16:59:45.405Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2684,15 +2151,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1496,
+                      "duration": 1377,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:12.275Z",
+                      "startTime": "2026-06-04T16:59:46.794Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2718,15 +2185,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1389,
+                      "duration": 1440,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:13.783Z",
+                      "startTime": "2026-06-04T16:59:48.180Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2752,15 +2219,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1526,
+                      "duration": 1428,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:15.191Z",
+                      "startTime": "2026-06-04T16:59:49.627Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2786,15 +2253,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1442,
+                      "duration": 1425,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:16.727Z",
+                      "startTime": "2026-06-04T16:59:51.062Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2820,15 +2287,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1780,
+                      "duration": 1626,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:18.178Z",
+                      "startTime": "2026-06-04T16:59:52.494Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2854,15 +2321,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1548,
+                      "duration": 1376,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:19.968Z",
+                      "startTime": "2026-06-04T16:59:54.127Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -2894,7 +2361,7 @@
           "specs": [
             {
               "title": "offline indicator is hidden when online",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -2905,60 +2372,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 13,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 1518,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: not visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 2 elements:\n    1) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    2) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: not visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 2 elements:\n    1) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    2) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:19:41",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                          "column": 41,
-                          "line": 19
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m         \u001b[90m// By default, should be online\u001b[39m\n \u001b[90m 18 |\u001b[39m         \u001b[36mconst\u001b[39m offlineBanner \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByText(\u001b[35m/you're offline|offline/i\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m         \u001b[36mawait\u001b[39m expect(offlineBanner)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 21 |\u001b[39m\n \u001b[90m 22 |\u001b[39m     test(\u001b[32m'offline indicator appears when offline'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                            "column": 41,
-                            "line": 19
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: not visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 2 elements:\n    1) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    2) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n\n\n  17 |         // By default, should be online\n  18 |         const offlineBanner = page.getByText(/you're offline|offline/i);\n> 19 |         await expect(offlineBanner).not.toBeVisible({ timeout: 3000 });\n     |                                         ^\n  20 |     });\n  21 |\n  22 |     test('offline indicator appears when offline', async ({ page }) => {\n    at C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:19:41"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 1381,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:21.561Z",
+                      "startTime": "2026-06-04T16:59:55.538Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offline-indicator-is-hidden-when-online-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offline-indicator-is-hidden-when-online-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offline-indicator-is-hidden-when-online-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                        "column": 41,
-                        "line": 19
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "586fc5283fd8ec7c7982-2e5a00106eac2bf9cd03",
@@ -2968,7 +2395,7 @@
             },
             {
               "title": "offline indicator appears when offline",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -2979,60 +2406,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 14,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 2624,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 3 elements:\n    1) <span>You're offline. Changes will sync when connected.</span> aka getByText('You\\'re offline. Changes will')\n    2) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    3) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 3 elements:\n    1) <span>You're offline. Changes will sync when connected.</span> aka getByText('You\\'re offline. Changes will')\n    2) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    3) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:27:37",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                          "column": 37,
-                          "line": 27
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mconst\u001b[39m offlineBanner \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByText(\u001b[35m/you're offline|offline/i\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(offlineBanner)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m     test(\u001b[32m'offline indicator disappears when back online'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                            "column": 37,
-                            "line": 27
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 3 elements:\n    1) <span>You're offline. Changes will sync when connected.</span> aka getByText('You\\'re offline. Changes will')\n    2) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    3) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n\n\n  25 |         await page.waitForTimeout(1000);\n  26 |         const offlineBanner = page.getByText(/you're offline|offline/i);\n> 27 |         await expect(offlineBanner).toBeVisible({ timeout: 5000 });\n     |                                     ^\n  28 |     });\n  29 |\n  30 |     test('offline indicator disappears when back online', async ({ page }) => {\n    at C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:27:37"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 2324,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:24.508Z",
+                      "startTime": "2026-06-04T16:59:56.927Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offline-indicator-appears-when-offline-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offline-indicator-appears-when-offline-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offline-indicator-appears-when-offline-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                        "column": 37,
-                        "line": 27
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "586fc5283fd8ec7c7982-a36e503879c9d4f1cea6",
@@ -3042,7 +2429,7 @@
             },
             {
               "title": "offline indicator disappears when back online",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -3053,60 +2440,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 2655,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 3 elements:\n    1) <span>You're offline. Changes will sync when connected.</span> aka getByText('You\\'re offline. Changes will')\n    2) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    3) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 3 elements:\n    1) <span>You're offline. Changes will sync when connected.</span> aka getByText('You\\'re offline. Changes will')\n    2) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    3) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:35:37",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                          "column": 37,
-                          "line": 35
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 33 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 34 |\u001b[39m         \u001b[36mconst\u001b[39m offlineBanner \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByText(\u001b[35m/you're offline|offline/i\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 35 |\u001b[39m         \u001b[36mawait\u001b[39m expect(offlineBanner)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 36 |\u001b[39m\n \u001b[90m 37 |\u001b[39m         \u001b[90m// Go back online\u001b[39m\n \u001b[90m 38 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mcontext()\u001b[33m.\u001b[39msetOffline(\u001b[36mfalse\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                            "column": 37,
-                            "line": 35
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 3 elements:\n    1) <span>You're offline. Changes will sync when connected.</span> aka getByText('You\\'re offline. Changes will')\n    2) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    3) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n\n\n  33 |         await page.waitForTimeout(1000);\n  34 |         const offlineBanner = page.getByText(/you're offline|offline/i);\n> 35 |         await expect(offlineBanner).toBeVisible({ timeout: 5000 });\n     |                                     ^\n  36 |\n  37 |         // Go back online\n  38 |         await page.context().setOffline(false);\n    at C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:35:37"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 3465,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:28.536Z",
+                      "startTime": "2026-06-04T16:59:59.258Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offli-be7af-disappears-when-back-online-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offli-be7af-disappears-when-back-online-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offli-be7af-disappears-when-back-online-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                        "column": 37,
-                        "line": 35
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "586fc5283fd8ec7c7982-a6635f07a839d5951df8",
@@ -3116,7 +2463,7 @@
             },
             {
               "title": "app remains functional when offline",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -3127,60 +2474,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 16,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 8631,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#nav-tab-loads')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#nav-tab-loads')\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#nav-tab-loads')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#nav-tab-loads')\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:51:54",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                          "column": 54,
-                          "line": 51
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 49 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 50 |\u001b[39m         \u001b[90m// Should still show loads tab content\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 51 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'#nav-tab-loads'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 52 |\u001b[39m\n \u001b[90m 53 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'#nav-tab-earnings'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 54 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                            "column": 54,
-                            "line": 51
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#nav-tab-loads')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#nav-tab-loads')\u001b[22m\n\n\n  49 |         await page.waitForTimeout(1000);\n  50 |         // Should still show loads tab content\n> 51 |         await expect(page.locator('#nav-tab-loads')).toBeVisible({ timeout: 5000 });\n     |                                                      ^\n  52 |\n  53 |         await page.locator('#nav-tab-earnings').click();\n  54 |         await page.waitForTimeout(1000);\n    at C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:51:54"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 2440,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:32.806Z",
+                      "startTime": "2026-06-04T17:00:02.729Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-app-remains-functional-when-offline-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-app-remains-functional-when-offline-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-app-remains-functional-when-offline-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
-                        "column": 54,
-                        "line": 51
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "586fc5283fd8ec7c7982-d598f68863b3032075e4",
@@ -3201,15 +2508,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 17,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3051,
+                      "duration": 3029,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:43.021Z",
+                      "startTime": "2026-06-04T17:00:05.176Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3219,7 +2526,7 @@
               ],
               "id": "586fc5283fd8ec7c7982-1e120350b3eb93572b7b",
               "file": "offline.spec.ts",
-              "line": 61,
+              "line": 55,
               "column": 5
             },
             {
@@ -3235,56 +2542,56 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 17,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 2582,
+                      "duration": 6288,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 3 elements:\n    1) <span>You're offline. Changes will sync when connected.</span> aka getByText('You\\'re offline. Changes will')\n    2) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    3) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 3 elements:\n    1) <span>You're offline. Changes will sync when connected.</span> aka getByText('You\\'re offline. Changes will')\n    2) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    3) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:81:37",
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline\\./i)\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline\\./i)\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline\\./i)\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline\\./i)\u001b[22m\n\n    at c:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:83:37",
                         "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
+                          "file": "c:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
                           "column": 37,
-                          "line": 81
+                          "line": 83
                         },
-                        "snippet": "\u001b[0m \u001b[90m 79 |\u001b[39m\n \u001b[90m 80 |\u001b[39m         \u001b[90m// Home\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 81 |\u001b[39m         \u001b[36mawait\u001b[39m expect(offlineBanner)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 82 |\u001b[39m\n \u001b[90m 83 |\u001b[39m         \u001b[90m// Loads\u001b[39m\n \u001b[90m 84 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'#nav-tab-loads'\u001b[39m)\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 81 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 82 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 83 |\u001b[39m         \u001b[36mawait\u001b[39m expect(offlineBanner)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 84 |\u001b[39m\n \u001b[90m 85 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mevaluate(() \u001b[33m=>\u001b[39m {\n \u001b[90m 86 |\u001b[39m             window\u001b[33m.\u001b[39mhistory\u001b[33m.\u001b[39mpushState({}\u001b[33m,\u001b[39m \u001b[32m''\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'/earnings'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
+                            "file": "c:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
                             "column": 37,
-                            "line": 81
+                            "line": 83
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline|offline/i)\nExpected: visible\nError: strict mode violation: getByText(/you're offline|offline/i) resolved to 3 elements:\n    1) <span>You're offline. Changes will sync when connected.</span> aka getByText('You\\'re offline. Changes will')\n    2) <p class=\"font-black text-[14px] text-ink uppercase tracking-wider\">Offline</p> aka getByText('Offline', { exact: true })\n    3) <p class=\"text-ink-muted text-xs mt-0.5 leading-snug font-semibold\">You're offline — go online to get loads</p> aka getByText('You\\'re offline — go online to')\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline|offline/i)\u001b[22m\n\n\n  79 |\n  80 |         // Home\n> 81 |         await expect(offlineBanner).toBeVisible({ timeout: 5000 });\n     |                                     ^\n  82 |\n  83 |         // Loads\n  84 |         await page.locator('#nav-tab-loads').click();\n    at C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:81:37"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/you're offline\\./i)\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/you're offline\\./i)\u001b[22m\n\n\n  81 |         });\n  82 |         await page.waitForTimeout(1000);\n> 83 |         await expect(offlineBanner).toBeVisible({ timeout: 3000 });\n     |                                     ^\n  84 |\n  85 |         await page.evaluate(() => {\n  86 |             window.history.pushState({}, '', '/earnings');\n    at c:\\Projects\\hindtrucks\\e2e\\offline.spec.ts:83:37"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:46.171Z",
+                      "startTime": "2026-06-04T17:00:08.213Z",
                       "annotations": [],
                       "attachments": [
                         {
                           "name": "screenshot",
                           "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offli-b5195--appears-on-all-tab-screens-chromium\\test-failed-1.png"
+                          "path": "c:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offli-b5195--appears-on-all-tab-screens-chromium\\test-failed-1.png"
                         },
                         {
                           "name": "error-context",
                           "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offli-b5195--appears-on-all-tab-screens-chromium\\error-context.md"
+                          "path": "c:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offli-b5195--appears-on-all-tab-screens-chromium\\error-context.md"
                         },
                         {
                           "name": "trace",
                           "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offli-b5195--appears-on-all-tab-screens-chromium\\trace.zip"
+                          "path": "c:\\Projects\\hindtrucks\\test-results\\offline-Offline-Mode-offli-b5195--appears-on-all-tab-screens-chromium\\trace.zip"
                         }
                       ],
                       "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
+                        "file": "c:\\Projects\\hindtrucks\\e2e\\offline.spec.ts",
                         "column": 37,
-                        "line": 81
+                        "line": 83
                       }
                     }
                   ],
@@ -3293,7 +2600,7 @@
               ],
               "id": "586fc5283fd8ec7c7982-436a74e7a444727ff768",
               "file": "offline.spec.ts",
-              "line": 74,
+              "line": 68,
               "column": 5
             }
           ]
@@ -3326,15 +2633,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3079,
+                      "duration": 3083,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:50.177Z",
+                      "startTime": "2026-06-04T17:00:16.977Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3360,15 +2667,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2864,
+                      "duration": 2954,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:53.351Z",
+                      "startTime": "2026-06-04T17:00:20.145Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3394,15 +2701,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3471,
+                      "duration": 3672,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:56.225Z",
+                      "startTime": "2026-06-04T17:00:23.107Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3428,15 +2735,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4047,
+                      "duration": 4027,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:36:59.705Z",
+                      "startTime": "2026-06-04T17:00:26.788Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3462,15 +2769,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3544,
+                      "duration": 3428,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:03.761Z",
+                      "startTime": "2026-06-04T17:00:30.824Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3496,15 +2803,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6443,
+                      "duration": 6510,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:07.314Z",
+                      "startTime": "2026-06-04T17:00:34.260Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3530,15 +2837,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5164,
+                      "duration": 5042,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:13.768Z",
+                      "startTime": "2026-06-04T17:00:40.778Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3564,15 +2871,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3612,
+                      "duration": 3506,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:18.950Z",
+                      "startTime": "2026-06-04T17:00:45.828Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3598,15 +2905,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3504,
+                      "duration": 3572,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:22.575Z",
+                      "startTime": "2026-06-04T17:00:49.343Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3649,15 +2956,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1364,
+                      "duration": 1532,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:26.122Z",
+                      "startTime": "2026-06-04T17:00:52.949Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3683,15 +2990,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2290,
+                      "duration": 2190,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:27.496Z",
+                      "startTime": "2026-06-04T17:00:54.490Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3717,15 +3024,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2242,
+                      "duration": 2365,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:29.796Z",
+                      "startTime": "2026-06-04T17:00:56.689Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3751,15 +3058,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1419,
+                      "duration": 1355,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:32.047Z",
+                      "startTime": "2026-06-04T17:00:59.062Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3785,15 +3092,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1357,
+                      "duration": 1341,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:33.474Z",
+                      "startTime": "2026-06-04T17:01:00.425Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3819,15 +3126,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1339,
+                      "duration": 1560,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:34.842Z",
+                      "startTime": "2026-06-04T17:01:01.774Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3853,15 +3160,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1358,
+                      "duration": 1258,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:36.193Z",
+                      "startTime": "2026-06-04T17:01:03.341Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3887,15 +3194,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1388,
+                      "duration": 1325,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:37.559Z",
+                      "startTime": "2026-06-04T17:01:04.608Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3921,15 +3228,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2614,
+                      "duration": 2458,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:38.958Z",
+                      "startTime": "2026-06-04T17:01:05.941Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -3955,15 +3262,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2143,
+                      "duration": 2418,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:41.580Z",
+                      "startTime": "2026-06-04T17:01:08.407Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -4006,15 +3313,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 649,
+                      "duration": 680,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:43.760Z",
+                      "startTime": "2026-06-04T17:01:10.842Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -4040,15 +3347,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2606,
+                      "duration": 2610,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:44.418Z",
+                      "startTime": "2026-06-04T17:01:11.531Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -4074,15 +3381,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2771,
+                      "duration": 2757,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:47.032Z",
+                      "startTime": "2026-06-04T17:01:14.149Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -4108,15 +3415,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2327,
+                      "duration": 2337,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:49.812Z",
+                      "startTime": "2026-06-04T17:01:16.914Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -4131,7 +3438,7 @@
             },
             {
               "title": "landing card has correct branding elements",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -4142,60 +3449,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 18,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 5877,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/earn/i).first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/earn/i).first()\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/earn/i).first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/earn/i).first()\u001b[22m\n\n    at C:\\Projects\\hindtrucks\\e2e\\splash.spec.ts:49:55",
-                        "location": {
-                          "file": "C:\\Projects\\hindtrucks\\e2e\\splash.spec.ts",
-                          "column": 55,
-                          "line": 49
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 47 |\u001b[39m         \u001b[90m// Verify key branding text\u001b[39m\n \u001b[90m 48 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/drive/i\u001b[39m)\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 49 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/earn/i\u001b[39m)\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m3000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 50 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 51 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Projects\\hindtrucks\\e2e\\splash.spec.ts",
-                            "column": 55,
-                            "line": 49
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/earn/i).first()\nExpected: visible\nTimeout: 3000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 3000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/earn/i).first()\u001b[22m\n\n\n  47 |         // Verify key branding text\n  48 |         await expect(page.getByText(/drive/i).first()).toBeVisible({ timeout: 3000 });\n> 49 |         await expect(page.getByText(/earn/i).first()).toBeVisible({ timeout: 3000 });\n     |                                                       ^\n  50 |     });\n  51 | });\n    at C:\\Projects\\hindtrucks\\e2e\\splash.spec.ts:49:55"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 2740,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-04T15:37:52.152Z",
+                      "startTime": "2026-06-04T17:01:19.259Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\splash-Splash-Screen-landi-7e751-s-correct-branding-elements-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\splash-Splash-Screen-landi-7e751-s-correct-branding-elements-chromium\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Projects\\hindtrucks\\test-results\\splash-Splash-Screen-landi-7e751-s-correct-branding-elements-chromium\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Projects\\hindtrucks\\e2e\\splash.spec.ts",
-                        "column": 55,
-                        "line": 49
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "317abf2631cf28c4bfed-8ffff238cb6da7d34f2e",
@@ -4210,11 +3477,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-06-04T15:32:14.128Z",
-    "duration": 345005.723,
-    "expected": 74,
+    "startTime": "2026-06-04T16:57:27.711Z",
+    "duration": 235934.261,
+    "expected": 92,
     "skipped": 0,
-    "unexpected": 19,
+    "unexpected": 1,
     "flaky": 0
   }
 }

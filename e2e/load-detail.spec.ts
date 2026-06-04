@@ -35,22 +35,22 @@ test.describe('Load Detail Screen', () => {
     });
 
     test('displays shipper information', async ({ page }) => {
-        const shipper = page.getByText(/shipper|sender|from/i).first();
+        const shipper = page.getByText(/shipper/i).first();
         await expect(shipper).toBeVisible({ timeout: 5000 });
     });
 
     test('displays accept load button', async ({ page }) => {
-        const acceptBtn = page.getByRole('button', { name: /accept|confirm|take load/i });
+        const acceptBtn = page.getByRole('button', { name: /accept load/i });
         await expect(acceptBtn).toBeVisible({ timeout: 5000 });
     });
 
     test('clicking accept opens confirmation sheet', async ({ page }) => {
-        const acceptBtn = page.getByRole('button', { name: /accept|confirm|take load/i });
+        const acceptBtn = page.getByRole('button', { name: /accept load/i });
         await expect(acceptBtn).toBeVisible({ timeout: 5000 });
         await acceptBtn.click();
         // Should show confirmation bottom sheet
         await page.waitForTimeout(1000);
-        const confirmSheet = page.getByText(/confirm|assign|select truck/i);
+        const confirmSheet = page.getByText(/select vehicle|assign truck/i);
         // May or may not be visible depending on state
         await expect(confirmSheet.first()).toBeVisible({ timeout: 3000 });
     });

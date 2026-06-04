@@ -50,9 +50,9 @@ test.describe('Loads Screen', () => {
     });
 
     test('shows empty state when no loads match filter', async ({ page }) => {
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(1500);
         // Check if empty state or load cards are shown
-        const emptyState = page.getByText(/no loads|no shipments|nothing found/i);
+        const emptyState = page.getByText(/no loads right now|no shipments|nothing found/i);
         const loadCards = page.locator('[class*="load-card"]');
         const hasCards = (await loadCards.count()) > 0;
         const hasEmpty = await emptyState.isVisible().catch(() => false);

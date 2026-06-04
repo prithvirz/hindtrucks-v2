@@ -60,7 +60,7 @@ function purgeOldMessages(db: IDBDatabase): Promise<void> {
 
 export function useChatHistory() {
     const [messages, setMessages] = useState<ChatMessage[]>([])
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoaded] = useState(true) // always fresh — no history loaded on mount
 
     const loadHistory = useCallback(async () => {
         try {
@@ -76,15 +76,14 @@ export function useChatHistory() {
                 getAllReq.onerror = () => reject(getAllReq.error)
             })
 
-            // Sort by timestamp descending, take last 50, reverse to chronological
+            // Sort by timestamp, take last 50
             const sorted = storedMessages
                 .sort((a, b) => a.timestamp - b.timestamp)
                 .slice(-MAX_MESSAGES)
 
             setMessages(sorted)
-            setIsLoaded(true)
         } catch {
-            setIsLoaded(true)
+            // Silently fail
         }
     }, [])
 
@@ -122,9 +121,12 @@ export function useChatHistory() {
         }
     }, [])
 
+    // Clear any zombie messages from a previous session on mount.
+    // Chat is session-scoped: fresh on every app load / login.
     useEffect(() => {
-        loadHistory()
-    }, [loadHistory])
+        clearHistory()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return { messages, setMessages, loadHistory, addMessage, clearHistory, isLoaded }
 }
