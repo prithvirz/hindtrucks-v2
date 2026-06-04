@@ -23,8 +23,16 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     const { messages, isStreaming, sendMessage, clearChat, retryLast } = useChat()
 
     const openChat = useCallback(() => setIsOpen(true), [])
-    const closeChat = useCallback(() => setIsOpen(false), [])
-    const toggleChat = useCallback(() => setIsOpen((prev) => !prev), [])
+    const closeChat = useCallback(() => {
+        setIsOpen(false)
+        clearChat()
+    }, [clearChat])
+    const toggleChat = useCallback(() => {
+        setIsOpen((prev) => {
+            if (prev) clearChat()
+            return !prev
+        })
+    }, [clearChat])
 
     return (
         <ChatCtx.Provider
