@@ -51,7 +51,7 @@ const TOUR_STEPS: TourStep[] = [
 export default function OnboardingTour() {
   const { t } = useTranslation()
   const { isTourActive, endTour, tourStep, setTourStep } = useShell()
-  const [coords, setCoords] = useState<{ top: number; left: number; width: number; height: number } | null>(null)
+  const [coords, setCoords] = useState<{ top: number; left: number; width: number; height: number; shellWidth: number } | null>(null)
   const tourRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -85,6 +85,7 @@ export default function OnboardingTour() {
           left: targetRect.left - shellRect.left,
           width: targetRect.width,
           height: targetRect.height,
+          shellWidth: shellRect.width,
         })
       } else {
         setCoords(null)
@@ -221,6 +222,22 @@ export default function OnboardingTour() {
         className="absolute bg-white/95 backdrop-blur-md boxed-border boxed-shadow p-5 flex flex-col z-50 text-ink animate-scale-in boxed-rounded-lg"
         style={tooltipStyle}
       >
+        {/* Speech Bubble Arrow Indicator */}
+        {coords && step.placement !== 'center' && (
+          <div
+            className={`absolute w-3 h-3 bg-white pointer-events-none ${
+              step.placement === 'bottom'
+                ? 'border-t border-l border-[#ECEEF1]'
+                : 'border-b border-r border-[#ECEEF1]'
+            }`}
+            style={{
+              left: Math.max(16, Math.min(coords.shellWidth - 48, coords.left + coords.width / 2 - 16)),
+              top: step.placement === 'bottom' ? -6 : 'auto',
+              bottom: step.placement === 'top' ? -6 : 'auto',
+              transform: 'translateX(-50%) rotate(45deg)',
+            }}
+          />
+        )}
         <div className="flex justify-between items-center mb-2.5">
           <span className="text-[10px] font-black uppercase tracking-wider text-accent bg-accent-soft px-2 py-0.5 boxed-rounded boxed-border border-accent">
             Tour {tourStep + 1} / {TOUR_STEPS.length}
