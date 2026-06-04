@@ -17,13 +17,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(
         () => localStorage.getItem('ht_auth') === '1',
     )
-    const [phone, setPhone] = useState('')
+    const [phone, setPhone] = useState<string>(
+        () => localStorage.getItem('ht_phone') || (localStorage.getItem('ht_auth') === '1' ? '9876543210' : ''),
+    )
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<ApiError | null>(null)
 
     useEffect(() => {
         localStorage.setItem('ht_auth', isLoggedIn ? '1' : '0')
     }, [isLoggedIn])
+
+    useEffect(() => {
+        if (phone) {
+            localStorage.setItem('ht_phone', phone)
+        } else {
+            localStorage.removeItem('ht_phone')
+        }
+    }, [phone])
 
     // Async session check on mount (if token exists) — service-backed but non-blocking
     useEffect(() => {
@@ -35,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     if (!session.valid) {
                         setLoggedIn(false)
                         localStorage.removeItem('ht_auth_token')
+                        localStorage.removeItem('ht_phone')
                     } else if (session.phone) {
                         setPhone(session.phone)
                     }
@@ -103,6 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setPhone('')
         setError(null)
         localStorage.removeItem('ht_auth_token')
+        localStorage.removeItem('ht_phone')
     }
 
     return (

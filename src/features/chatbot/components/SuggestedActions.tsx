@@ -1,14 +1,20 @@
 import { useNavigate } from 'react-router-dom'
+import { ExternalLink, ArrowRight, Phone } from 'lucide-react'
 import type { SuggestedAction } from '../types'
 import { useChatContext } from '../../../state/ChatContext'
 
-// ─── SuggestedActions: Tappable Action Chips ───
-// Enhanced replacement for RedirectBubble. Supports navigation,
-// trip actions, and call_support payloads.
+// ─── SuggestedActions: "Tap to open" CTA Chips ───
+// Renders tappable action buttons with a clear call-to-action style.
 
 interface SuggestedActionsProps {
     actions: SuggestedAction[]
     onAction?: (action: SuggestedAction) => void
+}
+
+function getActionIcon(action: SuggestedAction) {
+    if (action.action === 'call_support') return Phone
+    if (action.action === 'navigate' || action.action === 'update_profile') return ExternalLink
+    return ArrowRight
 }
 
 export function SuggestedActions({ actions, onAction }: SuggestedActionsProps) {
@@ -56,16 +62,27 @@ export function SuggestedActions({ actions, onAction }: SuggestedActionsProps) {
     if (!actions || actions.length === 0) return null
 
     return (
-        <div className="flex flex-wrap gap-2 mt-2.5 pt-2 border-t border-ink/10">
-            {actions.map((action) => (
-                <button
-                    key={action.id}
-                    onClick={() => handleAction(action)}
-                    className="text-xs font-black text-accent bg-accent-soft hover:bg-[#ffe8d6] boxed-border border-accent boxed-rounded px-3 py-1.5 shadow-[2px_2px_0px_0px_#F26A1B] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100"
-                >
-                    {action.label}
-                </button>
-            ))}
+        <div className="flex flex-col gap-2 mt-3">
+            {actions.map((action) => {
+                const Icon = getActionIcon(action)
+                return (
+                    <button
+                        key={action.id}
+                        onClick={() => handleAction(action)}
+                        className="group flex items-center justify-between w-full gap-2 px-3.5 py-2.5 text-xs font-black text-accent bg-accent-soft hover:bg-[#ffe8d6] active:bg-[#ffd9bc] boxed-border border-accent boxed-rounded shadow-[2px_2px_0px_0px_#F26A1B] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100"
+                    >
+                        <span className="flex items-center gap-1.5">
+                            <Icon size={13} strokeWidth={2.8} className="shrink-0" />
+                            <span>{action.label}</span>
+                        </span>
+                        <ArrowRight
+                            size={13}
+                            strokeWidth={2.8}
+                            className="shrink-0 opacity-60 group-hover:translate-x-0.5 transition-transform duration-100"
+                        />
+                    </button>
+                )
+            })}
         </div>
     )
 }

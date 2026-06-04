@@ -34,7 +34,7 @@ export default function LoadDetail() {
   if (!load) {
     return (
       <div className="h-full flex flex-col">
-        <TopBar title={t('loadDetail.title')} back />
+        <TopBar title={t('loadDetail.title')} back fallbackTo="/loads" />
         <p className="p-5 text-ink-muted">Not found.</p>
       </div>
     )
@@ -67,7 +67,7 @@ export default function LoadDetail() {
 
   return (
     <div className="h-full flex flex-col relative">
-      <TopBar title={t('loadDetail.title')} back />
+      <TopBar title={t('loadDetail.title')} back fallbackTo="/loads" />
       <div className="flex-1 overflow-y-auto no-scrollbar pb-28">
         {/* Hero */}
         <div className="relative h-40">
@@ -383,4 +383,3 @@ function Spec({ icon, label, value }: { icon: React.ReactNode; label: string; va
     </div>
   )
 }
-

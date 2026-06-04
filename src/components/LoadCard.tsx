@@ -42,7 +42,7 @@ export default function LoadCard({ load, onClick }: Props) {
   return (
     <button
       onClick={onClick}
-      className="w-full text-left bg-surface boxed-rounded-lg boxed-border boxed-shadow boxed-btn-active overflow-hidden transition-all duration-200 animate-fade-up"
+      className="load-card w-full text-left bg-surface boxed-rounded-lg boxed-border boxed-shadow boxed-btn-active overflow-hidden transition-all duration-200 animate-fade-up"
     >
       <div className="flex">
         <img

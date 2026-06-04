@@ -43,7 +43,8 @@ export default function Loads() {
       <TopBar title={t('loads.title')} />
 
       {/* Fleet matching filter pills */}
-      <div className="flex gap-2 overflow-x-auto no-scrollbar px-5 py-3.5 bg-surface-grey border-b border-hairline shrink-0">
+      <div className="w-full max-w-full overflow-hidden bg-surface-grey border-b border-hairline shrink-0">
+        <div className="flex max-w-full gap-2 overflow-x-auto no-scrollbar px-5 py-3.5">
         <button
           onClick={() => setSelectedTruckId('all')}
           className={`h-7 px-3.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-150 border flex items-center justify-center ${selectedTruckId === 'all'
@@ -70,6 +71,7 @@ export default function Loads() {
             </button>
           )
         })}
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-4 pb-32">

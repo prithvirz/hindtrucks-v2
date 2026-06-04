@@ -89,7 +89,7 @@ export function ChatDrawer() {
             <button
                 id="chatbot-button"
                 onClick={toggleChat}
-                className={`absolute bottom-[calc(5rem+env(safe-area-inset-bottom))] right-4 z-30 h-12 w-12 flex items-center justify-center bg-accent text-white boxed-border boxed-shadow-accent boxed-rounded boxed-btn-active transition-all ${isTourActive ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                className={`absolute bottom-[calc(5rem+env(safe-area-inset-bottom))] right-4 z-40 h-12 w-12 flex items-center justify-center bg-accent text-white boxed-border boxed-shadow-accent boxed-rounded boxed-btn-active transition-all ${isTourActive ? 'opacity-0 pointer-events-none' : 'opacity-100'
                     }`}
                 aria-label="AI Chatbot Assistant"
             >

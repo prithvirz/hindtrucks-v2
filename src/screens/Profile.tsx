@@ -91,12 +91,12 @@ export default function Profile() {
       <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-4 pb-32 space-y-5">
 
         {/* App Mode Toggle */}
-        <div className="bg-white p-3.5 boxed-rounded border-2 border-ink shadow-[4px_4px_0px_0px_#0B0B0F] flex items-center justify-between gap-4">
+        <div className="bg-white p-3.5 boxed-rounded border-2 border-ink shadow-[4px_4px_0px_0px_#0B0B0F] flex flex-col gap-2">
           <p className="text-sm font-black text-ink">APP MODE</p>
-          <div className="flex bg-surface-grey border border-ink/15 p-1 rounded-xl shrink-0 font-extrabold text-xs">
+          <div className="grid w-full grid-cols-2 bg-surface-grey border border-ink/15 p-1 rounded-xl font-extrabold text-[11px]">
             <button
               onClick={() => setRole('driver')}
-              className={`px-3 py-1.5 rounded-lg transition-colors ${
+              className={`min-w-0 px-2 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
                 role === 'driver' ? 'bg-accent text-white font-black' : 'text-ink-muted'
               }`}
             >
@@ -104,7 +104,7 @@ export default function Profile() {
             </button>
             <button
               onClick={() => setRole('owner')}
-              className={`px-3 py-1.5 rounded-lg transition-colors ${
+              className={`min-w-0 px-2 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
                 role === 'owner' ? 'bg-accent text-white font-black' : 'text-ink-muted'
               }`}
             >
@@ -130,12 +130,12 @@ export default function Profile() {
               </span>
             </div>
             <p className="text-sm text-ink-muted font-bold">{driver.phone}</p>
-            <div className="flex items-center justify-between mt-1">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 mt-2">
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1 text-xs font-bold text-ink">
                   <Star size={12} className="fill-yellow-400 text-yellow-400" /> {driver.rating}
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-success bg-white border border-success px-2 py-0.5 boxed-rounded">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-success bg-white border border-success px-1.5 py-0.5 boxed-rounded">
                   <BadgeCheck size={12} /> {t('common.verified')}
                 </span>
               </div>
@@ -291,12 +291,12 @@ export default function Profile() {
                         </button>
                       </div>
 
-                      <div className="flex items-center gap-2 bg-surface-grey/50 p-2 rounded-xl border border-hairline/10">
-                        <span className="text-[10px] font-black uppercase text-ink-muted">Truck:</span>
+                      <div className="flex flex-wrap items-center gap-2 bg-surface-grey/50 p-2 rounded-xl border border-hairline/10">
+                        <span className="text-[10px] font-black uppercase text-ink-muted shrink-0">Truck:</span>
                         <select
                           value={drv.assignedTruckId || ''}
                           onChange={(e) => assignDriverToTruck(drv.id, e.target.value || null)}
-                          className="flex-1 bg-white border border-hairline rounded-lg text-xs font-bold px-2 py-1 outline-none text-ink cursor-pointer"
+                          className="min-w-0 flex-1 bg-white border border-hairline rounded-lg text-xs font-bold px-2 py-1 outline-none text-ink cursor-pointer"
                         >
                           <option value="">Unassigned</option>
                           {driver.trucks.map((tk) => (
@@ -306,7 +306,7 @@ export default function Profile() {
                           ))}
                         </select>
                         {assignedTruck && (
-                          <span className="text-[10px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success">
+                          <span className="text-[10px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success shrink-0">
                             Assigned
                           </span>
                         )}

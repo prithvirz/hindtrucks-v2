@@ -8,7 +8,6 @@ import PhoneFrame from './components/PhoneFrame'
 import BottomTabBar from './components/BottomTabBar'
 import OnboardingTour from './components/OnboardingTour'
 import AIChatbot from './components/AIChatbot'
-import ErrorBoundary from './components/ErrorBoundary'
 import { OfflineIndicator } from './features/offline/components/OfflineIndicator'
 import { PermissionPrompt } from './features/notifications/components/PermissionPrompt'
 import { NotificationBanner } from './features/notifications/components/NotificationBanner'
@@ -31,7 +30,7 @@ const TAB_ROUTES = ['/home', '/loads', '/earnings', '/profile']
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { isLoggedIn, phone } = useAuth()
   const isRegistered = phone === '98765 43210' || phone === '9876543210' || localStorage.getItem('ht_registered_' + phone) === '1'
-  
+
   if (!isLoggedIn) {
     return <Navigate to="/language" replace />
   }
@@ -44,7 +43,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 function RequireRegistration({ children }: { children: JSX.Element }) {
   const { isLoggedIn, phone } = useAuth()
   const isRegistered = phone === '98765 43210' || phone === '9876543210' || localStorage.getItem('ht_registered_' + phone) === '1'
-  
+
   if (!isLoggedIn) {
     return <Navigate to="/language" replace />
   }
@@ -177,9 +176,7 @@ function Shell() {
 export default function App() {
   return (
     <AppProviders>
-      <ErrorBoundary>
-        <Shell />
-      </ErrorBoundary>
+      <Shell />
     </AppProviders>
   )
 }

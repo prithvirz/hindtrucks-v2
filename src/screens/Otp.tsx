@@ -39,7 +39,7 @@ export default function Otp() {
 
   return (
     <div className="h-full flex flex-col bg-surface">
-      <TopBar title={t('otp.title')} back />
+      <TopBar title={t('otp.title')} back fallbackTo="/login" />
       <div className="flex-1 px-5 pt-6">
         <p className="text-ink-muted text-[15px]">
           {t('otp.subtitle', { phone })}
