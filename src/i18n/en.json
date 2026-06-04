@@ -1,0 +1,206 @@
+{
+  "app": { "name": "HindTrucks" },
+  "common": {
+    "continue": "Continue",
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "km": "km",
+    "ton": "ton",
+    "perKm": "/km",
+    "verified": "Verified",
+    "online": "Online",
+    "offline": "Offline",
+    "call": "Call",
+    "viewAll": "View all",
+    "loading": "Loading…",
+    "cancel": "Cancel"
+  },
+  "language": {
+    "title": "Choose your language",
+    "subtitle": "You can change this anytime in Profile",
+    "suggested": "Suggested for your region",
+    "continueIn": "Continue in English"
+  },
+  "splash": {
+    "tagline": "Loads on every road"
+  },
+  "login": {
+    "title": "Enter your mobile number",
+    "subtitle": "We'll send you a one-time code (OTP)",
+    "phoneLabel": "Mobile number",
+    "sendOtp": "Send OTP",
+    "terms": "By continuing you agree to our Terms & Privacy Policy"
+  },
+  "otp": {
+    "title": "Verify your number",
+    "subtitle": "Enter the 4-digit code sent to {{phone}}",
+    "resend": "Resend code",
+    "verify": "Verify & Continue",
+    "hint": "Demo: type any 4 digits"
+  },
+  "tabs": {
+    "home": "Home",
+    "loads": "Loads",
+    "earnings": "Earnings",
+    "profile": "Profile"
+  },
+  "home": {
+    "greeting": "Hello, {{name}}",
+    "statusOnline": "You're online — finding loads",
+    "statusOffline": "You're offline — go online to get loads",
+    "goOnline": "Go online",
+    "todayEarnings": "Today's earnings",
+    "trips": "Trips",
+    "rating": "Rating",
+    "nearbyLoads": "Loads near you",
+    "noNearby": "Go online to see loads near you",
+    "bfcTitle": "BFC Elite Leaderboard",
+    "bfcSubtitle": "Bharat Freight Club Active Members",
+    "referTitle": "Refer & Earn ₹1,000",
+    "referSubtitle": "Earn when they complete their first trip",
+    "copyLink": "Copy Referral Link",
+    "copied": "Copied!"
+  },
+  "loads": {
+    "title": "Available loads",
+    "subtitle": "{{count}} available loads",
+    "empty": "No loads right now",
+    "emptyHint": "We'll alert you when a new load arrives",
+    "pickup": "Pickup",
+    "drop": "Drop",
+    "weight": "Weight",
+    "distance": "Distance",
+    "goods": "Goods",
+    "viewDetails": "View details",
+    "fitsTruck": "Fits {{reg}}",
+    "fitsTrucks": "Fits {{count}} trucks",
+    "noMatchingTruck": "No matching truck",
+    "assignTruckTitle": "Select Vehicle",
+    "assignTruckDesc": "Choose which truck from your fleet will carry this load:",
+    "confirmAccept": "Confirm & Accept"
+  },
+  "loadDetail": {
+    "title": "Load details",
+    "shipper": "Shipper",
+    "route": "Route",
+    "payment": "Payment",
+    "advance": "Advance on pickup",
+    "balance": "Balance on delivery",
+    "accept": "Accept load",
+    "goodsType": "Type of goods",
+    "truckType": "Truck needed"
+  },
+  "trip": {
+    "title": "Active trip",
+    "callShipper": "Call shipper",
+    "steps": {
+      "toPickup": "Going to pickup",
+      "loaded": "Loaded",
+      "transit": "In transit",
+      "delivered": "Delivered"
+    },
+    "markNext": "Mark as {{step}}",
+    "completed": "Trip completed",
+    "earned": "You earned",
+    "backHome": "Back to home"
+  },
+  "earnings": {
+    "title": "Earnings",
+    "balance": "Wallet balance",
+    "withdraw": "Withdraw",
+    "thisWeek": "This week",
+    "history": "Payout history",
+    "credited": "Credited",
+    "pending": "Pending"
+  },
+  "profile": {
+    "title": "Profile",
+    "truck": "Truck details",
+    "documents": "Documents",
+    "language": "Language",
+    "support": "Help & support",
+    "logout": "Log out",
+    "regNumber": "Registration",
+    "truckType": "Truck type",
+    "capacity": "Capacity",
+    "docRC": "RC (Registration)",
+    "docLicense": "Driving licence",
+    "docPermit": "National permit",
+    "docValid": "Valid",
+    "editProfile": "Edit Profile",
+    "saveChanges": "Save Changes",
+    "editName": "Full Name",
+    "editPhone": "Phone Number",
+    "editTruckNo": "Truck Number",
+    "editTruckType": "Truck Type",
+    "editCapacity": "Capacity",
+    "selectAvatar": "Select Profile Image",
+    "editCardDetails": "Edit Card Details",
+    "cardNo": "Card Number",
+    "validityDate": "Validity Date",
+    "saveCard": "Save Card",
+    "manageVehicles": "Manage Trucks",
+    "addTruck": "Add New Truck",
+    "removeTruck": "Remove",
+    "activeTruck": "Active",
+    "selectActive": "Set Active",
+    "noTrucks": "No other trucks registered."
+  },
+  "goods": {
+    "electronics": "Electronics",
+    "furniture": "Furniture",
+    "containers": "Container cargo",
+    "parcels": "Parcels"
+  },
+  "tour": {
+    "welcome": {
+      "title": "Welcome to HindTrucks!",
+      "content": "Let's take a quick 1-minute tour of the main navigation tabs to help you get started."
+    },
+    "navHome": {
+      "title": "Home Dashboard",
+      "content": "Go Online to find nearby loads, view daily stats, refer friends, and view the BFC driver leaderboard."
+    },
+    "toggle": {
+      "title": "Go Online / Offline",
+      "content": "Toggle this switch to go online. When online, you'll immediately see high-paying loads nearby."
+    },
+    "navLoads": {
+      "title": "Available Loads",
+      "content": "Browse active loads matching your truck, view route maps and payment splits, and accept new trips."
+    },
+    "navEarnings": {
+      "title": "Wallet & Payouts",
+      "content": "Track your payout histories, view wallet balance, and request instant withdrawals directly to your UPI ID."
+    },
+    "navProfile": {
+      "title": "Driver Profile",
+      "content": "Verify smart card details (Licence, RC, Permits), change application languages, or log out."
+    }
+  },
+  "bot": {
+    "greeting": "Hello {{name}}! I am your HindTrucks AI Assistant. Tap a quick question below or type your query.",
+    "faq_withdraw_q": "How to withdraw earnings?",
+    "faq_withdraw_a": "Go to the Earnings tab (wallet icon in bottom bar). Tap the 'Withdraw' button, enter your UPI ID, and the money will be credited instantly!",
+    "faq_withdraw_redirect": "Opening the Earnings wallet page for you...",
+    "faq_accept_q": "How do I accept a load?",
+    "faq_accept_a": "Browse the Loads tab in the bottom bar, tap on any load card to view details, and tap 'Accept Load' to start the trip.",
+    "faq_accept_redirect": "Opening the available Loads page for you...",
+    "faq_bfc_q": "What is BFC?",
+    "faq_bfc_a": "BFC (Bharat Freight Club) is our elite network. BFC drivers get priority loads, highlighted profile badge, and higher earnings!",
+    "faq_bfc_redirect": "Taking you to the Home dashboard to view the BFC leaderboard...",
+    "faq_refer_q": "How does referral work?",
+    "faq_refer_a": "Share your link (found on Home/Profile). When a driver joins and finishes their first trip, both of you earn ₹1,000!",
+    "faq_refer_redirect": "Navigating to the Referral section on the Home dashboard...",
+    "faq_docs_q": "Where are my documents?",
+    "faq_docs_a": "Go to your Profile tab to view and check your verified smart cards like Driving Licence and RC.",
+    "faq_docs_redirect": "Opening the Profile and documents page for you...",
+    "fallback": "I understand! For detailed help, you can tap one of our quick questions, or call our 24/7 Driver Support at +91 98765 43210.",
+    "redirecting_in": "Opening in {{count}}s...",
+    "go_now": "Go Now",
+    "placeholder": "Type message or tap Mic...",
+    "listening": "Listening... Speak now"
+  }
+}
+

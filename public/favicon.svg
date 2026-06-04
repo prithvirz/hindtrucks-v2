@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Rounded Orange background for favicon visibility -->
+  <rect width="64" height="64" rx="16" fill="#F26A1B"/>
+  
+  <!-- Speed lines in white / light opacity -->
+  <path d="M12 24H20" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.3" />
+  <path d="M8 32H16" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" opacity="0.4" />
+  
+  <!-- Road / Horizon under the truck -->
+  <path d="M12 48C22 48 42 48 52 48C50 51 46 54 40 54H24C18 54 14 51 12 48Z" fill="#374151" />
+
+  <!-- Truck Trailer -->
+  <path d="M18 20C18 18.8954 18.8954 18 20 18H36C37.1046 18 38 18.8954 38 20V42H18V20Z" fill="#0B0B0F" />
+  
+  <!-- Tricolor dynamic stripe on trailer (Orange, White, Green) representing Hind (India) -->
+  <path d="M18 24H38V26.5H18V24Z" fill="#FF9F59" />
+  <path d="M18 26.5H38V29H18V26.5Z" fill="#FFFFFF" />
+  <path d="M18 29H38V31.5H18V29Z" fill="#16A34A" />
+
+  <!-- Truck Cabin / Front -->
+  <path d="M39 22H48C49.6569 22 51 23.3431 51 25V33L56 37C56.63 37.5 57 38.25 57 39V42H39V22Z" fill="#FFFFFF" />
+  
+  <!-- Cabin Windshield / Window -->
+  <path d="M43 24H47C47.8 24 48.5 24.5 48.8 25.2L51 30H43V24Z" fill="#0B0B0F" opacity="0.8" />
+
+  <!-- Rear Tires -->
+  <circle cx="23" cy="46" r="4.5" fill="#0B0B0F" />
+  <circle cx="23" cy="46" r="1.5" fill="#E5E7EB" />
+  <circle cx="33" cy="46" r="4.5" fill="#0B0B0F" />
+  <circle cx="33" cy="46" r="1.5" fill="#E5E7EB" />
+  
+  <!-- Front Tire -->
+  <circle cx="48" cy="46" r="4.5" fill="#0B0B0F" />
+  <circle cx="48" cy="46" r="1.5" fill="#E5E7EB" />
+</svg>
