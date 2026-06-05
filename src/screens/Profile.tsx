@@ -67,7 +67,6 @@ export default function Profile() {
   const [copied, setCopied] = useState(false)
   const [notifCenterOpen, setNotifCenterOpen] = useState(false)
   const [supportOpen, setSupportOpen] = useState(false)
-  const [switchingLang, setSwitchingLang] = useState(false)
 
   const current = LANGUAGES.find((l) => l.code === (i18n.language?.slice(0, 2) as LangCode))
 
@@ -480,13 +479,9 @@ export default function Profile() {
         <LanguageSheet
           onClose={() => setLangOpen(false)}
           current={current?.code}
-          onPick={async (code) => {
+          onPick={(code) => {
             setLangOpen(false)
-            setSwitchingLang(true)
-            await i18n.changeLanguage(code)
-            // A short timeout to ensure the transition feels premium and not too abrupt
-            await new Promise((resolve) => setTimeout(resolve, 400))
-            setSwitchingLang(false)
+            i18n.changeLanguage(code)
           }}
         />
       )}
@@ -543,16 +538,6 @@ export default function Profile() {
           onDelete={deletePushNotification}
           onClose={() => setNotifCenterOpen(false)}
         />
-      )}
-
-      {/* Premium language switcher loader overlay */}
-      {switchingLang && (
-        <div className="absolute inset-0 z-50 bg-overlay backdrop-blur-sm flex flex-col items-center justify-center animate-fade-in select-none">
-          <div className="bg-surface p-6 rounded-2xl shadow-pop flex flex-col items-center gap-3 border border-hairline">
-            <div className="h-8 w-8 rounded-full border-2 border-accent border-t-transparent animate-spin" />
-            <p className="text-xs font-black text-ink uppercase tracking-wider">Changing Language...</p>
-          </div>
-        </div>
       )}
     </div>
   )
