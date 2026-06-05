@@ -35,4 +35,18 @@ i18n.on('languageChanged', (lng) => {
     })
 })
 
+// Override changeLanguage to preload lazy-loaded translation files synchronously/awaitable
+const originalChangeLanguage = i18n.changeLanguage.bind(i18n);
+(i18n as any).changeLanguage = async (lng: string, ...args: any[]) => {
+  if (lng && lng !== 'en' && !i18n.hasResourceBundle(lng, 'translation')) {
+    try {
+      const mod = await import(`./${lng}.json`)
+      i18n.addResourceBundle(lng, 'translation', mod.default || mod, true, true)
+    } catch (err) {
+      console.warn(`[i18n] Failed to load locale bundle for "${lng}"`, err)
+    }
+  }
+  return originalChangeLanguage(lng, ...args)
+}
+
 export default i18n

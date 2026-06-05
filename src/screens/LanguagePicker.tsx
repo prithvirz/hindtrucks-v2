@@ -19,14 +19,19 @@ export default function LanguagePicker() {
   const [selected, setSelected] = useState<LangCode>(
     (i18n.language?.slice(0, 2) as LangCode) || suggested,
   )
+  const [switching, setSwitching] = useState(false)
 
-  function choose(code: LangCode) {
+  async function choose(code: LangCode) {
     setSelected(code)
-    i18n.changeLanguage(code)
+    setSwitching(true)
+    await i18n.changeLanguage(code)
+    await new Promise((resolve) => setTimeout(resolve, 300))
+    setSwitching(false)
   }
 
-  function onContinue() {
-    i18n.changeLanguage(selected)
+  async function onContinue() {
+    setSwitching(true)
+    await i18n.changeLanguage(selected)
     nav('/login')
   }
 
@@ -57,6 +62,16 @@ export default function LanguagePicker() {
           {t('common.continue')}
         </Button>
       </div>
+
+      {/* Premium language switcher loader overlay */}
+      {switching && (
+        <div className="absolute inset-0 z-50 bg-overlay backdrop-blur-sm flex flex-col items-center justify-center animate-fade-in select-none">
+          <div className="bg-surface p-6 rounded-2xl shadow-pop flex flex-col items-center gap-3 border border-hairline">
+            <div className="h-8 w-8 rounded-full border-2 border-accent border-t-transparent animate-spin" />
+            <p className="text-xs font-black text-ink uppercase tracking-wider">Changing Language...</p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
