@@ -1,6 +1,7 @@
 // HindTrucks v2 - deployed via Cloudflare Pages Git integration
 import { Suspense, lazy, useState, useCallback, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { useRegisterSW } from 'virtual:pwa-register/react'
 import { AppProviders } from './state/AppProviders'
 import { useAuth } from './state/AuthContext'
 import { useShell } from './state/ShellContext'
@@ -56,6 +57,22 @@ function RequireRegistration({ children }: { children: JSX.Element }) {
 function Shell() {
   const { pathname } = useLocation()
   const { isLoggedIn } = useAuth()
+  const {
+    needRefresh: [needRefresh, setNeedRefresh],
+    updateServiceWorker,
+  } = useRegisterSW()
+
+  // Prompt the user to update when a new version is detected by the service worker
+  useEffect(() => {
+    if (needRefresh) {
+      if (window.confirm('A new version of HindTrucks is available. Update now?')) {
+        updateServiceWorker(true)
+      } else {
+        setNeedRefresh(false)
+      }
+    }
+  }, [needRefresh, updateServiceWorker, setNeedRefresh])
+
   const {
     notification,
     dismissNotification,
