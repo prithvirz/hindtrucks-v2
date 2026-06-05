@@ -53,6 +53,7 @@ interface ProfileState {
             capacity: string
         }
     }) => void
+    refreshProfile: () => Promise<void>
 }
 
 const ProfileCtx = createContext<ProfileState | null>(null)
@@ -178,6 +179,32 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                 return d
             })
         )
+    }
+
+    const refreshProfile = async () => {
+        setIsLoading(true)
+        setError(null)
+        try {
+            const { profileService } = await import('../services/index')
+            const { profile } = await profileService.getProfile()
+            setDriver((prev) => ({
+                ...prev,
+                name: profile.name,
+                phone: profile.phone,
+                rating: profile.rating,
+                tripsToday: profile.tripsToday,
+                earningsToday: profile.earningsToday,
+                truck: {
+                    regNumber: profile.truck.regNumber,
+                    type: profile.truck.type,
+                    capacity: profile.truck.capacity,
+                },
+            }))
+        } catch (err) {
+            if (err instanceof ApiError) setError(err)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const setOnline = async (v: boolean) => {
@@ -351,6 +378,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                 removeDriver,
                 assignDriverToTruck,
                 initializeProfile,
+                refreshProfile,
             }}
         >
             {children}

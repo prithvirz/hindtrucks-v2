@@ -132,7 +132,7 @@ export default function LoadDetail() {
               <Building2 size={20} className="text-accent" />
             </div>
             <div className="flex-1">
-              <p className="text-[11px] text-ink-faint">{t('loadDetail.shipper')}</p>
+              <p className="text-[11px] text-ink-faint" data-testid="shipper-label">{t('loadDetail.shipper')}</p>
               <p className="font-bold text-ink leading-tight">{load.shipperName}</p>
             </div>
             {load.shipperVerified && (
@@ -161,7 +161,7 @@ export default function LoadDetail() {
 
       {/* Accept */}
       <div className="absolute bottom-0 inset-x-0 p-5 bg-surface/95 backdrop-blur border-t border-hairline safe-bottom z-10">
-        <Button full onClick={accept}>
+        <Button full onClick={accept} data-testid="accept-load-button">
           {t('loadDetail.accept')} · {inr(load.price)}
         </Button>
       </div>

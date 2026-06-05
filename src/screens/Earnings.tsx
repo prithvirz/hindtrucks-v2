@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ArrowDownToLine, Wallet, CheckCircle2, Clock, X, Loader2, ArrowRight } from 'lucide-react'
 import TopBar from '../components/TopBar'
@@ -41,7 +41,11 @@ function Confetti() {
 
 export default function Earnings() {
   const { t } = useTranslation()
-  const { walletBalance, payouts, withdrawWallet } = useEarnings()
+  const { walletBalance, payouts, withdrawWallet, refreshEarnings } = useEarnings()
+
+  useEffect(() => {
+    refreshEarnings()
+  }, [])
 
   const [sheetOpen, setSheetOpen] = useState(false)
   const [withdrawAmount, setWithdrawAmount] = useState(String(walletBalance))

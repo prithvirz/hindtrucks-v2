@@ -80,19 +80,19 @@ export default function Loads() {
         </p>
 
         {loading ? (
-          <div className="flex flex-col gap-3">
+          <div data-testid="loads-loading" className="flex flex-col gap-3">
             {Array.from({ length: 4 }).map((_, i) => (
               <LoadCardSkeleton key={i} />
             ))}
           </div>
         ) : filteredLoads.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-hairline bg-surface-grey p-10 text-center mt-8">
+          <div data-testid="loads-empty" className="rounded-2xl border border-dashed border-hairline bg-surface-grey p-10 text-center mt-8">
             <PackageOpen size={32} className="mx-auto text-ink-faint" />
             <p className="mt-3 font-semibold text-ink">{t('loads.empty')}</p>
             <p className="text-sm text-ink-muted mt-1">{t('loads.emptyHint')}</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
+          <div data-testid="loads-list" className="flex flex-col gap-3">
             {filteredLoads.map((load) => (
               <LoadCard key={load.id} load={load} onClick={() => nav(`/loads/${load.id}`)} />
             ))}

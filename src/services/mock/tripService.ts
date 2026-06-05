@@ -9,6 +9,7 @@ import type {
 import type { TripStep } from '../../state/types'
 import type { Load } from '../../data/mockLoads'
 import { completeTripPayout } from './earningsService'
+import { completeTripStats } from './profileService'
 
 const delay = () => new Promise<void>((r) => setTimeout(r, 300 + Math.random() * 500))
 
@@ -37,6 +38,7 @@ export const mockTripService: ITripService = {
                 `${mockActiveLoad.fromCity} → ${mockActiveLoad.toCity}`,
                 mockActiveLoad.price
             )
+            completeTripStats(mockActiveLoad.price)
         }
 
         const messages: Record<number, string> = {

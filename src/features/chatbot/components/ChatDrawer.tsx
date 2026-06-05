@@ -211,6 +211,7 @@ export function ChatDrawer() {
             {/* Centered Proactive Tooltip (Text + Animated Pill) */}
             {!isOpen && (
                 <div
+                    id="chatbot-button"
                     onClick={toggleChat}
                     className={`absolute left-1/2 -translate-x-1/2 z-40 transition-all duration-500 cursor-pointer select-none bottom-[calc(4.8rem+env(safe-area-inset-bottom))] ${
                         isTourActive || hideClosedFab ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'
@@ -244,7 +245,7 @@ export function ChatDrawer() {
                     {/* Drawer Panel */}
                     <div className="relative bg-surface border-t border-hairline h-[510px] flex flex-col animate-fade-up max-w-app w-full mx-auto shadow-pop boxed-rounded-lg overflow-hidden">
                         {/* Header */}
-                        <div className="bg-surface-sunken text-ink px-4 py-3.5 flex items-center justify-between border-b border-hairline shrink-0 relative">
+                        <div className="bg-surface-sunken text-ink px-4 py-3.5 flex items-center justify-between border-b border-hairline shrink-0 relative z-10">
                             <div className="flex items-center gap-2.5">
                                 <div className="h-9 w-9 rounded-full overflow-hidden shrink-0 border-2 border-hairline">
                                     <PaghriPersonIcon className="w-full h-full" />
@@ -266,6 +267,7 @@ export function ChatDrawer() {
                                     onClick={() => setIsMuted(!isMuted)}
                                     className={`h-8 w-8 flex items-center justify-center rounded-full transition-colors text-ink-muted hover:bg-ink/10 ${!isMuted ? 'text-accent' : 'opacity-60'
                                         }`}
+                                    aria-label={isMuted ? 'Unmute voice' : 'Mute voice'}
                                     title={isMuted ? 'Unmute voice' : 'Mute voice'}
                                 >
                                     {isMuted ? (
@@ -276,6 +278,7 @@ export function ChatDrawer() {
                                 </button>
                                 <button
                                     onClick={closeChat}
+                                    aria-label="Close chat"
                                     className="h-8 w-8 flex items-center justify-center hover:bg-ink/10 rounded-full text-ink-muted transition-colors"
                                 >
                                     <X size={20} strokeWidth={2.5} />

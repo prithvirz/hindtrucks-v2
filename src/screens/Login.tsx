@@ -37,8 +37,10 @@ export default function Login() {
           <span className="text-ink font-bold nums">+91</span>
           <input
             autoFocus
+            type="tel"
             inputMode="numeric"
             placeholder="98765 43210"
+            data-testid="phone-input"
             value={phone}
             onChange={(e) => setPhone(e.target.value.replace(/[^\d ]/g, '').slice(0, 11))}
             className="flex-1 bg-transparent outline-none text-ink text-[17px] font-bold tracking-wide placeholder:text-ink-faint placeholder:font-semibold [&:-webkit-autofill]:shadow-[0_0_0_1000px_transparent_inset] [&:-webkit-autofill]:[transition:background-color_5000s_ease-in-out_0s]"

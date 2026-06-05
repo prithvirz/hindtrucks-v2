@@ -11,13 +11,15 @@ import { LocationPermission } from '../features/tracking/components/LocationPerm
 import { GeofenceAlert } from '../features/tracking/components/GeofenceAlert'
 import { useTrip } from '../state/TripContext'
 import { useProfile } from '../state/ProfileContext'
+import { useEarnings } from '../state/EarningsContext'
 import { inr } from '../lib/format'
 import type { RouteWaypoint } from '../features/tracking/types'
 
 export default function ActiveTrip() {
   const nav = useNavigate()
   const { t } = useTranslation()
-  const { role, drivers, driver } = useProfile()
+  const { role, drivers, driver, refreshProfile } = useProfile()
+  const { refreshEarnings } = useEarnings()
   const {
     activeLoad,
     tripStep,
@@ -148,6 +150,8 @@ export default function ActiveTrip() {
       localStorage.setItem('ht_first_trip_done_' + driver.phone, '1')
       stopTracking()
       resetTrip()
+      refreshProfile()
+      refreshEarnings()
       nav('/home', { replace: true })
     }
   }

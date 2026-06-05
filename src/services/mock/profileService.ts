@@ -10,6 +10,8 @@ const delay = () => new Promise<void>((r) => setTimeout(r, 300 + Math.random() *
 
 // Module-level mutable state
 let mockIsOnline = false
+let mockTripsToday = DRIVER.tripsToday
+let mockEarningsToday = DRIVER.earningsToday
 
 export const mockProfileService: IProfileService = {
     async getProfile(): Promise<GetProfileResponse> {
@@ -19,8 +21,8 @@ export const mockProfileService: IProfileService = {
                 name: DRIVER.name,
                 phone: DRIVER.phone,
                 rating: DRIVER.rating,
-                tripsToday: DRIVER.tripsToday,
-                earningsToday: DRIVER.earningsToday,
+                tripsToday: mockTripsToday,
+                earningsToday: mockEarningsToday,
                 truck: {
                     regNumber: DRIVER.truck.regNumber,
                     type: DRIVER.truck.type,
@@ -42,6 +44,13 @@ export function getMockOnlineStatus(): boolean {
     return mockIsOnline
 }
 
+export function completeTripStats(amount: number): void {
+    mockTripsToday += 1
+    mockEarningsToday += amount
+}
+
 export function resetMockProfile(): void {
     mockIsOnline = false
+    mockTripsToday = DRIVER.tripsToday
+    mockEarningsToday = DRIVER.earningsToday
 }

@@ -97,7 +97,7 @@ export default function Splash() {
                 <Wallet size={18} />
               </div>
               <div>
-                <p className="text-xs font-bold text-white">Instant Wallet Withdrawals</p>
+                <p className="text-xs font-bold text-white">Earn and Instant Withdrawals</p>
                 <p className="text-[10px] font-semibold text-white/50">Receive payouts directly to your bank account</p>
               </div>
             </div>

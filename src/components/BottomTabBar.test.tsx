@@ -1,5 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
+
+// Mock ChatContext hooks as we are testing the component, not the context logic
+vi.mock('../state/ChatContext', () => ({
+    useChatContext: () => ({
+        isOpen: false,
+        toggleChat: vi.fn(),
+    }),
+}))
+
 import { ShellCtx } from '../state/ShellContext'
 import BottomTabBar from './BottomTabBar'
 

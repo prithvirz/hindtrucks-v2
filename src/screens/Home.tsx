@@ -219,7 +219,7 @@ export default function Home() {
             {BFC_MEMBERS.map((member, i) => (
               <div
                 key={i}
-                className={`flex items-center justify-between p-2.5 boxed-rounded border ${member.isCurrent ? 'bg-accent-soft/40 border-accent' : 'bg-surface-grey border-hairline/40'
+                className={`bfc-member flex items-center justify-between p-2.5 boxed-rounded border ${member.isCurrent ? 'bg-accent-soft/40 border-accent' : 'bg-surface-grey border-hairline/40'
                   }`}
               >
                 <div className="flex items-center gap-3">

@@ -9,6 +9,7 @@ interface EarningsState {
     isLoading: boolean
     error: ApiError | null
     withdrawWallet: (amount: number, upiId: string) => void
+    refreshEarnings: () => Promise<void>
 }
 
 const EarningsCtx = createContext<EarningsState | null>(null)
@@ -51,6 +52,24 @@ export function EarningsProvider({ children }: { children: ReactNode }) {
         }
     }, [isLoggedIn])
 
+    const refreshEarnings = async () => {
+        setError(null)
+        setIsLoading(true)
+        try {
+            const { earningsService } = await import('../services/index')
+            const [wallet, payoutsRes] = await Promise.all([
+                earningsService.getWalletBalance(),
+                earningsService.getPayouts()
+            ])
+            setWalletBalance(wallet.balance)
+            setPayouts(payoutsRes.payouts)
+        } catch (err) {
+            if (err instanceof ApiError) setError(err)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     const withdrawWallet = async (amount: number, upiId: string) => {
         setError(null)
         setIsLoading(true)
@@ -83,7 +102,7 @@ export function EarningsProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <EarningsCtx.Provider value={{ walletBalance, payouts, isLoading, error, withdrawWallet }}>
+        <EarningsCtx.Provider value={{ walletBalance, payouts, isLoading, error, withdrawWallet, refreshEarnings }}>
             {children}
         </EarningsCtx.Provider>
     )

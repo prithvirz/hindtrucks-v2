@@ -25,7 +25,9 @@ export default function LanguageChip({
       <div className="flex items-center justify-between">
         <div>
           <p className="text-[18px] font-bold text-ink leading-tight">{lang.nativeName}</p>
-          <p className="text-xs text-ink-muted mt-0.5 font-bold">{lang.englishName}</p>
+          {lang.nativeName !== lang.englishName && (
+            <p className="text-xs text-ink-muted mt-0.5 font-bold">{lang.englishName}</p>
+          )}
         </div>
         <span
           className={`flex h-6 w-6 items-center justify-center rounded-full transition-all ${selected ? 'bg-accent text-white' : 'bg-surface-base ring-1 ring-hairline'
