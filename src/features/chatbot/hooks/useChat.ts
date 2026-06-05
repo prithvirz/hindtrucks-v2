@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from 'react'
+import { useCallback, useRef, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ChatMessage } from '../types'
 import { streamChatMessage, staticFaqMatch, shouldUseStaticFallback } from '../services/chatService'
@@ -13,6 +13,18 @@ export function useChat() {
     const context = useAIContext()
     const abortRef = useRef<AbortController | null>(null)
     const isStreamingRef = useRef(false)
+    const [translationTrigger, setTranslationTrigger] = useState(0)
+
+    // Listen to added resources to re-translate when lazy loaded bundles load
+    useEffect(() => {
+        const handleAdded = () => {
+            setTranslationTrigger((prev) => prev + 1)
+        }
+        i18n.on('added', handleAdded)
+        return () => {
+            i18n.off('added', handleAdded)
+        }
+    }, [i18n])
 
     // Proactively greet the driver and display a found job/load match message
     useEffect(() => {
@@ -36,7 +48,7 @@ export function useChat() {
         }
     }, [messages.length, context.driverName, context.driverLanguage, setMessages, t])
 
-    // Re-translate the static welcome message when the UI language changes
+    // Re-translate the static welcome message when the UI language changes or translation resources are loaded
     useEffect(() => {
         setMessages((prev) =>
             prev.some((m) => m.id === 'welcome')
@@ -59,8 +71,7 @@ export function useChat() {
                   )
                 : prev
         )
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [i18n.language])
+    }, [i18n.language, translationTrigger, context.driverName, context.driverLanguage, setMessages, t])
 
     const sendMessage = useCallback(
         async (text: string) => {
