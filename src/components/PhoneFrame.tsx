@@ -15,7 +15,7 @@ export default function PhoneFrame({ children }: { children: ReactNode }) {
       <div className="pointer-events-none absolute -right-20 bottom-0 hidden sm:block h-80 w-80 rounded-full bg-info/10 blur-3xl" />
 
       {/* Main responsive container */}
-      <div className="relative z-10 w-full max-w-[430px] h-[100dvh] sm:h-[820px] sm:max-h-[90vh] bg-surface-grey sm:rounded-[2.5rem] sm:shadow-pop border border-transparent sm:border-white/5 overflow-hidden flex flex-col">
+      <div className="relative z-10 w-full max-w-[430px] h-[100dvh] sm:h-[820px] sm:max-h-[90vh] bg-surface-grey sm:rounded-[2.5rem] sm:shadow-pop border-0 sm:border sm:border-white/5 overflow-hidden flex flex-col">
         {children}
       </div>
     </div>

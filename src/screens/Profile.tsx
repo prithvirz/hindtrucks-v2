@@ -12,11 +12,11 @@ import {
   BadgeCheck,
   X,
   Check,
-  Share2,
   Copy,
   Award,
   Bell,
   Users,
+  MessageCircle,
 } from 'lucide-react'
 import TopBar from '../components/TopBar'
 import Button from '../components/Button'
@@ -76,6 +76,11 @@ export default function Profile() {
     navigator.clipboard.writeText(referLink)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  function handleWhatsAppShare() {
+    const text = `Join HindTrucks using my link and earn ₹1,000 bonus on your first load! ${referLink}`
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank')
   }
 
   function doLogout() {
@@ -339,24 +344,33 @@ export default function Profile() {
           </Section>
         )}
 
-        {/* Referral Section */}
-        <Section title="Refer & Earn" icon={<Share2 size={16} className="text-accent" />}>
-          <div className="py-3 flex flex-col gap-2">
-            <p className="text-xs font-bold text-ink-muted leading-relaxed text-left">
-              Invite other drivers to HindTrucks. Earn ₹1,000 when they complete their first trip.
-            </p>
-            <div className="flex gap-2 items-center bg-surface-grey ring-1 ring-accent/25 rounded-xl p-2 mt-1 min-w-0">
-              <span className="text-xs text-ink font-bold truncate flex-1 leading-none select-all">{referLink}</span>
-              <button
-                onClick={handleCopy}
-                className="h-8 px-3 flex items-center gap-1.5 bg-accent text-white text-xs font-bold rounded-lg active:scale-95 transition-all shrink-0"
-              >
-                {copied ? <Check size={13} strokeWidth={3} /> : <Copy size={13} />}
-                {copied ? t('home.copied') : t('home.copyLink')}
-              </button>
-            </div>
+        {/* Refer & Earn - Premium Obsidian Card Style */}
+        <div id="refer-card" className="bg-gradient-to-br from-night-900 via-night-800 to-night-700 text-white border border-white/10 boxed-shadow boxed-rounded-lg p-5 relative overflow-hidden text-left">
+          <div className="absolute -top-10 -right-10 w-24 h-24 bg-accent/25 rounded-full blur-xl pointer-events-none" />
+
+          <h2 className="text-[16px] font-black text-white leading-tight">{t('home.referTitle')}</h2>
+          <p className="text-xs text-white/70 mt-0.5 font-bold">{t('home.referSubtitle')}</p>
+
+          <div className="mt-4 flex gap-2 items-center bg-white/10 border border-white/10 rounded-xl p-2 min-w-0">
+            <span className="text-xs text-white font-bold truncate flex-1 leading-none select-all pl-1">{referLink}</span>
+            <button
+              onClick={handleCopy}
+              className="h-8 px-3.5 flex items-center gap-1.5 bg-accent text-white text-xs font-bold rounded-lg active:scale-95 transition-all duration-100 shrink-0"
+            >
+              {copied ? <Check size={13} strokeWidth={3} /> : <Copy size={13} />}
+              {copied ? t('home.copied') : t('home.copyLink')}
+            </button>
           </div>
-        </Section>
+
+          <Button
+            full
+            className="mt-4 bg-[#25D366] border-[#128C7E] hover:bg-[#20bd5a] text-white shadow-[#25D366]/20"
+            leftIcon={<MessageCircle size={18} fill="currentColor" />}
+            onClick={handleWhatsAppShare}
+          >
+            Invite via WhatsApp
+          </Button>
+        </div>
 
         {/* Documents */}
         <Section title={t('profile.documents')} icon={<FileText size={16} className="text-accent" />}>

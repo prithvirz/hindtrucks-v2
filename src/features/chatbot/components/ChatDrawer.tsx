@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
-import { X, Send, Mic, MicOff, Volume2, VolumeX, Sparkles } from 'lucide-react'
+import { X, Send, Mic, MicOff, Volume2, VolumeX } from 'lucide-react'
 import { useShell } from '../../../state/ShellContext'
 import { useChatContext } from '../../../state/ChatContext'
 import { useTTS } from '../hooks/useTTS'
 import { useSTT } from '../hooks/useSTT'
 import { ChatMessage } from './ChatMessage'
 
-function PaghriPersonIcon({ className }: { className?: string }) {
+export function PaghriPersonIcon({ className }: { className?: string }) {
     return (
         <svg
             viewBox="0 0 100 100"
@@ -132,23 +132,6 @@ export function ChatDrawer() {
         return localStorage.getItem('ht_bot_muted') === 'true'
     })
 
-    // Peek-a-boo "Ask Raahgir" pill: slides out from the icon, holds, retracts, loops.
-    const [showPill, setShowPill] = useState(false)
-    useEffect(() => {
-        if (isOpen || isTourActive || hideClosedFab) {
-            setShowPill(false)
-            return
-        }
-        const VISIBLE_MS = 3000
-        const HIDDEN_MS = 7000
-        let timer: ReturnType<typeof setTimeout>
-        const cycle = (visible: boolean) => {
-            setShowPill(visible)
-            timer = setTimeout(() => cycle(!visible), visible ? VISIBLE_MS : HIDDEN_MS)
-        }
-        timer = setTimeout(() => cycle(true), 1200)
-        return () => clearTimeout(timer)
-    }, [isOpen, isTourActive, hideClosedFab])
 
     // STT hook
     const handleSttResult = (text: string) => {
@@ -206,49 +189,48 @@ export function ChatDrawer() {
                 .animate-paghri-float {
                     animation: paghriFloat 2.5s ease-in-out infinite;
                 }
+                @keyframes needHelpLoop {
+                    0%, 15% {
+                        transform: translate(-50%, calc(-50% + 44px)) scale(0);
+                        opacity: 0;
+                    }
+                    30%, 70% {
+                        transform: translate(-50%, calc(-50% - 28px)) scale(1);
+                        opacity: 1;
+                    }
+                    85%, 100% {
+                        transform: translate(-50%, calc(-50% + 44px)) scale(0);
+                        opacity: 0;
+                    }
+                }
+                .animate-need-help {
+                    animation: needHelpLoop 6s ease-in-out infinite;
+                }
             `}} />
 
-            {/* Proactive Floating Chatbot Trigger */}
-            <div
-                className={`absolute bottom-[calc(5rem+env(safe-area-inset-bottom))] right-4 z-40 transition-all duration-500 ${
-                    isTourActive || hideClosedFab ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'
-                }`}
-            >
-                {/* Proactive Tooltip / Speech Bubble — peeks out from the icon on a loop */}
-                {!isOpen && (
-                    <div
-                        style={{ transformOrigin: 'calc(100% - 32px) -32px' }}
-                        className={`absolute top-full mt-2 right-0 w-max bg-ink text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-2xl shadow-xl shadow-ink/20 whitespace-nowrap transition-all duration-300 ease-out ${
-                            showPill ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'
-                        }`}
-                    >
-                        <span className="flex items-center gap-1.5">
-                            <Sparkles size={12} className="text-accent animate-pulse" />
-                            {t('bot.ask_raahgir', 'Ask Raahgir')}
-                        </span>
-                    </div>
-                )}
-
-                <button
-                    id="chatbot-button"
+            {/* Centered Proactive Tooltip (Text + Animated Pill) */}
+            {!isOpen && (
+                <div
                     onClick={toggleChat}
-                    className={`h-16 w-16 flex items-center justify-center transition-all duration-300 select-none outline-none relative group ${
-                        isOpen 
-                            ? 'bg-ink rounded-full backdrop-blur-md shadow-lg shadow-black/20 hover:scale-105 active:scale-95 text-white' 
-                            : 'hover:scale-110 active:scale-95 animate-paghri-float drop-shadow-xl'
+                    className={`absolute left-1/2 -translate-x-1/2 z-40 transition-all duration-500 cursor-pointer select-none bottom-[calc(4.8rem+env(safe-area-inset-bottom))] ${
+                        isTourActive || hideClosedFab ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'
                     }`}
-                    aria-label="Raahgir Driver Assistant"
                 >
-                    {isOpen ? (
-                        <X size={26} strokeWidth={2.5} />
-                    ) : (
-                        <div className="relative flex items-center justify-center h-full w-full">
-                            {/* Indian Assistant Persona floating freely */}
-                            <PaghriPersonIcon className="w-16 h-16 relative z-10 transition-transform duration-200" />
+                    <div className="flex flex-col items-center relative">
+                        {/* Animated "Need help?" Pill */}
+                        <div className="absolute top-1/2 left-1/2 z-10 pointer-events-none">
+                            <div className="bg-accent text-white text-[9.5px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-lg whitespace-nowrap animate-need-help border border-white/20">
+                                {t('bot.need_help', 'Need help?')}
+                            </div>
                         </div>
-                    )}
-                </button>
-            </div>
+
+                        {/* Hi, I'm Rahgir. text */}
+                        <div className="relative z-0 bg-surface/90 backdrop-blur-md text-ink text-[10.5px] font-black px-2.5 py-0.5 rounded-full border border-hairline/60 shadow-sm whitespace-nowrap tracking-wide">
+                            {t('bot.hi_im_rahgir', "Hi, I'm Rahgir.")}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Chat Drawer Overlay */}
             {isOpen && (

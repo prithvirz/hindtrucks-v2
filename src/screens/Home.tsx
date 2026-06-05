@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Star, TrendingUp, Truck, ChevronRight, MapPin, Copy, Check, Award, MessageCircle } from 'lucide-react'
+import { Star, TrendingUp, Truck, ChevronRight, MapPin, Award } from 'lucide-react'
 import Toggle from '../components/Toggle'
 import Button from '../components/Button'
 import LoadCard from '../components/LoadCard'
@@ -23,26 +22,15 @@ export default function Home() {
   const { t } = useTranslation()
   const { isOnline, setOnline, driver, role, drivers } = useProfile()
   const { activeTrips, activeLoad } = useTrip()
-  const [copied, setCopied] = useState(false)
   const nearby = MOCK_LOADS.slice(0, 2)
-
-  const referLink = `https://hindtrucks.in/refer/${driver.truck.regNumber.replace(/\s+/g, '')}`
-
-  function handleCopy() {
-    navigator.clipboard.writeText(referLink)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  function handleWhatsAppShare() {
-    const text = `Join HindTrucks using my link and earn ₹1,000 bonus on your first load! ${referLink}`
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank')
-  }
 
   return (
     <div className="h-full overflow-y-auto no-scrollbar pb-32">
+      {/* Sticky status area cover */}
+      <div className="sticky top-0 z-20 h-[env(safe-area-inset-top,0px)] bg-night-900 w-full shrink-0" />
+
       {/* Header with Tour ID - Premium Deep Gradient */}
-      <div id="driver-profile" className="relative px-5 home-safe-top pb-7 bg-gradient-to-br from-night-900 via-night-800 to-night-700 text-white overflow-hidden">
+      <div id="driver-profile" className="relative px-5 pt-6 pb-7 bg-gradient-to-br from-night-900 via-night-800 to-night-700 text-white overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-accent/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-success/15 rounded-full blur-2xl pointer-events-none" />
 
@@ -263,35 +251,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Refer & Earn - Premium Obsidian Card Style */}
-      <div className="px-5 mt-6">
-        <div id="refer-card" className="bg-gradient-to-br from-night-900 via-night-800 to-night-700 text-white border border-white/10 boxed-shadow boxed-rounded-lg p-5 relative overflow-hidden">
-          <div className="absolute -top-10 -right-10 w-24 h-24 bg-accent/25 rounded-full blur-xl pointer-events-none" />
 
-          <h2 className="text-[16px] font-black text-white leading-tight">{t('home.referTitle')}</h2>
-          <p className="text-xs text-white/70 mt-0.5 font-bold">{t('home.referSubtitle')}</p>
-
-          <div className="mt-4 flex gap-2 items-center bg-white/10 border border-white/10 rounded-xl p-2 min-w-0">
-            <span className="text-xs text-white font-bold truncate flex-1 leading-none select-all pl-1">{referLink}</span>
-            <button
-              onClick={handleCopy}
-              className="h-8 px-3.5 flex items-center gap-1.5 bg-accent text-white text-xs font-bold rounded-lg active:scale-95 transition-all duration-100 shrink-0"
-            >
-              {copied ? <Check size={13} strokeWidth={3} /> : <Copy size={13} />}
-              {copied ? t('home.copied') : t('home.copyLink')}
-            </button>
-          </div>
-
-          <Button
-            full
-            className="mt-4 bg-[#25D366] border-[#128C7E] hover:bg-[#20bd5a] text-white shadow-[#25D366]/20"
-            leftIcon={<MessageCircle size={18} fill="currentColor" />}
-            onClick={handleWhatsAppShare}
-          >
-            Invite via WhatsApp
-          </Button>
-        </div>
-      </div>
 
       {/* Nearby loads */}
       <div className="px-5 mt-6">

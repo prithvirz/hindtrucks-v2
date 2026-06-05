@@ -1,6 +1,7 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react'
 import { renderWithProviders } from '../__tests__/test-utils'
 import AIChatbot from './AIChatbot'
+import BottomTabBar from './BottomTabBar'
 
 // Mock speechSynthesis
 beforeAll(() => {
@@ -23,14 +24,24 @@ describe('AIChatbot', () => {
     })
 
     it('renders the thin wrapper (ChatDrawer)', () => {
-        renderWithProviders(<AIChatbot />)
-        // ChatDrawer renders a FAB button to open the chat
+        renderWithProviders(
+            <>
+                <AIChatbot />
+                <BottomTabBar />
+            </>
+        )
+        // ChatDrawer triggers via BottomTabBar button
         expect(screen.getByRole('button', { name: /assistant/i })).toBeInTheDocument()
     })
 
     it('opens the chat drawer and scrolls to bottom', async () => {
         const scrollToSpy = vi.spyOn(window.HTMLElement.prototype, 'scrollTo')
-        renderWithProviders(<AIChatbot />)
+        renderWithProviders(
+            <>
+                <AIChatbot />
+                <BottomTabBar />
+            </>
+        )
 
         const fab = screen.getByRole('button', { name: /assistant/i })
         fireEvent.click(fab)
@@ -44,7 +55,12 @@ describe('AIChatbot', () => {
     })
 
     it('minimizes the chat drawer when clicking on a suggested action chip', async () => {
-        renderWithProviders(<AIChatbot />)
+        renderWithProviders(
+            <>
+                <AIChatbot />
+                <BottomTabBar />
+            </>
+        )
 
         // Open chat drawer
         const fab = screen.getByRole('button', { name: /assistant/i })

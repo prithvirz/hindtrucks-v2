@@ -24,6 +24,8 @@ vi.mock('react-i18next', () => ({
         i18n: {
             language: 'en',
             changeLanguage: () => Promise.resolve(),
+            on: () => { },
+            off: () => { },
         },
     }),
     Trans: ({ children }: { children: React.ReactNode }) => children,

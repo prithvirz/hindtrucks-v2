@@ -19,14 +19,4 @@ describe('Home Screen', () => {
         expect(screen.getByText('home.bfcTitle')).toBeInTheDocument()
     })
 
-    it('renders referral section', () => {
-        renderWithProviders(<Home />)
-        expect(screen.getByText('home.referTitle')).toBeInTheDocument()
-    })
-
-    it('renders referral link text', () => {
-        renderWithProviders(<Home />)
-        const linkText = screen.getByText(/hindtrucks\.in\/refer\//i)
-        expect(linkText).toBeInTheDocument()
-    })
 })
