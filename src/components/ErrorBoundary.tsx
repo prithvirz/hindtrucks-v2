@@ -62,7 +62,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
             }
 
             return (
-                <div className="h-full w-full flex items-center justify-center bg-white px-6">
+                <div className="h-full w-full flex items-center justify-center bg-surface px-6">
                     <div className="flex flex-col items-center text-center max-w-sm">
                         <div className="text-5xl mb-4">{icon}</div>
                         <h1 className="text-xl font-black text-ink mb-2">{title}</h1>

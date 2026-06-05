@@ -48,8 +48,8 @@ export default function Loads() {
         <button
           onClick={() => setSelectedTruckId('all')}
           className={`h-7 px-3.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-150 border flex items-center justify-center ${selectedTruckId === 'all'
-              ? 'bg-ink text-white border-ink shadow-xs'
-              : 'bg-white text-ink-muted border-hairline hover:bg-surface-grey'
+              ? 'bg-ink text-surface border-ink shadow-xs'
+              : 'bg-surface-sunken text-ink-muted border-hairline hover:bg-surface'
             }`}
         >
           {t('common.all') || 'All'}
@@ -63,10 +63,10 @@ export default function Loads() {
               onClick={() => setSelectedTruckId(truck.id)}
               className={`h-7 px-3.5 rounded-full text-xs font-extrabold whitespace-nowrap transition-all duration-150 border flex items-center justify-center gap-1.5 ${isSelected
                   ? 'bg-accent text-white border-accent shadow-xs'
-                  : 'bg-white text-ink-muted border-hairline hover:bg-surface-grey'
+                  : 'bg-surface-sunken text-ink-muted border-hairline hover:bg-surface'
                 }`}
             >
-              {isActive && role !== 'owner' && <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] animate-pulse" />}
+              {isActive && role !== 'owner' && <span className="w-1.5 h-1.5 rounded-full bg-[#39E990] animate-pulse" />}
               {truck.regNumber} ({parseFloat(truck.capacity)}T)
             </button>
           )

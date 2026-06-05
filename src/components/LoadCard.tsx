@@ -18,21 +18,21 @@ export default function LoadCard({ load, onClick }: Props) {
   let badgeEl = null
   if (matchingTrucks.length === 1) {
     badgeEl = (
-      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#16a34a] bg-[#f0fdf4] border border-[#bbf7d0] px-2 py-0.5 rounded-md mt-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] animate-pulse" />
+      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-success bg-success/12 border border-success/20 px-2 py-0.5 rounded-md mt-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
         {t('loads.fitsTruck', { reg: matchingTrucks[0].regNumber })}
       </span>
     )
   } else if (matchingTrucks.length > 1) {
     badgeEl = (
-      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#2563eb] bg-[#eff6ff] border border-[#bfdbfe] px-2 py-0.5 rounded-md mt-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb]" />
+      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-info bg-info/12 border border-info/20 px-2 py-0.5 rounded-md mt-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-info" />
         {t('loads.fitsTrucks', { count: matchingTrucks.length })}
       </span>
     )
   } else {
     badgeEl = (
-      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-ink-muted bg-surface-grey border border-hairline px-2 py-0.5 rounded-md mt-2">
+      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-ink-muted bg-surface-grey border border-white/5 px-2 py-0.5 rounded-md mt-2">
         <ShieldAlert size={10} className="text-amber-500" />
         {t('loads.noMatchingTruck')}
       </span>
@@ -49,7 +49,7 @@ export default function LoadCard({ load, onClick }: Props) {
           src={load.image}
           alt=""
           loading="lazy"
-          className="h-[118px] w-[104px] object-cover shrink-0 border-r-2 border-ink"
+          className="h-[118px] w-[104px] object-cover shrink-0 border-r border-hairline"
         />
         <div className="flex-1 p-3 min-w-0 flex flex-col justify-between">
           <div>
@@ -85,7 +85,7 @@ export default function LoadCard({ load, onClick }: Props) {
             </div>
             <div className="flex flex-col items-end">
               {load.shipperVerified && (
-                <span className="inline-flex items-center gap-1 text-[9px] font-black text-success bg-white border border-success px-1.5 py-0.5 boxed-rounded shrink-0">
+                <span className="inline-flex items-center gap-1 text-[9px] font-black text-success bg-success/12 border border-success/20 px-1.5 py-0.5 boxed-rounded shrink-0">
                   <BadgeCheck size={11} /> {t('common.verified')}
                 </span>
               )}

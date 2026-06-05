@@ -8,6 +8,7 @@ import type {
 } from '../types'
 import type { TripStep } from '../../state/types'
 import type { Load } from '../../data/mockLoads'
+import { completeTripPayout } from './earningsService'
 
 const delay = () => new Promise<void>((r) => setTimeout(r, 300 + Math.random() * 500))
 
@@ -29,6 +30,14 @@ export const mockTripService: ITripService = {
         const currentStep = request.currentStep
         const newStep = currentStep < 4 ? ((currentStep + 1) as TripStep) : currentStep
         mockTripStep = newStep
+
+        if (newStep === 4 && mockActiveLoad) {
+            completeTripPayout(
+                mockActiveLoad.id,
+                `${mockActiveLoad.fromCity} → ${mockActiveLoad.toCity}`,
+                mockActiveLoad.price
+            )
+        }
 
         const messages: Record<number, string> = {
             1: 'Arrived at pickup point',

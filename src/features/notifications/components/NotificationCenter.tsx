@@ -101,12 +101,12 @@ export function NotificationCenter({
     };
 
     return (
-        <div className="fixed inset-0 z-50 bg-white flex flex-col animate-slide-up">
+        <div className="fixed inset-0 z-50 bg-surface-base flex flex-col animate-slide-up">
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-hairline safe-top">
                 <button
                     onClick={onClose}
-                    className="h-10 w-10 rounded-full flex items-center justify-center hover:bg-surface-grey transition"
+                    className="h-9 w-9 rounded-lg border border-hairline bg-surface flex items-center justify-center hover:bg-surface-grey transition"
                 >
                     <ArrowLeft className="w-5 h-5 text-ink" />
                 </button>
@@ -116,7 +116,7 @@ export function NotificationCenter({
                 <button
                     onClick={onMarkAllRead}
                     disabled={unreadCount === 0}
-                    className="h-10 px-3 rounded-full flex items-center gap-1.5 text-sm font-bold text-accent hover:bg-accent-soft transition disabled:opacity-30"
+                    className="h-9 px-3 rounded-lg border border-accent/25 bg-accent-soft flex items-center gap-1.5 text-sm font-bold text-accent hover:bg-[#ffe8d6] transition disabled:opacity-30"
                 >
                     <CheckCheck className="w-4 h-4" />
                 </button>
@@ -197,7 +197,7 @@ export function NotificationCenter({
                                             e.stopPropagation();
                                             onDelete(n.id);
                                         }}
-                                        className="shrink-0 h-8 w-8 rounded-full flex items-center justify-center hover:bg-red-50 transition"
+                                        className="shrink-0 h-8 w-8 rounded-lg border border-transparent flex items-center justify-center hover:bg-red-50 hover:border-red-200 transition"
                                         aria-label="Delete notification"
                                     >
                                         <Trash2 className="w-3.5 h-3.5 text-ink-faint hover:text-red-500" />

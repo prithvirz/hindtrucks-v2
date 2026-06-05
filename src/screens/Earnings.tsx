@@ -96,16 +96,21 @@ export default function Earnings() {
       <TopBar title={t('earnings.title')} />
       <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-4 pb-32 space-y-5">
         {/* Wallet */}
-        <div className="rounded-3xl bg-gradient-to-br from-night-900 via-night-800 to-night-700 text-white p-5 shadow-pop relative overflow-hidden">
-          <div className="pointer-events-none absolute -top-10 -right-8 h-32 w-32 rounded-full bg-accent/25 blur-2xl" />
+        <div className="rounded-3xl bg-gradient-to-br from-[#8F43FF] to-[#3E7BFF] text-white p-5 shadow-pop relative overflow-hidden">
+          <div className="pointer-events-none absolute -top-10 -right-8 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
           <div className="relative">
             <div className="flex items-center gap-2 text-white/70 text-sm">
               <Wallet size={16} /> {t('earnings.balance')}
             </div>
             <p className="text-4xl font-extrabold mt-1 nums tracking-tight">{inr(walletBalance)}</p>
+            {walletBalance === 1500 && payouts.some(p => p.load === 'BONUS') && (
+              <div className="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/10 rounded-lg text-[11px] font-extrabold text-yellow-300 border border-white/10">
+                <span>🎁 ₹1,500 Signup Bonus Active</span>
+              </div>
+            )}
             <Button
               className="mt-4"
-              variant="primary"
+              variant="white"
               size="md"
               disabled={walletBalance <= 0}
               onClick={handleWithdrawClick}
@@ -117,7 +122,7 @@ export default function Earnings() {
         </div>
 
         {/* Weekly chart */}
-        <div className="rounded-2xl bg-surface shadow-card border border-hairline/60 p-4">
+        <div className="rounded-2xl bg-surface shadow-card border border-hairline p-4">
           <div className="flex items-center justify-between mb-4">
             <p className="font-bold text-ink">{t('earnings.thisWeek')}</p>
             <p className="font-extrabold text-ink nums">{inr(weekTotal)}</p>
@@ -127,7 +132,7 @@ export default function Earnings() {
               <div key={i} className="flex-1 flex flex-col items-center gap-2 h-full">
                 <div className="w-full flex-1 flex items-end min-h-0">
                   <div
-                    className={`w-full rounded-lg transition-all ${v === max ? 'bg-accent' : 'bg-accent-soft'
+                    className={`w-full rounded-lg transition-all ${v === max ? 'bg-accent' : 'bg-accent/15'
                       }`}
                     style={{ height: `${Math.max((v / max) * 100, 4)}%` }}
                   />
@@ -228,7 +233,7 @@ export default function Earnings() {
                     <label className="block text-[11px] font-black uppercase text-ink-muted tracking-wider">
                       Withdrawal Amount (₹)
                     </label>
-                    <div className="mt-1.5 flex items-center gap-2 h-14 rounded-xl bg-surface-grey ring-1 ring-hairline px-4 focus-within:bg-white focus-within:ring-2 focus-within:ring-accent/40 focus-within:shadow-glow transition-all">
+                    <div className="mt-1.5 flex items-center gap-2 h-14 rounded-xl bg-surface-grey ring-1 ring-hairline px-4 focus-within:bg-surface-sunken focus-within:ring-2 focus-within:ring-accent/40 focus-within:shadow-glow transition-all">
                       <span className="text-ink font-bold text-lg">₹</span>
                       <input
                         type="number"
@@ -260,7 +265,7 @@ export default function Earnings() {
                     <label className="block text-[11px] font-black uppercase text-ink-muted tracking-wider">
                       UPI ID (Instant Transfer)
                     </label>
-                    <div className="mt-1.5 flex items-center gap-2 h-14 rounded-xl bg-surface-grey ring-1 ring-hairline px-4 focus-within:bg-white focus-within:ring-2 focus-within:ring-accent/40 focus-within:shadow-glow transition-all">
+                    <div className="mt-1.5 flex items-center gap-2 h-14 rounded-xl bg-surface-grey ring-1 ring-hairline px-4 focus-within:bg-surface-sunken focus-within:ring-2 focus-within:ring-accent/40 focus-within:shadow-glow transition-all">
                       <input
                         type="text"
                         placeholder="example@upi"

@@ -34,18 +34,18 @@ export default function Splash() {
   }, [nav, isLoggedIn, state])
 
   return (
-    <div className="relative h-full w-full bg-ink overflow-hidden flex flex-col justify-between">
+    <div className="relative h-full w-full bg-night-900 overflow-hidden flex flex-col justify-between">
       <img
         src={images.splashHighway}
         alt=""
         className="absolute inset-0 h-full w-full object-cover opacity-50 transition-opacity duration-700"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/20 via-ink/60 to-ink/95" />
+      <div className="absolute inset-0 bg-gradient-to-b from-night-900/20 via-night-900/60 to-night-900/95" />
 
       {/* Main Branding Section */}
       <div className="relative flex-1 flex flex-col items-center justify-center px-8 text-center transition-all duration-500">
         <div className={`transition-all duration-700 transform ${showLanding ? '-translate-y-6 scale-90' : 'translate-y-0'}`}>
-          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-white border-2 border-accent shadow-accent animate-scale-in">
+          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-surface-base border-2 border-accent shadow-accent animate-scale-in">
             <AppLogo size={52} />
           </div>
           <h1 className="text-4xl font-extrabold text-white tracking-tight">

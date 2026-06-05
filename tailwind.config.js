@@ -7,56 +7,57 @@ export default {
         // Single source of truth for the brand accent — change here to re-theme.
         accent: {
           DEFAULT: '#F26A1B',
-          soft: '#FFF3EA',
+          soft: 'var(--color-accent-soft)',
           press: '#D9590F',
           ring: 'rgba(242,106,27,0.22)',
         },
         // Cool secondary accent for info / map / links.
         info: {
           DEFAULT: '#2563EB',
-          soft: '#EAF1FE',
+          soft: 'var(--color-info-soft)',
         },
         ink: {
-          DEFAULT: '#0B0B0F',
-          muted: '#6B7280',
-          faint: '#9CA3AF',
+          DEFAULT: 'var(--color-ink)',
+          muted: 'var(--color-ink-muted)',
+          faint: 'var(--color-ink-faint)',
         },
         // Dark "obsidian" surfaces — tokenized so premium cards stay consistent.
         night: {
-          900: '#0B0B0F',
-          800: '#15151E',
-          700: '#1E1E2A',
-          600: '#2A2937',
+          900: '#08090C',
+          800: '#0C0E14',
+          700: '#151821',
+          600: '#1B1E2B',
         },
         surface: {
-          DEFAULT: '#FFFFFF',
-          grey: '#F6F7F9',
-          sunken: '#EEF0F3',
+          DEFAULT: 'var(--color-surface)',
+          grey: 'var(--color-surface-grey)',
+          sunken: 'var(--color-surface-sunken)',
         },
-        canvas: '#EAECF0',
-        hairline: '#ECEEF1',
+        canvas: 'var(--color-canvas)',
+        hairline: 'var(--color-hairline)',
         success: {
-          DEFAULT: '#16A34A',
-          soft: '#E8F5EC',
+          DEFAULT: 'var(--color-success)',
+          soft: 'var(--color-success-soft)',
         },
+        overlay: 'var(--color-overlay)',
       },
       fontFamily: {
         sans: ['Inter', 'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Telugu', 'Noto Sans Gurmukhi', 'system-ui', 'sans-serif'],
       },
       // Two-radius system: controls (sm) and cards (lg).
       borderRadius: {
-        lg: '14px',
-        xl: '14px',
-        '2xl': '20px',
-        '3xl': '26px',
+        lg: '16px',
+        xl: '20px',
+        '2xl': '24px',
+        '3xl': '32px',
       },
       boxShadow: {
         // Soft, layered elevation — the premium depth language.
-        xs: '0 1px 2px rgba(11,11,15,0.05)',
-        card: '0 1px 2px rgba(11,11,15,0.04), 0 8px 24px rgba(11,11,15,0.06)',
-        pop: '0 12px 40px rgba(11,11,15,0.12)',
-        accent: '0 8px 24px rgba(242,106,27,0.28)',
-        glow: '0 0 0 4px rgba(242,106,27,0.16)',
+        xs: '0 1px 2px rgba(15,23,42,0.06)',
+        card: '0 8px 24px rgba(15,23,42,0.08)',
+        pop: '0 22px 54px rgba(15,23,42,0.18)',
+        accent: '0 8px 22px rgba(242,106,27,0.16)',
+        glow: '0 0 14px rgba(242,106,27,0.12)',
       },
       maxWidth: {
         app: '420px',

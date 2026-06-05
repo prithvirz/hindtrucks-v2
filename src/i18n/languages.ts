@@ -1,7 +1,7 @@
 // Registry of supported languages. Adding a new one = add an entry here,
 // create its JSON file, and register it in i18n/index.ts.
 
-export type LangCode = 'en' | 'hi' | 'pa' | 'ta' | 'te'
+export type LangCode = 'en' | 'hi' | 'pa' | 'ta' | 'te' | 'bn' | 'mr' | 'gu' | 'kn' | 'ml' | 'or' | 'as'
 
 export interface Language {
   code: LangCode
@@ -14,11 +14,21 @@ export interface Language {
 }
 
 export const LANGUAGES: Language[] = [
+  // Top 5 (Always at the top)
   { code: 'en', nativeName: 'English', englishName: 'English', regions: [] },
+  { code: 'bn', nativeName: 'বাংলা', englishName: 'Bengali', regions: ['IN-WB', 'IN-TR'] },
   { code: 'hi', nativeName: 'हिन्दी', englishName: 'Hindi', regions: ['IN-UP', 'IN-DL', 'IN-MP', 'IN-BR', 'IN-RJ', 'IN-HR', 'IN-JH', 'IN-CT', 'IN-UT'] },
   { code: 'pa', nativeName: 'ਪੰਜਾਬੀ', englishName: 'Punjabi', regions: ['IN-PB', 'IN-CH'] },
-  { code: 'ta', nativeName: 'தமிழ்', englishName: 'Tamil', regions: ['IN-TN', 'IN-PY'] },
   { code: 'te', nativeName: 'తెలుగు', englishName: 'Telugu', regions: ['IN-AP', 'IN-TG'] },
+
+  // Others (Scrollable below the top 5)
+  { code: 'ta', nativeName: 'தமிழ்', englishName: 'Tamil', regions: ['IN-TN', 'IN-PY'] },
+  { code: 'mr', nativeName: 'मराठी', englishName: 'Marathi', regions: ['IN-MH'] },
+  { code: 'gu', nativeName: 'ગુજરાતી', englishName: 'Gujarati', regions: ['IN-GJ'] },
+  { code: 'kn', nativeName: 'ಕನ್ನಡ', englishName: 'Kannada', regions: ['IN-KA'] },
+  { code: 'ml', nativeName: 'മലയാളം', englishName: 'Malayalam', regions: ['IN-KL'] },
+  { code: 'or', nativeName: 'ଓଡ଼ିଆ', englishName: 'Odia', regions: ['IN-OR'] },
+  { code: 'as', nativeName: 'অসমীয়া', englishName: 'Assamese', regions: ['IN-AS'] },
 ]
 
 /**
@@ -33,11 +43,17 @@ export function suggestedLangForRegion(): LangCode {
     'en'
   const lower = locale.toLowerCase()
 
-  // Direct language-tag matches (e.g. "ta-IN", "pa", "te-IN")
+  if (lower.startsWith('bn')) return 'bn'
   if (lower.startsWith('hi')) return 'hi'
   if (lower.startsWith('pa')) return 'pa'
   if (lower.startsWith('ta')) return 'ta'
   if (lower.startsWith('te')) return 'te'
+  if (lower.startsWith('mr')) return 'mr'
+  if (lower.startsWith('gu')) return 'gu'
+  if (lower.startsWith('kn')) return 'kn'
+  if (lower.startsWith('ml')) return 'ml'
+  if (lower.startsWith('or')) return 'or'
+  if (lower.startsWith('as')) return 'as'
   if (lower.startsWith('en-in') || lower.endsWith('-in')) return 'hi'
 
   return 'en'

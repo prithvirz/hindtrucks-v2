@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Star, TrendingUp, Truck, ChevronRight, MapPin, Copy, Check, Share2, Award } from 'lucide-react'
+import { Star, TrendingUp, Truck, ChevronRight, MapPin, Copy, Check, Award, MessageCircle } from 'lucide-react'
 import Toggle from '../components/Toggle'
+import Button from '../components/Button'
 import LoadCard from '../components/LoadCard'
 import { useProfile } from '../state/ProfileContext'
 import { useTrip } from '../state/TripContext'
@@ -21,7 +22,7 @@ export default function Home() {
   const nav = useNavigate()
   const { t } = useTranslation()
   const { isOnline, setOnline, driver, role, drivers } = useProfile()
-  const { activeTrips } = useTrip()
+  const { activeTrips, activeLoad } = useTrip()
   const [copied, setCopied] = useState(false)
   const nearby = MOCK_LOADS.slice(0, 2)
 
@@ -67,19 +68,19 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <span className="inline-flex items-center gap-1 text-xs font-bold bg-white text-ink px-2.5 py-1 rounded-full shadow-xs nums shrink-0">
+            <span className="inline-flex items-center gap-1 text-xs font-bold bg-white/10 text-white px-2.5 py-1 rounded-full border border-white/10 shadow-xs nums shrink-0">
               <Star size={13} className="fill-yellow-400 text-yellow-400" /> {driver.rating}
             </span>
           </div>
 
           {/* Online toggle Card with Tour ID */}
-          <div id="online-toggle" className="mt-5 flex items-center justify-between bg-white text-ink boxed-border boxed-shadow boxed-rounded-lg p-4">
+          <div id="online-toggle" className="mt-5 flex items-center justify-between bg-surface text-ink boxed-border boxed-shadow boxed-rounded-lg p-4">
             <div className="flex-1 pr-3">
               <p className="font-black text-[14px] text-ink uppercase tracking-wider">
-                {role === 'owner' ? 'FLEET ONLINE STATUS' : (isOnline ? t('common.online') : t('common.offline'))}
+                {role === 'owner' ? t('profile.fleetOnlineStatus') : (isOnline ? t('common.online') : t('common.offline'))}
               </p>
               <p className="text-ink-muted text-xs mt-0.5 leading-snug font-semibold">
-                {role === 'owner' ? 'Toggle to receive load matching alerts for the entire fleet' : (isOnline ? t('home.statusOnline') : t('home.statusOffline'))}
+                {role === 'owner' ? t('profile.fleetOnlineStatusDesc') : (isOnline ? t('home.statusOnline') : t('home.statusOffline'))}
               </p>
             </div>
             <Toggle on={isOnline} onChange={setOnline} />
@@ -112,7 +113,7 @@ export default function Home() {
       {/* Active Fleet Trips stepper list */}
       {role === 'owner' && (
         <div className="px-5 mt-6">
-          <div className="bg-white boxed-border boxed-shadow boxed-rounded-lg p-4 text-left">
+          <div className="bg-surface boxed-border boxed-shadow boxed-rounded-lg p-4 text-left">
             <div className="flex items-center gap-2 mb-3.5 border-b border-hairline pb-2.5">
               <Truck className="text-accent shrink-0" size={20} />
               <div>
@@ -121,15 +122,12 @@ export default function Home() {
               </div>
             </div>
             {activeTrips.length === 0 ? (
-              <div className="text-center py-6 border border-dashed border-ink/15 rounded-xl bg-surface-grey">
-                <Truck className="mx-auto text-ink-faint mb-2" size={24} />
-                <p className="text-xs font-bold text-ink-muted">No active trips currently running.</p>
-                <button
-                  onClick={() => nav('/loads')}
-                  className="mt-2 text-xs font-black text-white bg-accent hover:bg-[#E0590E] px-3.5 py-1.5 rounded-lg active:scale-95 transition-all shadow-sm"
-                >
+              <div className="text-center py-8 border-2 border-dashed border-hairline rounded-3xl bg-surface-grey/50">
+                <Truck className="mx-auto text-ink-faint mb-3 opacity-20" size={32} />
+                <p className="text-xs font-black text-ink-muted uppercase tracking-wider mb-4">No active trips currently running</p>
+                <Button size="sm" onClick={() => nav('/loads')}>
                   Book a Load
-                </button>
+                </Button>
               </div>
             ) : (
               <div className="flex flex-col gap-3">
@@ -196,8 +194,32 @@ export default function Home() {
         </div>
       )}
 
+      {role === 'driver' && activeLoad && (
+        <div className="px-5 mt-6">
+          <div className="bg-accent/10 border border-accent/20 rounded-2xl p-4 text-left shadow-lg shadow-accent/5 flex flex-col gap-3 relative overflow-hidden">
+            <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-accent" />
+            <div className="flex justify-between items-center gap-2 pl-1.5">
+              <div>
+                <span className="text-[10px] font-black uppercase text-accent bg-accent-soft px-1.5 py-0.5 rounded border border-accent">
+                  📍 Active GPS Tracking
+                </span>
+                <h3 className="text-sm font-black text-ink mt-1.5 leading-tight">
+                  {activeLoad.fromCity} &rarr; {activeLoad.toCity}
+                </h3>
+                <p className="text-[10px] text-ink-muted font-bold mt-1">
+                  HPCL, BPCL Partner Petrol Pumps visible on route.
+                </p>
+              </div>
+              <Button size="sm" onClick={() => nav('/trip')} className="shrink-0" rightIcon={<ChevronRight size={14} />}>
+                Track
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="px-5 mt-6">
-        <div id="bfc-leaderboard" className="bg-white boxed-border boxed-shadow boxed-rounded-lg p-4">
+        <div id="bfc-leaderboard" className="bg-surface boxed-border boxed-shadow boxed-rounded-lg p-4">
           <div className="flex items-center gap-2 mb-3.5 border-b border-hairline pb-2.5">
             <Award className="text-accent shrink-0" size={20} />
             <div>
@@ -209,13 +231,13 @@ export default function Home() {
             {BFC_MEMBERS.map((member, i) => (
               <div
                 key={i}
-                className={`flex items-center justify-between p-2.5 boxed-rounded border ${member.isCurrent ? 'bg-accent-soft/40 border-accent' : 'bg-surface-grey border-hairline'
+                className={`flex items-center justify-between p-2.5 boxed-rounded border ${member.isCurrent ? 'bg-accent-soft/40 border-accent' : 'bg-surface-grey border-hairline/40'
                   }`}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-xs font-black text-accent w-4 text-center">#{i + 1}</span>
                   {/* Driver Initials Badge */}
-                  <div className={`h-8.5 w-8.5 rounded-full flex items-center justify-center font-black text-xs border ${member.isCurrent ? 'bg-accent text-white border-ink' : 'bg-white text-ink-muted border-hairline'
+                  <div className={`h-8.5 w-8.5 rounded-full flex items-center justify-center font-black text-xs border ${member.isCurrent ? 'bg-accent text-white border-white/20' : 'bg-surface-sunken text-ink-muted border-hairline'
                     }`}>
                     {member.name.split(' ').map(n => n[0]).join('')}
                   </div>
@@ -231,7 +253,7 @@ export default function Home() {
                     <p className="text-[10px] text-ink-muted font-bold mt-0.5">{member.truck}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs font-bold bg-white px-2 py-0.5 ring-1 ring-hairline rounded-lg shadow-xs nums">
+                <div className="flex items-center gap-1 text-xs font-bold bg-surface-sunken px-2 py-0.5 border border-hairline rounded-lg shadow-xs nums text-ink">
                   <Star size={11} className="fill-yellow-400 text-yellow-400" />
                   {member.rating}
                 </div>
@@ -243,14 +265,14 @@ export default function Home() {
 
       {/* Refer & Earn - Premium Obsidian Card Style */}
       <div className="px-5 mt-6">
-        <div id="refer-card" className="bg-gradient-to-br from-night-900 via-night-800 to-night-600 text-white boxed-shadow boxed-rounded-lg p-5 relative overflow-hidden">
+        <div id="refer-card" className="bg-gradient-to-br from-night-900 via-night-800 to-night-700 text-white border border-white/10 boxed-shadow boxed-rounded-lg p-5 relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-24 h-24 bg-accent/25 rounded-full blur-xl pointer-events-none" />
 
           <h2 className="text-[16px] font-black text-white leading-tight">{t('home.referTitle')}</h2>
           <p className="text-xs text-white/70 mt-0.5 font-bold">{t('home.referSubtitle')}</p>
 
-          <div className="mt-4 flex gap-2 items-center bg-white rounded-xl p-2 min-w-0">
-            <span className="text-xs text-ink font-bold truncate flex-1 leading-none select-all pl-1">{referLink}</span>
+          <div className="mt-4 flex gap-2 items-center bg-white/10 border border-white/10 rounded-xl p-2 min-w-0">
+            <span className="text-xs text-white font-bold truncate flex-1 leading-none select-all pl-1">{referLink}</span>
             <button
               onClick={handleCopy}
               className="h-8 px-3.5 flex items-center gap-1.5 bg-accent text-white text-xs font-bold rounded-lg active:scale-95 transition-all duration-100 shrink-0"
@@ -260,12 +282,14 @@ export default function Home() {
             </button>
           </div>
 
-          <button
+          <Button
+            full
+            className="mt-4 bg-[#25D366] border-[#128C7E] hover:bg-[#20bd5a] text-white shadow-[#25D366]/20"
+            leftIcon={<MessageCircle size={18} fill="currentColor" />}
             onClick={handleWhatsAppShare}
-            className="mt-3.5 w-full h-11 flex items-center justify-center gap-2 bg-[#25D366] text-white text-xs font-bold rounded-xl shadow-[0_8px_20px_rgba(37,211,102,0.35)] active:scale-[0.98] transition-all duration-200"
           >
-            <Share2 size={14} /> Invite Drivers via WhatsApp
-          </button>
+            Invite via WhatsApp
+          </Button>
         </div>
       </div>
 
@@ -290,7 +314,7 @@ export default function Home() {
         ) : (
           <button
             onClick={() => setOnline(true)}
-            className="w-full boxed-rounded-lg border border-dashed border-ink/15 bg-surface-grey p-8 text-center active:scale-[0.99] transition-all duration-200 hover:bg-white"
+            className="w-full boxed-rounded-lg border border-dashed border-hairline bg-surface-grey p-8 text-center active:scale-[0.99] transition-all duration-200 hover:bg-surface/50"
           >
             <MapPin size={28} className="mx-auto text-accent animate-bounce" />
             <p className="mt-2 text-sm text-ink font-black">{t('home.noNearby')}</p>
@@ -310,4 +334,3 @@ function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; va
     </div>
   )
 }
-

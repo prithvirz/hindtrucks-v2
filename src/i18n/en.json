@@ -145,7 +145,9 @@
     "removeTruck": "Remove",
     "activeTruck": "Active",
     "selectActive": "Set Active",
-    "noTrucks": "No other trucks registered."
+    "noTrucks": "No other trucks registered.",
+    "fleetOnlineStatus": "FLEET ONLINE STATUS",
+    "fleetOnlineStatusDesc": "Toggle to receive load matching alerts for the entire fleet"
   },
   "goods": {
     "electronics": "Electronics",
@@ -180,7 +182,9 @@
     }
   },
   "bot": {
-    "greeting": "Hello {{name}}! I am your HindTrucks AI Assistant. Tap a quick question below or type your query.",
+    "greeting": "Hello {{name}}! I am Raahgir, your AI Driver Assistant. Tap a quick question below or type your query.",
+    "welcome_greet": "Hello {{name}}! I am Raahgir, your AI Driver Assistant. Raahgir found a high-paying load for you today matching your truck! From Ludhiana to Delhi, paying ₹28,500. Tap below to view details.",
+    "welcome_view_loads_btn": "View Matches",
     "faq_withdraw_q": "How to withdraw earnings?",
     "faq_withdraw_a": "Go to the Earnings tab (wallet icon in bottom bar). Tap the 'Withdraw' button, enter your UPI ID, and the money will be credited instantly!",
     "faq_withdraw_redirect": "Open Earnings & Withdraw",

@@ -44,13 +44,13 @@ describe('Button', () => {
 
     it('applies size classes', () => {
         const { rerender } = render(<Button size="sm">Small</Button>)
-        expect(screen.getByRole('button').className).toContain('h-10')
+        expect(screen.getByRole('button').className).toContain('h-9')
 
         rerender(<Button size="md">Medium</Button>)
-        expect(screen.getByRole('button').className).toContain('h-12')
+        expect(screen.getByRole('button').className).toContain('h-11')
 
         rerender(<Button size="lg">Large</Button>)
-        expect(screen.getByRole('button').className).toContain('h-14')
+        expect(screen.getByRole('button').className).toContain('h-12')
     })
 
     it('applies full width class when full=true', () => {

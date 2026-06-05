@@ -55,7 +55,7 @@ export default function Otp() {
               inputMode="numeric"
               onChange={(e) => setAt(i, e.target.value)}
               onKeyDown={(e) => onKey(i, e)}
-              className={`h-16 w-14 text-center text-2xl font-extrabold nums bg-surface-grey outline-none transition-all rounded-xl ring-1 ring-hairline focus:bg-white focus:ring-2 focus:ring-accent/40 focus:shadow-glow ${d ? 'text-accent' : 'text-ink'
+              className={`h-16 w-14 text-center text-2xl font-extrabold nums bg-surface-grey outline-none transition-all rounded-xl ring-1 ring-hairline focus:bg-surface-sunken focus:ring-2 focus:ring-accent/40 focus:shadow-glow [&:-webkit-autofill]:shadow-[0_0_0_1000px_transparent_inset] ${d ? 'text-accent' : 'text-ink'
                 }`}
             />
           ))}

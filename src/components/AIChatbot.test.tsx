@@ -36,7 +36,7 @@ describe('AIChatbot', () => {
         fireEvent.click(fab)
 
         await waitFor(() => {
-            expect(screen.getByText('HindTrucks AI Support')).toBeInTheDocument()
+            expect(screen.getByText('Raahgir (Driver Assistant)')).toBeInTheDocument()
         })
 
         // Check if scrollTo was called on the messages container
@@ -74,7 +74,7 @@ describe('AIChatbot', () => {
 
         // Chat drawer should minimize (HindTrucks AI Support should not be in document)
         await waitFor(() => {
-            expect(screen.queryByText('HindTrucks AI Support')).not.toBeInTheDocument()
+            expect(screen.queryByText('Raahgir (Driver Assistant)')).not.toBeInTheDocument()
         })
     })
 })

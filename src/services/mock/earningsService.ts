@@ -6,7 +6,7 @@ import type {
     WithdrawRequest,
     WithdrawResponse,
 } from '../types'
-import { MOCK_PAYOUTS, WEEK_EARNINGS, DRIVER } from '../../data/mockLoads'
+import { MOCK_PAYOUTS, WEEK_EARNINGS, DRIVER, type Payout } from '../../data/mockLoads'
 
 const delay = () => new Promise<void>((r) => setTimeout(r, 300 + Math.random() * 500))
 
@@ -62,4 +62,58 @@ export const mockEarningsService: IEarningsService = {
 export function resetMockEarnings(): void {
     mockWalletBalance = DRIVER.walletBalance
     mockPayouts = [...MOCK_PAYOUTS]
+}
+
+export function setMockWalletBalance(amount: number) {
+    mockWalletBalance = amount
+}
+
+export function clearMockPayouts() {
+    mockPayouts = []
+}
+
+export function addMockPayout(payout: Payout) {
+    mockPayouts = [payout, ...mockPayouts]
+}
+
+export function completeTripPayout(loadId: string, route: string, amount: number) {
+    const hasBonus = mockPayouts.some(p => p.load === 'BONUS')
+    const alreadyAdjusted = mockPayouts.some(p => p.load === 'BONUS_ADJUST')
+    const isSignupBonusActive = hasBonus && !alreadyAdjusted
+
+    if (isSignupBonusActive) {
+        // Add trip earnings
+        const tripPayout = {
+            id: `P${Math.floor(9000 + Math.random() * 1000)}`,
+            load: loadId,
+            route: `Trip Earnings: ${route}`,
+            amount: amount,
+            status: 'credited' as const,
+            date: new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }),
+        }
+
+        // Add bonus deduction
+        const bonusDeduction = {
+            id: `P${Math.floor(9000 + Math.random() * 1000)}`,
+            load: 'BONUS_ADJUST',
+            route: `Signup Bonus Adjusted (Deducted)`,
+            amount: -1500,
+            status: 'credited' as const,
+            date: new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }),
+        }
+
+        mockPayouts = [tripPayout, bonusDeduction, ...mockPayouts]
+        mockWalletBalance = mockWalletBalance + amount - 1500
+    } else {
+        const tripPayout = {
+            id: `P${Math.floor(9000 + Math.random() * 1000)}`,
+            load: loadId,
+            route: `Trip Earnings: ${route}`,
+            amount: amount,
+            status: 'credited' as const,
+            date: new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }),
+        }
+        mockPayouts = [tripPayout, ...mockPayouts]
+        mockWalletBalance += amount
+    }
 }

@@ -313,6 +313,22 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
             setDrivers(DEFAULT_DRIVERS)
         }
         localStorage.setItem('ht_registered_' + phone, '1')
+
+        // Initialize ₹1,500 Signup Welcome Bonus
+        import('../services/mock/earningsService').then(({ setMockWalletBalance, clearMockPayouts, addMockPayout }) => {
+            setMockWalletBalance(1500)
+            clearMockPayouts()
+            addMockPayout({
+                id: 'P9000',
+                load: 'BONUS',
+                route: 'Signup Bonus - Welcome to HindTrucks',
+                amount: 1500,
+                status: 'credited',
+                date: new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }),
+            })
+        }).catch((err) => {
+            console.error('Failed to initialize mock signup bonus:', err)
+        })
     }
 
     return (

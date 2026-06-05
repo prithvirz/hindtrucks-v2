@@ -219,16 +219,16 @@ export default function OnboardingTour() {
       {/* Tooltip Card with Glassmorphism */}
       <div
         key={tourStep}
-        className="absolute bg-white/95 backdrop-blur-md boxed-border boxed-shadow p-5 flex flex-col z-50 text-ink animate-scale-in boxed-rounded-lg"
+        className="absolute bg-surface backdrop-blur-md boxed-border boxed-shadow p-5 flex flex-col z-50 text-ink animate-scale-in boxed-rounded-lg border border-hairline"
         style={tooltipStyle}
       >
         {/* Speech Bubble Arrow Indicator */}
         {coords && step.placement !== 'center' && (
           <div
-            className={`absolute w-3 h-3 bg-white pointer-events-none ${
+            className={`absolute w-3 h-3 bg-surface border-hairline pointer-events-none ${
               step.placement === 'bottom'
-                ? 'border-t border-l border-[#ECEEF1]'
-                : 'border-b border-r border-[#ECEEF1]'
+                ? 'border-t border-l'
+                : 'border-b border-r'
             }`}
             style={{
               left: Math.max(16, Math.min(coords.shellWidth - 48, coords.left + coords.width / 2 - 16)),

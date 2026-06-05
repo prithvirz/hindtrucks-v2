@@ -58,7 +58,7 @@ export default function ActiveTrip() {
                   <div
                     key={trip.id}
                     onClick={() => setSelectedTripId(trip.id)}
-                    className="p-4 bg-white boxed-rounded border-2 border-ink shadow-[4px_4px_0px_0px_#0B0B0F] active:translate-x-[0.5px] active:translate-y-[0.5px] active:shadow-none transition-all cursor-pointer text-left flex flex-col gap-3 relative overflow-hidden"
+                    className="p-4 bg-surface rounded-[24px] border border-hairline shadow-card active:scale-[0.99] transition-all cursor-pointer text-left flex flex-col gap-3 relative overflow-hidden"
                   >
                     <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-accent" />
                     
@@ -77,7 +77,7 @@ export default function ActiveTrip() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-xs text-ink font-extrabold pl-1.5 border-t border-hairline/20 pt-2.5">
+                    <div className="flex items-center gap-1.5 text-xs text-ink font-extrabold pl-1.5 border-t border-hairline pt-2.5">
                       <span className="truncate">{trip.load.fromCity}</span>
                       <span className="text-ink-faint font-normal">&rarr;</span>
                       <span className="truncate">{trip.load.toCity}</span>
@@ -145,6 +145,7 @@ export default function ActiveTrip() {
       resetTripOwner(tripId)
       setSelectedTripId(null)
     } else {
+      localStorage.setItem('ht_first_trip_done_' + driver.phone, '1')
       stopTracking()
       resetTrip()
       nav('/home', { replace: true })
@@ -209,6 +210,15 @@ export default function ActiveTrip() {
             ) : (
               <RouteMap progress={currentStep / 4} />
             )}
+
+            <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2 rounded-2xl bg-surface/85 border border-hairline backdrop-blur-md px-3.5 py-2.5 shadow-lg">
+              <span className="font-bold text-ink text-sm">{currentLoad.fromCity}</span>
+              <ArrowRight size={14} className="text-accent" />
+              <span className="font-bold text-ink text-sm">{currentLoad.toCity}</span>
+              <span className="ml-auto text-xs text-ink-muted nums">
+                {currentLoad.distanceKm} {t('common.km')}
+              </span>
+            </div>
           </LocationPermission>
 
           {geofenceStatus.justEntered && geofenceStatus.nearestWaypoint && geofenceStatus.distanceToNext !== null && (
@@ -218,15 +228,6 @@ export default function ActiveTrip() {
               onDismiss={() => { }}
             />
           )}
-
-          <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2 rounded-2xl bg-surface/90 backdrop-blur-xl px-3.5 py-2.5 shadow-card ring-1 ring-hairline">
-            <span className="font-bold text-ink text-sm">{currentLoad.fromCity}</span>
-            <ArrowRight size={14} className="text-accent" />
-            <span className="font-bold text-ink text-sm">{currentLoad.toCity}</span>
-            <span className="ml-auto text-xs text-ink-muted nums">
-              {currentLoad.distanceKm} {t('common.km')}
-            </span>
-          </div>
         </div>
 
         <div className="px-5 pt-5">
@@ -234,12 +235,39 @@ export default function ActiveTrip() {
             <div className="rounded-2xl bg-success-soft ring-1 ring-success/20 p-6 text-center animate-scale-in">
               <PartyPopper size={36} className="mx-auto text-success" />
               <p className="mt-3 text-lg font-extrabold text-ink">{role === 'owner' ? 'Trip Fully Delivered!' : t('trip.completed')}</p>
-              <p className="text-sm text-ink-muted mt-1">{role === 'owner' ? 'Payment released to your wallet:' : t('trip.earned')}</p>
-              <p className="text-3xl font-extrabold text-success mt-1 nums">{inr(currentLoad.price)}</p>
+              
+              {role === 'driver' && localStorage.getItem(`ht_first_trip_done_${driver.phone}`) !== '1' && driver.phone !== '+91 98765 43210' ? (
+                <>
+                  <p className="text-xs text-ink-muted mt-1">First Trip Settlement (Signup Bonus Adjusted):</p>
+                  <div className="my-3 py-2.5 px-3.5 bg-surface-sunken rounded-xl text-left text-xs font-bold text-ink-muted space-y-1.5 border border-success/20 max-w-[260px] mx-auto">
+                    <div className="flex justify-between">
+                      <span>Trip Payout:</span>
+                      <span className="nums text-ink">{inr(currentLoad.price)}</span>
+                    </div>
+                    <div className="flex justify-between text-red-500">
+                      <span>Signup Bonus Adjusted:</span>
+                      <span className="nums font-black">-{inr(1500)}</span>
+                    </div>
+                    <div className="border-t border-hairline my-1"></div>
+                    <div className="flex justify-between text-success font-black text-sm">
+                      <span>Net Added to Wallet:</span>
+                      <span className="nums">{inr(currentLoad.price - 1500)}</span>
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-ink-faint font-semibold max-w-[220px] mx-auto leading-normal">
+                    The ₹1,500 bonus already credited to your account upon signup has been settled against this first trip.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm text-ink-muted mt-1">{role === 'owner' ? 'Payment released to your wallet:' : t('trip.earned')}</p>
+                  <p className="text-3xl font-extrabold text-success mt-1 nums">{inr(currentLoad.price)}</p>
+                </>
+              )}
             </div>
           ) : (
             <>
-              <div className="rounded-2xl bg-surface shadow-card border border-hairline/60 p-4 flex items-center gap-3 mb-5">
+              <div className="rounded-2xl bg-surface shadow-card border border-hairline p-4 flex items-center gap-3 mb-5">
                 <div className="flex-1">
                   <p className="text-[11px] text-ink-faint">{t('loadDetail.shipper')}</p>
                   <p className="font-bold text-ink leading-tight">{currentLoad.shipperName}</p>
@@ -255,7 +283,7 @@ export default function ActiveTrip() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 inset-x-0 p-5 bg-surface/95 backdrop-blur border-t border-hairline safe-bottom z-10">
+      <div className="absolute bottom-0 inset-x-0 p-5 bg-surface/90 border-t border-hairline backdrop-blur-xl safe-bottom z-10">
         {isComplete ? (
           <Button full variant="dark" onClick={finish}>
             {role === 'owner' ? 'Back to Fleet List' : t('trip.backHome')}

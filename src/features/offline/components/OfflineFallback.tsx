@@ -9,10 +9,10 @@ export function OfflineFallback() {
             <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mb-4">
                 <WifiOff className="w-8 h-8 text-amber-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            <h3 className="text-lg font-semibold text-ink mb-2">
                 {t('offline.title', 'No Connection')}
             </h3>
-            <p className="text-sm text-gray-500 mb-6 max-w-xs">
+            <p className="text-sm text-ink-muted mb-6 max-w-xs">
                 {t('offline.description', 'This feature requires an internet connection. Please check your connection and try again.')}
             </p>
             <button

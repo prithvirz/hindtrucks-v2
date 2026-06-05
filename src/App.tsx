@@ -115,7 +115,7 @@ function Shell() {
         {notification && (
           <div
             onClick={dismissNotification}
-            className="absolute top-4 inset-x-4 z-50 bg-white/95 backdrop-blur border border-hairline rounded-2xl p-3.5 shadow-pop flex items-start gap-3 cursor-pointer animate-slide-down select-none"
+            className="absolute top-4 inset-x-4 z-50 bg-surface-base/95 backdrop-blur border border-hairline rounded-2xl p-3.5 shadow-pop flex items-start gap-3 cursor-pointer animate-slide-down select-none"
           >
             <div className="h-9 w-9 rounded-xl bg-accent-soft flex items-center justify-center text-accent shrink-0 border border-accent/15">
               {notification.type === 'sms' ? (

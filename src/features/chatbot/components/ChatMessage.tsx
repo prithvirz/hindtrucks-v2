@@ -17,8 +17,8 @@ export function ChatMessage({ message, ttsEnabled = false, onPlayTts }: ChatMess
     return (
         <div className={`flex ${isBot ? 'justify-start' : 'justify-end'}`}>
             <div
-                className={`max-w-[80%] px-4 py-3 text-[14px] leading-relaxed boxed-border boxed-rounded shadow-[2px_2px_0px_0px_#0B0B0F] ${isBot
-                        ? 'bg-white text-ink font-semibold w-full'
+                className={`max-w-[80%] px-4 py-3 text-[14px] leading-relaxed boxed-border boxed-rounded shadow-md ${isBot
+                        ? 'bg-surface text-ink font-semibold w-full'
                         : 'bg-gradient-to-br from-accent to-[#E0590E] text-white font-bold'
                     }`}
             >

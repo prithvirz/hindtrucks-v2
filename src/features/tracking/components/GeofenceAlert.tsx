@@ -28,7 +28,7 @@ export function GeofenceAlert({ waypoint, distance, onDismiss }: GeofenceAlertPr
         : `${(distance / 1000).toFixed(1)}km`;
 
     return (
-        <div className="absolute top-4 left-4 right-4 z-50 bg-white/95 backdrop-blur border border-accent/20 rounded-2xl p-3.5 shadow-lg flex items-start gap-3 animate-slide-down">
+        <div className="absolute top-4 left-4 right-4 z-50 bg-surface-base/95 backdrop-blur border border-accent/20 rounded-2xl p-3.5 shadow-lg flex items-start gap-3 animate-slide-down">
             <div className="h-10 w-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
                 <Bell className="w-5 h-5 text-accent" />
             </div>

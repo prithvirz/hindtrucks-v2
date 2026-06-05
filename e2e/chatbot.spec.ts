@@ -21,7 +21,7 @@ test.describe('AI Chatbot', () => {
         await page.locator('#chatbot-button').click();
         await page.waitForTimeout(800);
         // Chat drawer should be visible
-        await expect(page.getByText(/hindtrucks ai|ai support/i)).toBeVisible({ timeout: 3000 });
+        await expect(page.getByRole('heading', { name: 'Raahgir (Driver Assistant)' })).toBeVisible({ timeout: 3000 });
     });
 
     test('chat drawer shows header with online status', async ({ page }) => {
@@ -50,7 +50,7 @@ test.describe('AI Chatbot', () => {
         await sendBtn.click();
         await page.waitForTimeout(1000);
         // Should see user message in chat
-        await expect(page.getByText('Hello')).toBeVisible({ timeout: 3000 });
+        await expect(page.getByText('Hello', { exact: true })).toBeVisible({ timeout: 3000 });
     });
 
     test('Enter key sends message', async ({ page }) => {
@@ -67,12 +67,12 @@ test.describe('AI Chatbot', () => {
     test('close button dismisses chat drawer', async ({ page }) => {
         await page.locator('#chatbot-button').click();
         await page.waitForTimeout(800);
-        await expect(page.getByText(/hindtrucks ai|ai support/i)).toBeVisible({ timeout: 3000 });
+        await expect(page.getByRole('heading', { name: 'Raahgir (Driver Assistant)' })).toBeVisible({ timeout: 3000 });
         // When drawer is open, FAB shows X icon — clicking it toggles chat closed
         await page.locator('#chatbot-button').click();
         await page.waitForTimeout(500);
         // Chat drawer should be hidden
-        await expect(page.getByText(/hindtrucks ai|ai support/i)).not.toBeVisible({ timeout: 3000 });
+        await expect(page.getByRole('heading', { name: 'Raahgir (Driver Assistant)' })).not.toBeVisible({ timeout: 3000 });
     });
 
     test('chatbot is available on Loads tab', async ({ page }) => {
@@ -99,6 +99,6 @@ test.describe('AI Chatbot', () => {
         // Find mute/unmute button (volume icon)
         const muteBtn = page.locator('button').filter({ hasText: '' }).first();
         // Just verify drawer opens, mute toggle is a bonus
-        await expect(page.getByText(/hindtrucks ai|ai support/i)).toBeVisible({ timeout: 3000 });
+        await expect(page.getByRole('heading', { name: 'Raahgir (Driver Assistant)' })).toBeVisible({ timeout: 3000 });
     });
 });

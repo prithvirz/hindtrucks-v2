@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ChatMessage } from '../types'
 import { streamChatMessage, staticFaqMatch, shouldUseStaticFallback } from '../services/chatService'
@@ -13,6 +13,28 @@ export function useChat() {
     const context = useAIContext()
     const abortRef = useRef<AbortController | null>(null)
     const isStreamingRef = useRef(false)
+
+    // Proactively greet the driver and display a found job/load match message
+    useEffect(() => {
+        if (messages.length === 0) {
+            const welcomeMsg: ChatMessage = {
+                id: 'welcome',
+                role: 'assistant',
+                content: t('bot.welcome_greet', { name: context.driverName || 'Driver' }),
+                language: context.driverLanguage,
+                timestamp: Date.now(),
+                suggestedActions: [
+                    {
+                        id: 'welcome-view-loads',
+                        label: t('bot.welcome_view_loads_btn', 'View Matches'),
+                        action: 'navigate',
+                        payload: { route: '/loads' }
+                    }
+                ]
+            }
+            setMessages([welcomeMsg])
+        }
+    }, [messages.length, context.driverName, context.driverLanguage, setMessages, t])
 
     const sendMessage = useCallback(
         async (text: string) => {

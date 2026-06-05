@@ -39,7 +39,7 @@ export default function Login() {
         <label className="block mt-6 text-xs font-black uppercase text-ink-muted">
           {t('login.phoneLabel')}
         </label>
-        <div className="mt-2 flex items-center gap-2 h-14 rounded-xl bg-surface-grey ring-1 ring-hairline px-4 focus-within:bg-white focus-within:ring-2 focus-within:ring-accent/40 focus-within:shadow-glow transition-all">
+        <div className="mt-2 flex items-center gap-2 h-14 rounded-xl bg-surface-grey ring-1 ring-hairline px-4 focus-within:bg-surface-sunken focus-within:ring-2 focus-within:ring-accent/40 focus-within:shadow-glow transition-all">
           <Phone size={18} className="text-ink-faint" />
           <span className="text-ink font-bold nums">+91</span>
           <input
@@ -48,7 +48,7 @@ export default function Login() {
             placeholder="98765 43210"
             value={phone}
             onChange={(e) => setPhone(e.target.value.replace(/[^\d ]/g, '').slice(0, 11))}
-            className="flex-1 bg-transparent outline-none text-ink text-[17px] font-bold tracking-wide placeholder:text-ink-faint placeholder:font-semibold"
+            className="flex-1 bg-transparent outline-none text-ink text-[17px] font-bold tracking-wide placeholder:text-ink-faint placeholder:font-semibold [&:-webkit-autofill]:shadow-[0_0_0_1000px_transparent_inset] [&:-webkit-autofill]:[transition:background-color_5000s_ease-in-out_0s]"
           />
         </div>
 

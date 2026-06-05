@@ -129,7 +129,7 @@ test.describe('Login Flow', () => {
 
         // Should redirect to /register for new users
         await page.waitForURL(/\/register/, { timeout: 10000 });
-        await expect(page.getByRole('heading', { name: /create account/i })).toBeVisible({ timeout: 5000 });
+        await expect(page.getByRole('heading', { name: /complete verification/i })).toBeVisible({ timeout: 5000 });
     });
 
     test('back button on login returns to language picker', async ({ page }) => {

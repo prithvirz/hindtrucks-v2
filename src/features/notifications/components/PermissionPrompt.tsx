@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Bell, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import Button from '../../../components/Button';
 
 interface PermissionPromptProps {
     onEnable: () => Promise<boolean>;
@@ -27,7 +28,7 @@ export function PermissionPrompt({ onEnable, onDismiss, visible }: PermissionPro
 
     return (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white w-full max-w-sm mx-4 rounded-3xl shadow-elevated animate-slide-up safe-bottom">
+            <div className="bg-surface w-full max-w-sm mx-4 rounded-3xl shadow-elevated animate-slide-up safe-bottom border border-hairline">
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 pt-6 pb-3">
                     <div className="h-12 w-12 rounded-2xl bg-accent-soft flex items-center justify-center">
@@ -35,7 +36,7 @@ export function PermissionPrompt({ onEnable, onDismiss, visible }: PermissionPro
                     </div>
                     <button
                         onClick={onDismiss}
-                        className="h-8 w-8 rounded-full bg-surface-grey flex items-center justify-center hover:bg-hairline transition"
+                        className="h-8 w-8 rounded-lg border border-hairline bg-surface-grey flex items-center justify-center hover:bg-surface-sunken transition"
                         aria-label="Dismiss"
                     >
                         <X className="w-4 h-4 text-ink-muted" />
@@ -70,23 +71,24 @@ export function PermissionPrompt({ onEnable, onDismiss, visible }: PermissionPro
 
                 {/* Actions */}
                 <div className="flex gap-3 px-6 pt-4 pb-6">
-                    <button
+                    <Button
+                        variant="ghost"
                         onClick={onDismiss}
-                        className="flex-1 h-12 rounded-2xl bg-surface-grey text-ink-muted font-bold text-sm hover:bg-hairline transition"
+                        className="flex-1"
                     >
                         {t('common.maybe_later', 'Maybe Later')}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         onClick={handleEnable}
                         disabled={loading}
-                        className="flex-1 h-12 rounded-2xl bg-accent text-white font-bold text-sm hover:bg-accent-dark transition disabled:opacity-50"
+                        className="flex-1"
                     >
                         {loading ? (
                             <span className="inline-block h-5 w-5 rounded-full border-2 border-white border-t-transparent animate-spin" />
                         ) : (
                             t('common.enable', 'Enable')
                         )}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

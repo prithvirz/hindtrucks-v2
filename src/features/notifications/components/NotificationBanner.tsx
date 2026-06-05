@@ -62,7 +62,7 @@ export function NotificationBanner({ notification, onDismiss, onTap }: Notificat
                     e.stopPropagation();
                     onDismiss();
                 }}
-                className="shrink-0 h-7 w-7 rounded-full flex items-center justify-center hover:bg-black/5 transition"
+                className="shrink-0 h-7 w-7 rounded-lg border border-transparent flex items-center justify-center hover:bg-black/5 hover:border-black/10 transition"
                 aria-label="Dismiss"
             >
                 <X className="w-4 h-4" />

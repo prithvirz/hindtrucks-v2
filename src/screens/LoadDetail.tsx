@@ -247,8 +247,8 @@ function ConfirmAssignmentSheet({
 
         {compatibleTrucks.length === 0 ? (
           <div className="space-y-4 py-2">
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-xs font-semibold flex gap-2">
-              <AlertTriangle className="shrink-0 text-amber-500" size={16} />
+            <div className="p-4 bg-accent/10 border border-accent/20 rounded-xl text-ink text-xs font-semibold flex gap-2">
+              <AlertTriangle className="shrink-0 text-accent" size={16} />
               <span>You do not have any compatible vehicles in your fleet for this load. Please add a compatible vehicle in your Profile.</span>
             </div>
             <Button full onClick={() => nav('/profile')}>
@@ -282,7 +282,7 @@ function ConfirmAssignmentSheet({
                         <div className="flex items-center gap-1.5">
                           <p className="font-extrabold text-sm nums tracking-wide">{truck.regNumber}</p>
                           {isActive && (
-                            <span className="text-[9px] font-black text-[#16a34a] bg-[#f0fdf4] px-1.5 py-0.5 rounded border border-[#bbf7d0] select-none">
+                            <span className="text-[9px] font-black text-success bg-success-soft px-1.5 py-0.5 rounded border border-success/20 select-none">
                               Active
                             </span>
                           )}
@@ -306,7 +306,7 @@ function ConfirmAssignmentSheet({
                 <p className="text-xs font-black uppercase text-ink-muted">Assign Driver</p>
                 <div className="flex flex-col gap-2 max-h-40 overflow-y-auto no-scrollbar">
                   {drivers.length === 0 ? (
-                    <div className="p-3 bg-red-50 border border-red-100 rounded-xl text-red-800 text-[11px] font-bold">
+                    <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-[11px] font-bold">
                       Note: You have no drivers. Please add a driver in Profile.
                     </div>
                   ) : (
@@ -352,7 +352,7 @@ function ConfirmAssignmentSheet({
               const selectedTruck = compatibleTrucks.find((t) => t.id === selectedTruckId)
               if (selectedTruck && selectedTruck.regNumber !== activeTruck.regNumber) {
                 return (
-                  <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl text-blue-800 text-[11px] font-bold">
+                  <div className="p-3 bg-info-soft border border-info/20 rounded-xl text-ink text-[11px] font-bold">
                     Note: Accepting with this vehicle will switch it to your Active Truck.
                   </div>
                 )

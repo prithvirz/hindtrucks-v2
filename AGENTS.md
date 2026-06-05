@@ -1,3 +1,7 @@
+@C:\Users\apexp\.codex\RTK.md
+
+--- project-doc ---
+
 # Repository Guidelines
 
 ## Project Structure & Module Organization
