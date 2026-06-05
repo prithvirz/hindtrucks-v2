@@ -65,6 +65,15 @@
   .safe-bottom {
     padding-bottom: max(env(safe-area-inset-bottom), 12px);
   }
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .safe-top-padding {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 1.25rem);
+  }
+  .home-safe-top {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem);
+  }
   /* Tabular figures so currency/stat digits never jitter. */
   .nums {
     font-variant-numeric: tabular-nums;

@@ -27,7 +27,7 @@ export default function TopBar({ title, back, right, onBack, fallbackTo }: Props
   }
 
   return (
-    <header className="sticky top-0 z-10 bg-surface/85 backdrop-blur-xl border-b border-hairline">
+    <header className="sticky top-0 z-10 bg-surface/85 backdrop-blur-xl border-b border-hairline safe-top">
       <div className="h-14 flex items-center gap-2 px-3">
         {back && (
           <button

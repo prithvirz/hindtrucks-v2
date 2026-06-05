@@ -32,7 +32,7 @@ export default function LanguagePicker() {
 
   return (
     <div className="h-full flex flex-col bg-surface">
-      <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-12 pb-4">
+      <div className="flex-1 overflow-y-auto no-scrollbar px-5 safe-top-padding pb-4">
         <div className="mb-6">
           <h1 className="text-2xl font-extrabold text-ink">{t('language.title')}</h1>
           <p className="text-ink-muted mt-1 text-[15px]">{t('language.subtitle')}</p>

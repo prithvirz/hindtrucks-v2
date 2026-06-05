@@ -20,7 +20,7 @@ export default function BottomTabBar() {
   const { t } = useTranslation()
   const { unreadPushCount } = useShell()
   return (
-    <nav className="absolute bottom-0 inset-x-4 z-20 bg-surface/80 border border-hairline rounded-[24px] shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl overflow-hidden">
+    <nav className="absolute inset-x-4 z-20 bg-surface/80 border border-hairline rounded-[24px] shadow-[0_12px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl overflow-hidden" style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 8px)' }}>
       <ul className="grid grid-cols-4 py-1.5 px-1">
         {TABS.map(({ to, icon: Icon, key }) => (
           <li key={key} className="relative">
