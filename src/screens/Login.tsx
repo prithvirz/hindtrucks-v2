@@ -4,23 +4,16 @@ import { useTranslation } from 'react-i18next'
 import { Phone, ShieldCheck } from 'lucide-react'
 import Button from '../components/Button'
 import { images } from '../lib/assets'
-import { useShell } from '../state/ShellContext'
 
 export default function Login() {
   const nav = useNavigate()
   const { t } = useTranslation()
-  const { showNotification } = useShell()
   const [phone, setPhone] = useState('')
 
   const valid = phone.replace(/\D/g, '').length === 10
 
   function handleSendOtp() {
     const code = '4821'
-    showNotification(
-      'HindTrucks Verification',
-      `Your verification code (OTP) is ${code}. Valid for 10 minutes. Do not share.`,
-      'sms'
-    )
     nav('/otp', { state: { phone, code } })
   }
 
