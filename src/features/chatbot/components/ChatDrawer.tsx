@@ -225,7 +225,7 @@ export function ChatDrawer() {
                         </div>
 
                         {/* Hi, I'm Rahgir. text */}
-                        <div className="relative z-0 bg-surface/90 backdrop-blur-md text-ink text-[10.5px] font-black px-2.5 py-0.5 rounded-full border border-hairline/60 shadow-sm whitespace-nowrap tracking-wide">
+                        <div className="relative z-0 bg-night-900/95 backdrop-blur-md text-white text-[10.5px] font-black px-2.5 py-0.5 rounded-full border border-white/10 shadow-md whitespace-nowrap tracking-wide">
                             {t('bot.hi_im_rahgir', "Hi, I'm Rahgir.")}
                         </div>
                     </div>
