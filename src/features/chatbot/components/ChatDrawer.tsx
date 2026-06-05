@@ -132,6 +132,24 @@ export function ChatDrawer() {
         return localStorage.getItem('ht_bot_muted') === 'true'
     })
 
+    // Peek-a-boo "Ask Raahgir" pill: slides out from the icon, holds, retracts, loops.
+    const [showPill, setShowPill] = useState(false)
+    useEffect(() => {
+        if (isOpen || isTourActive || hideClosedFab) {
+            setShowPill(false)
+            return
+        }
+        const VISIBLE_MS = 3000
+        const HIDDEN_MS = 7000
+        let timer: ReturnType<typeof setTimeout>
+        const cycle = (visible: boolean) => {
+            setShowPill(visible)
+            timer = setTimeout(() => cycle(!visible), visible ? VISIBLE_MS : HIDDEN_MS)
+        }
+        timer = setTimeout(() => cycle(true), 1200)
+        return () => clearTimeout(timer)
+    }, [isOpen, isTourActive, hideClosedFab])
+
     // STT hook
     const handleSttResult = (text: string) => {
         setInputValue(text)
@@ -196,9 +214,14 @@ export function ChatDrawer() {
                     isTourActive || hideClosedFab ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'
                 }`}
             >
-                {/* Proactive Tooltip / Speech Bubble (only when closed) */}
+                {/* Proactive Tooltip / Speech Bubble — peeks out from the icon on a loop */}
                 {!isOpen && (
-                    <div className="absolute -top-12 right-1/2 translate-x-1/2 w-max bg-ink text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-2xl shadow-xl shadow-ink/20 animate-fade-up whitespace-nowrap">
+                    <div
+                        style={{ transformOrigin: 'calc(100% - 32px) -32px' }}
+                        className={`absolute top-full mt-2 right-0 w-max bg-ink text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-2xl shadow-xl shadow-ink/20 whitespace-nowrap transition-all duration-300 ease-out ${
+                            showPill ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'
+                        }`}
+                    >
                         <span className="flex items-center gap-1.5">
                             <Sparkles size={12} className="text-accent animate-pulse" />
                             {t('bot.ask_raahgir', 'Ask Raahgir')}

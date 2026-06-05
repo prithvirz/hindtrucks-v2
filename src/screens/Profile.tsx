@@ -673,14 +673,14 @@ function LanguageSheet({
             <X size={18} strokeWidth={2.5} />
           </button>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 overflow-y-auto max-h-[65vh] no-scrollbar pb-4">
           {LANGUAGES.map((l) => {
             const active = l.code === current
             return (
               <button
                 key={l.code}
                 onClick={() => onPick(l.code)}
-                className={`flex items-center justify-between p-3.5 transition-all boxed-rounded boxed-border ${active ? 'border-accent bg-accent-soft text-accent' : 'border-hairline bg-surface text-ink'
+                className={`flex items-center justify-between p-3.5 transition-all boxed-rounded boxed-border border ${active ? 'border-accent bg-accent-soft text-accent' : 'border-hairline bg-surface text-ink hover:bg-surface-grey'
                   }`}
               >
                 <div className="text-left">

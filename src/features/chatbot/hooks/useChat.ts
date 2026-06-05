@@ -8,7 +8,7 @@ import { useAIContext } from './useAIContext'
 // ─── useChat: Send/Receive Chat Messages with SSE Streaming ───
 
 export function useChat() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const { messages, setMessages, addMessage, clearHistory } = useChatHistory()
     const context = useAIContext()
     const abortRef = useRef<AbortController | null>(null)
@@ -35,6 +35,32 @@ export function useChat() {
             setMessages([welcomeMsg])
         }
     }, [messages.length, context.driverName, context.driverLanguage, setMessages, t])
+
+    // Re-translate the static welcome message when the UI language changes
+    useEffect(() => {
+        setMessages((prev) =>
+            prev.some((m) => m.id === 'welcome')
+                ? prev.map((m) =>
+                      m.id === 'welcome'
+                          ? {
+                                ...m,
+                                content: t('bot.welcome_greet', { name: context.driverName || 'Driver' }),
+                                language: context.driverLanguage,
+                                suggestedActions: [
+                                    {
+                                        id: 'welcome-view-loads',
+                                        label: t('bot.welcome_view_loads_btn', 'View Matches'),
+                                        action: 'navigate',
+                                        payload: { route: '/loads' },
+                                    },
+                                ],
+                            }
+                          : m
+                  )
+                : prev
+        )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [i18n.language])
 
     const sendMessage = useCallback(
         async (text: string) => {

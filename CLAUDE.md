@@ -30,6 +30,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **PWA** — `vite-plugin-pwa` (autoUpdate) with custom `public/sw-push-handler.js` imported into the service worker for push.
 
+## Understanding the codebase
+
+Use **graphify** to explore architecture and file relationships — `graphify-out/` holds the persistent knowledge graph for this repo. Treat questions about project structure as graphify queries first before manual searching.
+
 ## Conventions
 
 - TypeScript `strict`. Function components + hooks only.
