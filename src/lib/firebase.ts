@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
+import type { UserRole } from '../state/types'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAain5de57rlYHN2bb5BXt6x1Qpfaxoeo0',
@@ -16,3 +17,34 @@ export const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
 export const db = getFirestore(app)
 export const storage = getStorage(app)
+
+export async function saveDriverToFirestore(params: {
+  uid: string
+  name: string
+  phone: string
+  role: UserRole
+  licenseNumber?: string
+  truckRegNumber: string
+  truckType: string
+  truckCapacity: string
+}) {
+  await setDoc(doc(db, 'drivers', params.uid), {
+    name: params.name,
+    phone: params.phone,
+    role: params.role,
+    licenseNumber: params.licenseNumber ?? null,
+    truckRegNumber: params.truckRegNumber,
+    truckType: params.truckType,
+    truckCapacity: params.truckCapacity,
+    rating: 5.0,
+    tripsToday: 0,
+    earningsToday: 0,
+    isOnline: false,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  })
+  await setDoc(doc(db, 'wallets', params.uid), {
+    balance: 0,
+    updatedAt: serverTimestamp(),
+  })
+}

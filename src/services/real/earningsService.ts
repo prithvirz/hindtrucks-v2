@@ -1,31 +1,112 @@
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  query,
+  where,
+  orderBy,
+  limit,
+  serverTimestamp,
+  increment,
+} from 'firebase/firestore'
+import { auth, db } from '../../lib/firebase'
 import type {
-    IEarningsService,
-    GetPayoutsResponse,
-    GetWeekEarningsResponse,
-    GetWalletBalanceResponse,
-    WithdrawRequest,
-    WithdrawResponse,
+  IEarningsService,
+  GetPayoutsResponse,
+  GetWeekEarningsResponse,
+  GetWalletBalanceResponse,
+  WithdrawRequest,
+  WithdrawResponse,
 } from '../types'
-import { apiClient } from '../apiClient'
+import type { Payout } from '../../data/mockLoads'
 
 export const earningsService: IEarningsService = {
-    async getPayouts(): Promise<GetPayoutsResponse> {
-        const res = await apiClient.get<GetPayoutsResponse>('/earnings/payouts')
-        return res.data
-    },
+  async getPayouts(): Promise<GetPayoutsResponse> {
+    const uid = auth.currentUser?.uid
+    if (!uid) return { payouts: [] }
+    const snap = await getDocs(
+      query(collection(db, 'payouts'), where('driverUid', '==', uid), orderBy('createdAt', 'desc'), limit(50)),
+    )
+    const payouts: Payout[] = snap.docs.map((d) => {
+      const data = d.data() as Record<string, unknown>
+      return {
+        id: d.id,
+        load: (data.loadId as string) ?? '',
+        route: (data.route as string) ?? '',
+        amount: (data.amount as number) ?? 0,
+        status: (data.status as Payout['status']) ?? 'pending',
+        date: (data.createdAt as { toDate?: () => Date })?.toDate
+          ? (data.createdAt as { toDate: () => Date }).toDate().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })
+          : '',
+      }
+    })
+    return { payouts }
+  },
 
-    async getWeekEarnings(): Promise<GetWeekEarningsResponse> {
-        const res = await apiClient.get<GetWeekEarningsResponse>('/earnings/weekly')
-        return res.data
-    },
+  async getWeekEarnings(): Promise<GetWeekEarningsResponse> {
+    const uid = auth.currentUser?.uid
+    if (!uid) return { earnings: [0, 0, 0, 0, 0, 0, 0] }
+    const earnings = [0, 0, 0, 0, 0, 0, 0]
+    const now = Date.now()
+    const snap = await getDocs(
+      query(collection(db, 'payouts'), where('driverUid', '==', uid), orderBy('createdAt', 'desc'), limit(100)),
+    )
+    snap.docs.forEach((d) => {
+      const data = d.data() as Record<string, unknown>
+      const ts = (data.createdAt as { toDate?: () => Date })?.toDate?.()
+      if (!ts) return
+      const daysAgo = Math.floor((now - ts.getTime()) / 86400000)
+      if (daysAgo >= 0 && daysAgo < 7) {
+        earnings[6 - daysAgo] += (data.amount as number) ?? 0
+      }
+    })
+    return { earnings }
+  },
 
-    async getWalletBalance(): Promise<GetWalletBalanceResponse> {
-        const res = await apiClient.get<GetWalletBalanceResponse>('/earnings/wallet')
-        return res.data
-    },
+  async getWalletBalance(): Promise<GetWalletBalanceResponse> {
+    const uid = auth.currentUser?.uid
+    if (!uid) return { balance: 0 }
+    const snap = await getDoc(doc(db, 'wallets', uid))
+    if (!snap.exists()) return { balance: 0 }
+    return { balance: ((snap.data() as Record<string, unknown>).balance as number) ?? 0 }
+  },
 
-    async withdraw(request: WithdrawRequest): Promise<WithdrawResponse> {
-        const res = await apiClient.post<WithdrawResponse>('/earnings/withdraw', request)
-        return res.data
-    },
+  async withdraw({ amount, upiId }: WithdrawRequest): Promise<WithdrawResponse> {
+    const uid = auth.currentUser?.uid
+    if (!uid) throw new Error('Not authenticated')
+
+    const walletRef = doc(db, 'wallets', uid)
+    const walletSnap = await getDoc(walletRef)
+    const currentBalance = walletSnap.exists()
+      ? ((walletSnap.data() as Record<string, unknown>).balance as number) ?? 0
+      : 0
+    if (currentBalance < amount) throw new Error('Insufficient balance')
+
+    await setDoc(walletRef, { balance: increment(-amount), updatedAt: serverTimestamp() }, { merge: true })
+
+    const txnId = 'W' + Date.now()
+    await setDoc(doc(db, 'payouts', txnId), {
+      driverUid: uid,
+      loadId: 'WITHDRAWAL',
+      route: `Withdrawal to ${upiId}`,
+      amount: -amount,
+      status: 'credited',
+      createdAt: serverTimestamp(),
+    })
+
+    return {
+      success: true,
+      newBalance: currentBalance - amount,
+      transaction: {
+        id: txnId,
+        load: 'WITHDRAWAL',
+        route: `Withdrawal to ${upiId}`,
+        amount: -amount,
+        status: 'credited',
+        date: new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }),
+      },
+    }
+  },
 }

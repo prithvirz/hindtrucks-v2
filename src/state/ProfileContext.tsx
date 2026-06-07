@@ -335,27 +335,42 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         setDriver(newProfile)
         setRoleState(params.role)
         if (params.role === 'owner') {
-            setDrivers([]) // Starts with empty fleet drivers
+            setDrivers([])
         } else {
             setDrivers(DEFAULT_DRIVERS)
         }
         localStorage.setItem('ht_registered_' + phone, '1')
 
-        // Initialize ₹1,500 Signup Welcome Bonus
-        import('../services/mock/earningsService').then(({ setMockWalletBalance, clearMockPayouts, addMockPayout }) => {
-            setMockWalletBalance(1500)
-            clearMockPayouts()
-            addMockPayout({
-                id: 'P9000',
-                load: 'BONUS',
-                route: 'Signup Bonus - Welcome to HindTrucks',
-                amount: 1500,
-                status: 'credited',
-                date: new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }),
+        const apiMode = import.meta.env.VITE_API_MODE
+        if (apiMode === 'real') {
+            import('../lib/firebase').then(({ auth, saveDriverToFirestore }) => {
+                const uid = auth.currentUser?.uid
+                if (!uid) return
+                saveDriverToFirestore({
+                    uid,
+                    name: params.name,
+                    phone,
+                    role: params.role,
+                    licenseNumber: params.licenseNumber,
+                    truckRegNumber: params.truck.regNumber.toUpperCase(),
+                    truckType: params.truck.type,
+                    truckCapacity: params.truck.capacity,
+                }).catch(console.error)
             })
-        }).catch((err) => {
-            console.error('Failed to initialize mock signup bonus:', err)
-        })
+        } else {
+            import('../services/mock/earningsService').then(({ setMockWalletBalance, clearMockPayouts, addMockPayout }) => {
+                setMockWalletBalance(1500)
+                clearMockPayouts()
+                addMockPayout({
+                    id: 'P9000',
+                    load: 'BONUS',
+                    route: 'Signup Bonus - Welcome to HindTrucks',
+                    amount: 1500,
+                    status: 'credited',
+                    date: new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }),
+                })
+            }).catch(console.error)
+        }
     }
 
     return (

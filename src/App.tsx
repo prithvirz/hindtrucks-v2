@@ -1,5 +1,5 @@
 // HindTrucks v2 - deployed via Cloudflare Pages Git integration
-import { Suspense, lazy, useState, useCallback, useEffect } from 'react'
+import { Suspense, lazy, useState, useCallback, useEffect, useRef } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { AppProviders } from './state/AppProviders'
@@ -28,35 +28,36 @@ const Register = lazy(() => import('./screens/Register'))
 // Tabs that should show the bottom navigation bar.
 const TAB_ROUTES = ['/home', '/loads', '/earnings', '/profile']
 
+function isRegisteredPhone(phone: string): boolean {
+  return localStorage.getItem('ht_registered_' + phone) === '1'
+}
+
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { isLoggedIn, phone } = useAuth()
-  const isRegistered = phone === '98765 43210' || phone === '9876543210' || localStorage.getItem('ht_registered_' + phone) === '1'
-
-  if (!isLoggedIn) {
-    return <Navigate to="/language" replace />
-  }
-  if (!isRegistered) {
-    return <Navigate to="/register" replace />
-  }
+  if (!isLoggedIn) return <Navigate to="/language" replace />
+  if (!isRegisteredPhone(phone)) return <Navigate to="/register" replace />
   return children
 }
 
 function RequireRegistration({ children }: { children: JSX.Element }) {
   const { isLoggedIn, phone } = useAuth()
-  const isRegistered = phone === '98765 43210' || phone === '9876543210' || localStorage.getItem('ht_registered_' + phone) === '1'
-
-  if (!isLoggedIn) {
-    return <Navigate to="/language" replace />
-  }
-  if (isRegistered) {
-    return <Navigate to="/home" replace />
-  }
+  if (!isLoggedIn) return <Navigate to="/language" replace />
+  if (isRegisteredPhone(phone)) return <Navigate to="/home" replace />
   return children
 }
 
 function Shell() {
   const { pathname } = useLocation()
   const { isLoggedIn } = useAuth()
+  const seededRef = useRef(false)
+
+  useEffect(() => {
+    if (seededRef.current) return
+    if (import.meta.env.VITE_API_MODE === 'real') {
+      seededRef.current = true
+      import('./lib/seedFirestore').then(({ seedLoadsIfEmpty }) => seedLoadsIfEmpty()).catch(console.error)
+    }
+  }, [])
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
