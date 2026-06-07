@@ -6,8 +6,8 @@ import basicSsl from '@vitejs/plugin-basic-ssl'
 export default defineConfig(({ mode }) => ({
   plugins: [
     // Dev-only HTTPS so phones on the LAN can use geolocation (browsers block
-    // it on plain http). Not included in production builds.
-    ...(mode === 'development' ? [basicSsl()] : []),
+    // it on plain http). Skipped in 'http' mode for local tooling that can't handle self-signed certs.
+    ...(mode === 'development' || mode === 'https' ? [basicSsl()] : []),
     react(),
     VitePWA({
       registerType: 'prompt',
