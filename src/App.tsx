@@ -52,12 +52,12 @@ function Shell() {
   const seededRef = useRef(false)
 
   useEffect(() => {
-    if (seededRef.current) return
+    if (seededRef.current || !isLoggedIn) return
     if (import.meta.env.VITE_API_MODE === 'real') {
       seededRef.current = true
       import('./lib/seedFirestore').then(({ seedLoadsIfEmpty }) => seedLoadsIfEmpty()).catch(console.error)
     }
-  }, [])
+  }, [isLoggedIn])
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,

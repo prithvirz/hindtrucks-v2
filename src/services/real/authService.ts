@@ -22,15 +22,18 @@ let recaptchaVerifier: RecaptchaVerifier | null = null
 export const authService: IAuthService = {
   async sendOtp({ phone }: SendOtpRequest): Promise<SendOtpResponse> {
     const e164 = '+91' + phone.replace(/\D/g, '')
-    if (!recaptchaVerifier) {
-      let container = document.getElementById('ht-recaptcha')
-      if (!container) {
-        container = document.createElement('div')
-        container.id = 'ht-recaptcha'
-        document.body.appendChild(container)
-      }
-      recaptchaVerifier = new RecaptchaVerifier(auth, 'ht-recaptcha', { size: 'invisible' })
+    // Always recreate verifier to avoid stale state after previous CAPTCHA challenges
+    if (recaptchaVerifier) {
+      recaptchaVerifier.clear()
+      recaptchaVerifier = null
     }
+    let container = document.getElementById('ht-recaptcha')
+    if (!container) {
+      container = document.createElement('div')
+      container.id = 'ht-recaptcha'
+      document.body.appendChild(container)
+    }
+    recaptchaVerifier = new RecaptchaVerifier(auth, 'ht-recaptcha', { size: 'invisible' })
     confirmationResult = await signInWithPhoneNumber(auth, e164, recaptchaVerifier)
     return { success: true, retryAfterSeconds: 60, expiresInSeconds: 300 }
   },

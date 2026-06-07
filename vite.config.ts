@@ -36,10 +36,11 @@ export default defineConfig(({ mode }) => ({
   define: {
     'import.meta.env.VITE_API_MODE': JSON.stringify(process.env.VITE_API_MODE || 'mock'),
     'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL || '/api'),
+    'import.meta.env.VITE_USE_EMULATOR': JSON.stringify(process.env.VITE_USE_EMULATOR || 'false'),
     __BUNDLED_DEV__: 'false',
     __SERVER_FORWARD_CONSOLE__: 'false',
   },
-  server: { host: true, allowedHosts: true },
+  server: { host: true, allowedHosts: true, port: process.env.PORT ? parseInt(process.env.PORT) : undefined },
   build: {
     rollupOptions: {
       output: {
