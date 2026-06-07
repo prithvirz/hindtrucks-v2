@@ -6,6 +6,7 @@ interface AuthState {
     phone: string
     isLoading: boolean
     error: ApiError | null
+    sendOtp: (phone: string) => Promise<void>
     login: (phone: string) => void
     verifyOtp: (phone: string, otp: string) => Promise<void>
     logout: () => void
@@ -55,6 +56,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 })
         }
     }, [])
+
+    const sendOtp = async (p: string): Promise<void> => {
+        setError(null)
+        setIsLoading(true)
+        try {
+            const { authService } = await import('../services/index')
+            await authService.sendOtp({ phone: p })
+        } catch (err) {
+            setError(err instanceof ApiError ? err : new ApiError(
+                err instanceof Error ? err.message : 'Failed to send OTP',
+                0,
+                'UNKNOWN_ERROR',
+            ))
+            throw err
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     const login = (p: string) => {
         setError(null)
@@ -118,7 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthCtx.Provider value={{ isLoggedIn, phone, isLoading, error, login, verifyOtp, logout }}>
+        <AuthCtx.Provider value={{ isLoggedIn, phone, isLoading, error, sendOtp, login, verifyOtp, logout }}>
             {children}
         </AuthCtx.Provider>
     )

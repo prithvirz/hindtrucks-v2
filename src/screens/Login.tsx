@@ -4,22 +4,28 @@ import { useTranslation } from 'react-i18next'
 import { Phone, ShieldCheck } from 'lucide-react'
 import Button from '../components/Button'
 import { images } from '../lib/assets'
+import { useAuth } from '../state/AuthContext'
 
 export default function Login() {
   const nav = useNavigate()
   const { t } = useTranslation()
+  const { sendOtp, isLoading, error } = useAuth()
   const [phone, setPhone] = useState('')
 
   const valid = phone.replace(/\D/g, '').length === 10
 
-  function handleSendOtp() {
-    const code = '4821'
-    nav('/otp', { state: { phone, code } })
+  async function handleSendOtp() {
+    const cleaned = phone.replace(/\D/g, '')
+    try {
+      await sendOtp(cleaned)
+      nav('/otp', { state: { phone: cleaned } })
+    } catch {
+      // error displayed via auth context error state
+    }
   }
 
   return (
     <div className="h-full flex flex-col bg-surface">
-      {/* Hero image */}
       <div className="relative h-44 shrink-0">
         <img src={images.truckSide} alt="" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/20 to-transparent" />
@@ -47,6 +53,10 @@ export default function Login() {
           />
         </div>
 
+        {error && (
+          <p className="mt-3 text-sm text-red-500 font-semibold">{error.message}</p>
+        )}
+
         <div className="mt-4 flex items-center gap-2 text-xs text-ink-muted font-bold">
           <ShieldCheck size={15} className="text-success" />
           <span>{t('login.terms')}</span>
@@ -54,11 +64,10 @@ export default function Login() {
       </div>
 
       <div className="p-5 border-t border-hairline safe-bottom">
-        <Button full disabled={!valid} onClick={handleSendOtp}>
-          {t('login.sendOtp')}
+        <Button full disabled={!valid || isLoading} onClick={handleSendOtp}>
+          {isLoading ? t('gps.requesting') : t('login.sendOtp')}
         </Button>
       </div>
     </div>
   )
 }
-

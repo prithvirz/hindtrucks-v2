@@ -34,10 +34,10 @@
   },
   "otp": {
     "title": "Verify your number",
-    "subtitle": "Enter the 4-digit code sent to {{phone}}",
+    "subtitle": "Enter the 6-digit code sent to {{phone}}",
     "resend": "Resend code",
     "verify": "Verify & Continue",
-    "hint": "Demo: type any 4 digits"
+    "hint": "Demo: type any 6 digits"
   },
   "tabs": {
     "home": "Home",
