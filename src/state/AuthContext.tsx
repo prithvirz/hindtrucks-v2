@@ -1,5 +1,11 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { ApiError } from '../services/errors'
+import {
+    unsubscribeFromPush,
+    deleteStoredNotification,
+    getStoredNotifications,
+} from '../features/notifications/services/notificationService'
+import { clearChatHistory } from '../features/chatbot/services/chatService'
 
 interface AuthState {
     isLoggedIn: boolean
@@ -113,22 +119,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             authService.logout().catch(() => { /* silent */ })
         })
         // Unsubscribe push notifications on logout
-        import('../features/notifications/services/notificationService').then(({ unsubscribeFromPush }) => {
-            unsubscribeFromPush().catch(() => { /* silent */ })
-        })
+        unsubscribeFromPush().catch(() => { /* silent */ })
         // Clear stored notifications from IndexedDB
-        import('../features/notifications/services/notificationService').then(({ deleteStoredNotification }) => {
-            const clearAll = async () => {
-                const { getStoredNotifications } = await import('../features/notifications/services/notificationService')
-                const stored = await getStoredNotifications()
-                await Promise.all(stored.map((n) => deleteStoredNotification(n.id)))
-            }
-            clearAll().catch(() => { /* silent */ })
-        })
+        const clearStoredNotifications = async () => {
+            const stored = await getStoredNotifications()
+            await Promise.all(stored.map((n) => deleteStoredNotification(n.id)))
+        }
+        clearStoredNotifications().catch(() => { /* silent */ })
         // Clear chat history from IndexedDB on logout
-        import('../features/chatbot/services/chatService').then(({ clearChatHistory }) => {
-            clearChatHistory().catch(() => { /* silent */ })
-        })
+        clearChatHistory().catch(() => { /* silent */ })
         setLoggedIn(false)
         setPhone('')
         setError(null)
