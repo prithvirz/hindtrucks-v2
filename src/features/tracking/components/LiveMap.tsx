@@ -60,9 +60,42 @@ function makePOIIcon(category: RoutePoI['category']) {
 function MapAutoCenter({ position, navMode }: { position: Coordinates | null; navMode: boolean }) {
     const map = useMap();
     useEffect(() => {
-        if (!position) return;
-        map.setView([position.lat, position.lng], navMode ? 15 : map.getZoom(), { animate: true });
+        // Only follow the driver in fullscreen nav mode. In preview mode the
+        // route view (FitRouteBounds) owns the camera so the whole route + POIs
+        // stay visible even when the driver is far off-route.
+        if (!navMode || !position) return;
+        map.setView([position.lat, position.lng], 15, { animate: true });
     }, [map, position, navMode]);
+    return null;
+}
+
+// Preview mode: fit the camera to the route + waypoints once, so the user
+// always sees the full trip and its POIs regardless of their own GPS location.
+function FitRouteBounds({
+    route,
+    waypoints,
+    navMode,
+}: {
+    route: Coordinates[];
+    waypoints: RouteWaypoint[];
+    navMode: boolean;
+}) {
+    const map = useMap();
+    const fittedRef = useRef(false);
+    useEffect(() => {
+        if (navMode || fittedRef.current) return;
+        const pts: [number, number][] = [
+            ...route.map((c) => [c.lat, c.lng] as [number, number]),
+            ...waypoints.map((w) => [w.coordinates.lat, w.coordinates.lng] as [number, number]),
+        ];
+        if (pts.length < 1) return;
+        fittedRef.current = true;
+        if (pts.length === 1) {
+            map.setView(pts[0], 12, { animate: false });
+        } else {
+            map.fitBounds(L.latLngBounds(pts), { padding: [30, 30], animate: false });
+        }
+    }, [map, route, waypoints, navMode]);
     return null;
 }
 
@@ -159,6 +192,7 @@ export function LiveMap({
                 />
 
                 <MapAutoCenter position={driverPosition ?? null} navMode={navMode} />
+                <FitRouteBounds route={route} waypoints={waypoints} navMode={navMode} />
 
                 {routePositions.length > 1 && (
                     <Polyline
