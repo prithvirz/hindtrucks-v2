@@ -12,6 +12,7 @@ import AIChatbot from './components/AIChatbot'
 import { OfflineIndicator } from './features/offline/components/OfflineIndicator'
 import { PermissionPrompt } from './features/notifications/components/PermissionPrompt'
 import { NotificationBanner } from './features/notifications/components/NotificationBanner'
+import { useAndroidBackButton } from './hooks/useAndroidBackButton'
 
 const Splash = lazy(() => import('./screens/Splash'))
 const LanguagePicker = lazy(() => import('./screens/LanguagePicker'))
@@ -50,6 +51,9 @@ function Shell() {
   const { pathname } = useLocation()
   const { isLoggedIn } = useAuth()
   const seededRef = useRef(false)
+
+  // Android hardware/gesture back → in-app navigation instead of app exit.
+  useAndroidBackButton()
 
   useEffect(() => {
     if (seededRef.current || !isLoggedIn) return
