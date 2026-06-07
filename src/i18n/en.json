@@ -182,6 +182,21 @@
       "content": "Verify smart card details (Licence, RC, Permits), change application languages, or log out."
     }
   },
+  "gps": {
+    "permissionTitle": "Enable GPS Tracking",
+    "permissionMessage": "Allow location access to track your trip progress and provide accurate ETAs.",
+    "allow": "Allow Location",
+    "skip": "Skip",
+    "requesting": "Requesting...",
+    "backgroundTitle": "Allow tracking during your trip",
+    "backgroundMessage": "HindTrucks collects location in the background — even when the app is closed or the screen is off — so your live trip can be tracked end to end. On the next screen, please choose \"Allow all the time\".",
+    "backgroundAllow": "Continue",
+    "backgroundSkip": "Only while using the app",
+    "deniedTitle": "Location Access Denied",
+    "deniedMessage": "Please enable location access in your device settings to use GPS tracking.",
+    "openSettings": "Open Settings",
+    "continueWithoutGps": "Continue Without GPS"
+  },
   "bot": {
     "greeting": "Hello {{name}}! I am Raahgir, your AI Driver Assistant. Tap a quick question below or type your query.",
     "welcome_greet": "Hello {{name}}! I am Raahgir, your AI Driver Assistant. Raahgir found a high-paying load for you today matching your truck! From Ludhiana to Delhi, paying ₹28,500. Tap below to view details.",

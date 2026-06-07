@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Phone, ArrowRight, PartyPopper, Navigation } from 'lucide-react'
@@ -13,7 +13,39 @@ import { useTrip } from '../state/TripContext'
 import { useProfile } from '../state/ProfileContext'
 import { useEarnings } from '../state/EarningsContext'
 import { inr } from '../lib/format'
-import type { RouteWaypoint } from '../features/tracking/types'
+import type { Coordinates, RouteWaypoint } from '../features/tracking/types'
+import { lookupCity } from '../features/tracking/services/geocoding'
+import { getRoadRoute } from '../features/tracking/services/routing'
+
+// Wraps LiveMap and fetches the real road-following path between pickup and
+// drop. Falls back to a straight line internally if routing is unavailable.
+function RoutedLiveMap({
+  pickup,
+  drop,
+  waypoints,
+  driverPosition,
+}: {
+  pickup: Coordinates
+  drop: Coordinates
+  waypoints: RouteWaypoint[]
+  driverPosition: Coordinates | null
+}) {
+  const [path, setPath] = useState<Coordinates[]>([pickup, drop])
+
+  useEffect(() => {
+    let cancelled = false
+    getRoadRoute(pickup, drop).then((r) => {
+      if (!cancelled) setPath(r.path)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [pickup.lat, pickup.lng, drop.lat, drop.lng])
+
+  return (
+    <LiveMap driverPosition={driverPosition} route={path} waypoints={waypoints} height="100%" />
+  )
+}
 
 export default function ActiveTrip() {
   const nav = useNavigate()
@@ -164,10 +196,15 @@ export default function ActiveTrip() {
     }
   }
 
+  // Resolve real coordinates from the load's cities (offline table). Falls back
+  // to Delhi / Jaipur only if a city name is unknown.
+  const pickupCoord = lookupCity(currentLoad.fromCity) ?? { lat: 28.6139, lng: 77.209, timestamp: Date.now() }
+  const dropCoord = lookupCity(currentLoad.toCity) ?? { lat: 26.9124, lng: 75.7873, timestamp: Date.now() }
+
   const waypoints: RouteWaypoint[] = [
     {
       id: `pickup-${currentLoad.id}`,
-      coordinates: { lat: 28.6139, lng: 77.209, timestamp: Date.now() },
+      coordinates: pickupCoord,
       label: `${currentLoad.fromCity}, ${currentLoad.fromArea}`,
       type: 'pickup',
       geofenceRadius: 200,
@@ -175,7 +212,7 @@ export default function ActiveTrip() {
     },
     {
       id: `drop-${currentLoad.id}`,
-      coordinates: { lat: 26.9124, lng: 75.7873, timestamp: Date.now() },
+      coordinates: dropCoord,
       label: `${currentLoad.toCity}, ${currentLoad.toArea}`,
       type: 'drop',
       geofenceRadius: 200,
@@ -205,11 +242,11 @@ export default function ActiveTrip() {
             }}
           >
             {trackingState.isTracking && trackingState.driverPosition ? (
-              <LiveMap
+              <RoutedLiveMap
+                pickup={pickupCoord}
+                drop={dropCoord}
                 driverPosition={trackingState.driverPosition}
-                route={routeCoords}
                 waypoints={waypoints}
-                height="100%"
               />
             ) : (
               <RouteMap progress={currentStep / 4} />

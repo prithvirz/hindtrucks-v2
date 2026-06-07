@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { MapPin, MapPinOff } from 'lucide-react';
+import { MapPin, MapPinOff, Navigation } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Capacitor } from '@capacitor/core';
 import { useGeolocation } from '../hooks/useGeolocation';
+import { openLocationSettings } from '../services/backgroundLocation';
 
 interface LocationPermissionProps {
     onGranted: () => void;
@@ -9,22 +11,81 @@ interface LocationPermissionProps {
     children?: React.ReactNode;
 }
 
+const isNative = Capacitor.isNativePlatform();
+
 export function LocationPermission({ onGranted, onDenied, children }: LocationPermissionProps) {
     const { t } = useTranslation();
     const { permissionState, requestPermission } = useGeolocation();
     const [isRequesting, setIsRequesting] = useState(false);
+    // Stage 2 prominent disclosure (Android background-location policy): shown
+    // only on native after foreground location is granted.
+    const [showBackgroundDisclosure, setShowBackgroundDisclosure] = useState(false);
 
     const handleRequest = async () => {
         setIsRequesting(true);
         const state = await requestPermission();
         setIsRequesting(false);
 
-        if (state === 'granted') {
-            onGranted();
-        } else {
+        if (state !== 'granted') {
             onDenied();
+            return;
+        }
+
+        // Foreground granted. On native, surface the background-tracking
+        // disclosure before the OS "Allow all the time" upgrade (prompted by
+        // the watcher on start). On web there is no background stage.
+        if (isNative) {
+            setShowBackgroundDisclosure(true);
+        } else {
+            onGranted();
         }
     };
+
+    // Already granted (web, or returning native user) — show children.
+    if (permissionState === 'granted' && !showBackgroundDisclosure) {
+        return <>{children}</>;
+    }
+
+    // Stage 2: prominent background-location disclosure (native only).
+    if (showBackgroundDisclosure) {
+        return (
+            <div className="flex flex-col items-center justify-center p-6 text-center">
+                <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mb-3">
+                    <Navigation className="w-7 h-7 text-accent" />
+                </div>
+                <h4 className="text-sm font-bold text-ink mb-1">
+                    {t('gps.backgroundTitle', 'Allow tracking during your trip')}
+                </h4>
+                <p className="text-xs text-ink-muted mb-4 max-w-xs">
+                    {t(
+                        'gps.backgroundMessage',
+                        'HindTrucks collects location in the background — even when the app is closed or the screen is off — so your live trip can be tracked end to end. On the next screen, please choose "Allow all the time".',
+                    )}
+                </p>
+                <div className="flex flex-col gap-2 w-full max-w-xs">
+                    <button
+                        onClick={() => {
+                            setShowBackgroundDisclosure(false);
+                            onGranted();
+                        }}
+                        className="px-5 py-2.5 text-sm font-bold text-white bg-accent rounded-xl hover:bg-accent/90 transition-colors"
+                    >
+                        {t('gps.backgroundAllow', 'Continue')}
+                    </button>
+                    <button
+                        onClick={() => {
+                            // Decline background — proceed with foreground-only tracking.
+                            setShowBackgroundDisclosure(false);
+                            onGranted();
+                        }}
+                        className="px-5 py-2 text-xs font-semibold text-ink-muted bg-surface-grey rounded-xl hover:bg-surface-sunken transition-colors"
+                    >
+                        {t('gps.backgroundSkip', 'Only while using the app')}
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     // Already granted — show children
     if (permissionState === 'granted') {
@@ -44,12 +105,22 @@ export function LocationPermission({ onGranted, onDenied, children }: LocationPe
                 <p className="text-xs text-ink-muted mb-4 max-w-xs">
                     {t('gps.deniedMessage', 'Please enable location access in your device settings to use GPS tracking.')}
                 </p>
-                <button
-                    onClick={onDenied}
-                    className="px-4 py-2 text-xs font-semibold text-ink-muted bg-surface border border-hairline rounded-lg hover:bg-surface-grey transition-colors"
-                >
-                    {t('gps.continueWithoutGps', 'Continue Without GPS')}
-                </button>
+                <div className="flex gap-3">
+                    {isNative && (
+                        <button
+                            onClick={() => openLocationSettings().catch(() => undefined)}
+                            className="px-4 py-2 text-xs font-semibold text-white bg-accent rounded-lg hover:bg-accent/90 transition-colors"
+                        >
+                            {t('gps.openSettings', 'Open Settings')}
+                        </button>
+                    )}
+                    <button
+                        onClick={onDenied}
+                        className="px-4 py-2 text-xs font-semibold text-ink-muted bg-surface border border-hairline rounded-lg hover:bg-surface-grey transition-colors"
+                    >
+                        {t('gps.continueWithoutGps', 'Continue Without GPS')}
+                    </button>
+                </div>
             </div>
         );
     }

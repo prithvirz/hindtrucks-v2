@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
 import type { Coordinates } from '../types';
+import { startBackgroundWatch, stopBackgroundWatch } from '../services/backgroundLocation';
 
 interface GeolocationOptions {
     enableHighAccuracy?: boolean;
@@ -137,20 +138,31 @@ export function useGeolocation(options: GeolocationOptions = DEFAULT_OPTIONS): U
 
         if (isNative) {
             setIsWatching(true);
-            Geolocation.watchPosition(geoOptions, (pos, err) => {
-                if (err || !pos) {
-                    setError('Location information unavailable');
-                    return;
-                }
-                onCoords(
-                    pos.coords.latitude,
-                    pos.coords.longitude,
-                    pos.coords.accuracy,
-                    pos.coords.heading,
-                    pos.coords.speed,
-                    pos.timestamp,
-                );
-            })
+            // Background-capable native watcher (foreground service on Android):
+            // keeps delivering fixes while app is backgrounded, screen off, or killed.
+            startBackgroundWatch(
+                { distanceFilter: 20, requestPermissions: true },
+                (coords) => {
+                    onCoords(
+                        coords.lat,
+                        coords.lng,
+                        coords.accuracy ?? 0,
+                        coords.heading,
+                        coords.speed,
+                        coords.timestamp,
+                    );
+                },
+                (code, message) => {
+                    // Plugin reports NOT_AUTHORIZED when the user denies/revokes permission.
+                    if (code === 'NOT_AUTHORIZED') {
+                        setPermissionState('denied');
+                        setError('Location permission denied');
+                        setIsWatching(false);
+                    } else {
+                        setError(message || 'Location information unavailable');
+                    }
+                },
+            )
                 .then((id) => {
                     nativeWatchIdRef.current = id;
                 })
@@ -206,7 +218,7 @@ export function useGeolocation(options: GeolocationOptions = DEFAULT_OPTIONS): U
 
     const stopWatching = useCallback(() => {
         if (nativeWatchIdRef.current !== null) {
-            Geolocation.clearWatch({ id: nativeWatchIdRef.current });
+            stopBackgroundWatch(nativeWatchIdRef.current).catch(() => undefined);
             nativeWatchIdRef.current = null;
         }
         if (watchIdRef.current !== null) {
@@ -220,7 +232,7 @@ export function useGeolocation(options: GeolocationOptions = DEFAULT_OPTIONS): U
     useEffect(() => {
         return () => {
             if (nativeWatchIdRef.current !== null) {
-                Geolocation.clearWatch({ id: nativeWatchIdRef.current });
+                stopBackgroundWatch(nativeWatchIdRef.current).catch(() => undefined);
             }
             if (watchIdRef.current !== null) {
                 navigator.geolocation.clearWatch(watchIdRef.current);
