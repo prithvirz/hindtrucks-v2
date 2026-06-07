@@ -42,9 +42,6 @@ test.describe('Login Flow', () => {
                 await otpInputs.nth(i).fill('1');
             }
         } else {
-            // Fallback: find all inputs on the page
-            const inputs = page.locator('input');
-            const inputCount = await inputs.count();
             // Type into the OTP area
             await page.keyboard.type('1111');
         }
@@ -140,8 +137,6 @@ test.describe('Login Flow', () => {
         await continueBtn.click();
         await expect(page).toHaveURL(/\/login/);
 
-        // Find back button/arrow
-        const backBtn = page.locator('button, a').filter({ hasText: '' }).first();
         // Try clicking back navigation
         const topBarBack = page.locator('[data-testid="back"], .back-button, button:has(svg)').first();
         if (await topBarBack.isVisible()) {

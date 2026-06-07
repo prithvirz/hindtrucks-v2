@@ -96,8 +96,6 @@ test.describe('AI Chatbot', () => {
     test('mute button toggles voice output', async ({ page }) => {
         await page.locator('#chatbot-button').click();
         await page.waitForTimeout(800);
-        // Find mute/unmute button (volume icon)
-        const muteBtn = page.locator('button').filter({ hasText: '' }).first();
         // Just verify drawer opens, mute toggle is a bonus
         await expect(page.getByRole('heading', { name: 'Raahgir (Driver Assistant)' })).toBeVisible({ timeout: 3000 });
     });

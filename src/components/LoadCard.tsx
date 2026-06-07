@@ -15,7 +15,7 @@ export default function LoadCard({ load, onClick }: Props) {
   const { driver } = useProfile()
   const matchingTrucks = getCompatibleTrucks(load, driver.trucks || [])
 
-  let badgeEl = null
+  let badgeEl
   if (matchingTrucks.length === 1) {
     badgeEl = (
       <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-success bg-success/12 border border-success/20 px-2 py-0.5 rounded-md mt-2">

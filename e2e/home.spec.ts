@@ -51,8 +51,6 @@ test.describe('Home Screen', () => {
     });
 
     test('shows active trips section when trips exist', async ({ page }) => {
-        // Check if active trips section renders
-        const activeTripsSection = page.getByText(/active trip|ongoing trip/i);
         // May or may not have trips — just verify the section structure exists
         await page.waitForTimeout(1000);
     });

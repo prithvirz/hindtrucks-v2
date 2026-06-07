@@ -35,8 +35,6 @@ test.describe('Loads Screen', () => {
     test('shows loading skeleton while fetching', async ({ page }) => {
         // Navigate fresh to see loading state
         await page.goto('/loads');
-        // Skeleton should appear briefly
-        const skeleton = page.locator('[class*="skeleton"], [class*="animate-pulse"]');
         // May flash quickly, just verify page loads
         await page.waitForLoadState('networkidle');
     });

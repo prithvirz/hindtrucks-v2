@@ -107,7 +107,7 @@ test.describe('Onboarding Tour', () => {
     test('tour highlights navigation tabs', async ({ page }) => {
         await page.waitForTimeout(1500);
         // Advance to step 2 (nav home)
-        let nextBtn = page.getByRole('button', { name: /next/i });
+        const nextBtn = page.getByRole('button', { name: /next/i });
         await expect(nextBtn).toBeVisible({ timeout: 5000 });
         await nextBtn.click();
         await page.waitForTimeout(500);
