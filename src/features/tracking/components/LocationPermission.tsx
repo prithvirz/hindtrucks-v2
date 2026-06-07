@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, MapPinOff, Navigation } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Capacitor } from '@capacitor/core';
@@ -21,6 +21,18 @@ export function LocationPermission({ onGranted, onDenied, children }: LocationPe
     // only on native after foreground location is granted.
     const [showBackgroundDisclosure, setShowBackgroundDisclosure] = useState(false);
 
+    // Call onGranted whenever permission is already granted (returning user).
+    // Also fires after background disclosure is dismissed (new native user).
+    const onGrantedRef = useRef(onGranted);
+    onGrantedRef.current = onGranted;
+    const startedRef = useRef(false);
+    useEffect(() => {
+        if (permissionState === 'granted' && !showBackgroundDisclosure && !startedRef.current) {
+            startedRef.current = true;
+            onGrantedRef.current();
+        }
+    }, [permissionState, showBackgroundDisclosure]);
+
     const handleRequest = async () => {
         setIsRequesting(true);
         const state = await requestPermission();
@@ -36,9 +48,9 @@ export function LocationPermission({ onGranted, onDenied, children }: LocationPe
         // the watcher on start). On web there is no background stage.
         if (isNative) {
             setShowBackgroundDisclosure(true);
-        } else {
-            onGranted();
         }
+        // onGranted() is called by the effect when permissionState === 'granted'
+        // and showBackgroundDisclosure is false (after disclosure dismissed or web).
     };
 
     // Already granted (web, or returning native user) — show children.
@@ -66,7 +78,6 @@ export function LocationPermission({ onGranted, onDenied, children }: LocationPe
                     <button
                         onClick={() => {
                             setShowBackgroundDisclosure(false);
-                            onGranted();
                         }}
                         className="px-5 py-2.5 text-sm font-bold text-white bg-accent rounded-xl hover:bg-accent/90 transition-colors"
                     >
@@ -76,7 +87,6 @@ export function LocationPermission({ onGranted, onDenied, children }: LocationPe
                         onClick={() => {
                             // Decline background — proceed with foreground-only tracking.
                             setShowBackgroundDisclosure(false);
-                            onGranted();
                         }}
                         className="px-5 py-2 text-xs font-semibold text-ink-muted bg-surface-grey rounded-xl hover:bg-surface-sunken transition-colors"
                     >
