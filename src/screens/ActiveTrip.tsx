@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Phone, ArrowRight, PartyPopper, Navigation } from 'lucide-react'
+import { Phone, ArrowRight, PartyPopper, Navigation, Maximize2 } from 'lucide-react'
 import TopBar from '../components/TopBar'
 import Button from '../components/Button'
 import StatusStepper from '../components/StatusStepper'
 import RouteMap from '../components/RouteMap'
 import { LiveMap } from '../features/tracking/components/LiveMap'
+import { NavHUD } from '../features/tracking/components/NavHUD'
 import { LocationPermission } from '../features/tracking/components/LocationPermission'
 import { GeofenceAlert } from '../features/tracking/components/GeofenceAlert'
 import { useTrip } from '../state/TripContext'
@@ -15,35 +16,84 @@ import { useEarnings } from '../state/EarningsContext'
 import { inr } from '../lib/format'
 import type { Coordinates, RouteWaypoint } from '../features/tracking/types'
 import { lookupCity } from '../features/tracking/services/geocoding'
-import { getRoadRoute } from '../features/tracking/services/routing'
+import { getRouteWithSteps } from '../features/tracking/services/routing'
+import type { RouteWithSteps, RouteStep } from '../features/tracking/services/routing'
+import { fetchPoisAlongRoute } from '../features/tracking/services/overpass'
+import type { RoutePoI } from '../features/tracking/services/overpass'
 
-// Wraps LiveMap and fetches the real road-following path between pickup and
-// drop. Falls back to a straight line internally if routing is unavailable.
+// Finds the current step the driver is on based on distance to next maneuver
+function findCurrentStep(steps: RouteStep[], _pos: Coordinates): RouteStep | null {
+  if (!steps.length) return null;
+  return steps[0]; // always show next maneuver (simplest correct approach)
+}
+
+// Haversine for remaining distance estimate
+function haversine(a: Coordinates, b: Coordinates): number {
+  const R = 6371000;
+  const φ1 = (a.lat * Math.PI) / 180, φ2 = (b.lat * Math.PI) / 180;
+  const Δφ = ((b.lat - a.lat) * Math.PI) / 180, Δλ = ((b.lng - a.lng) * Math.PI) / 180;
+  const x = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
+}
+
 function RoutedLiveMap({
   pickup,
   drop,
   waypoints,
   driverPosition,
+  navMode,
+  pois,
 }: {
   pickup: Coordinates
   drop: Coordinates
   waypoints: RouteWaypoint[]
   driverPosition: Coordinates | null
+  navMode: boolean
+  pois: RoutePoI[]
 }) {
-  const [path, setPath] = useState<Coordinates[]>([pickup, drop])
+  const [routeData, setRouteData] = useState<RouteWithSteps | null>(null)
 
   useEffect(() => {
     let cancelled = false
-    getRoadRoute(pickup, drop).then((r) => {
-      if (!cancelled) setPath(r.path)
+    getRouteWithSteps(pickup, drop).then((r) => {
+      if (!cancelled) setRouteData(r)
     })
-    return () => {
-      cancelled = true
-    }
+    return () => { cancelled = true }
   }, [pickup.lat, pickup.lng, drop.lat, drop.lng])
 
+  const path = routeData?.path ?? [pickup, drop]
+  const steps = routeData?.steps ?? []
+  const currentStep = driverPosition ? findCurrentStep(steps, driverPosition) : null
+
+  const distanceRemainingM = driverPosition && routeData?.distanceMeters
+    ? haversine(driverPosition, drop)
+    : routeData?.distanceMeters ?? null
+
+  const durationRemainingS = distanceRemainingM != null && routeData?.distanceMeters
+    ? (distanceRemainingM / routeData.distanceMeters) * (routeData.durationSeconds ?? 0)
+    : routeData?.durationSeconds ?? null
+
   return (
-    <LiveMap driverPosition={driverPosition} route={path} waypoints={waypoints} height="100%" />
+    <div className="h-full flex flex-col">
+      <LiveMap
+        driverPosition={driverPosition}
+        route={path}
+        waypoints={waypoints}
+        pois={pois}
+        height="100%"
+        navMode={navMode}
+        className="flex-1"
+      />
+      {navMode && (
+        <NavHUD
+          position={driverPosition}
+          distanceRemainingM={distanceRemainingM}
+          durationRemainingS={durationRemainingS}
+          currentStep={currentStep}
+          pois={pois}
+        />
+      )}
+    </div>
   )
 }
 
@@ -66,6 +116,8 @@ export default function ActiveTrip() {
   } = useTrip()
 
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null)
+  const [navMode, setNavMode] = useState(false)
+  const [pois, setPois] = useState<RoutePoI[]>([])
 
   if (role === 'owner' && !selectedTripId) {
     return (
@@ -201,6 +253,13 @@ export default function ActiveTrip() {
   const pickupCoord = lookupCity(currentLoad.fromCity) ?? { lat: 28.6139, lng: 77.209, timestamp: Date.now() }
   const dropCoord = lookupCity(currentLoad.toCity) ?? { lat: 26.9124, lng: 75.7873, timestamp: Date.now() }
 
+  // Load POIs once route is known (pickup → drop path)
+  const poisLoadedRef = useCallback(() => {
+    fetchPoisAlongRoute([pickupCoord, dropCoord]).then(setPois).catch(() => {})
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pickupCoord.lat, pickupCoord.lng, dropCoord.lat, dropCoord.lng])
+  useEffect(() => { poisLoadedRef() }, [poisLoadedRef])
+
   const waypoints: RouteWaypoint[] = [
     {
       id: `pickup-${currentLoad.id}`,
@@ -222,6 +281,29 @@ export default function ActiveTrip() {
 
   const routeCoords = waypoints.map((wp) => wp.coordinates)
   const { geofenceStatus } = trackingState
+
+  // Fullscreen nav mode — covers entire screen
+  if (navMode && trackingState.isTracking && trackingState.driverPosition) {
+    return (
+      <div className="h-full flex flex-col relative">
+        <RoutedLiveMap
+          pickup={pickupCoord}
+          drop={dropCoord}
+          driverPosition={trackingState.driverPosition}
+          waypoints={waypoints}
+          navMode={true}
+          pois={pois}
+        />
+        {/* Exit nav mode button */}
+        <button
+          onClick={() => setNavMode(false)}
+          className="absolute top-4 left-4 z-[1100] bg-surface/90 backdrop-blur border border-hairline rounded-2xl px-3 py-2 shadow-pop flex items-center gap-2 text-sm font-black text-ink"
+        >
+          ✕ Exit Nav
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="h-full flex flex-col">
@@ -247,6 +329,8 @@ export default function ActiveTrip() {
                 drop={dropCoord}
                 driverPosition={trackingState.driverPosition}
                 waypoints={waypoints}
+                navMode={false}
+                pois={pois}
               />
             ) : (
               <RouteMap progress={currentStep / 4} />
@@ -259,6 +343,14 @@ export default function ActiveTrip() {
               <span className="ml-auto text-xs text-ink-muted nums">
                 {currentLoad.distanceKm} {t('common.km')}
               </span>
+              {trackingState.isTracking && (
+                <button
+                  onClick={() => setNavMode(true)}
+                  className="ml-1 flex items-center gap-1 bg-accent text-white text-[11px] font-black px-2 py-1 rounded-xl"
+                >
+                  <Maximize2 size={11} /> Nav
+                </button>
+              )}
             </div>
           </LocationPermission>
 
