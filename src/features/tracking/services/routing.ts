@@ -2,6 +2,11 @@ import type { Coordinates } from '../types';
 
 const OSRM_BASE = 'https://router.project-osrm.org/route/v1/driving';
 
+// OpenRouteService (primary when a key is configured). 'driving-hgv' = heavy
+// goods vehicle, so routes avoid roads trucks legally/physically can't use.
+const ORS_KEY = import.meta.env.VITE_ORS_API_KEY as string | undefined;
+const ORS_BASE = 'https://api.openrouteservice.org/v2/directions/driving-hgv';
+
 export interface RouteResult {
     path: Coordinates[];
     distanceMeters: number | null;
@@ -89,7 +94,81 @@ export async function getRoadRoute(from: Coordinates, to: Coordinates): Promise<
     }
 }
 
+// OpenRouteService instruction-type codes → our maneuver enum.
+function orsTypeToManeuver(type: number): RouteStep['maneuver'] {
+    switch (type) {
+        case 0: case 2: case 4: case 12: return 'turn-left';   // left / sharp left / slight left / keep left
+        case 1: case 3: case 5: case 13: return 'turn-right';  // right / sharp right / slight right / keep right
+        case 6: return 'straight';
+        case 7: case 8: return 'roundabout';                   // enter / exit roundabout
+        case 10: return 'arrive';
+        case 11: return 'depart';
+        default: return 'other';
+    }
+}
+
+async function getRouteWithStepsORS(from: Coordinates, to: Coordinates): Promise<RouteWithSteps | null> {
+    if (!ORS_KEY) return null;
+    const url = `${ORS_BASE}?api_key=${ORS_KEY}&start=${from.lng},${from.lat}&end=${to.lng},${to.lat}`;
+
+    try {
+        const res = await fetch(url);
+        if (!res.ok) return null;
+
+        const data = (await res.json()) as {
+            features?: Array<{
+                geometry: { coordinates: [number, number][] };
+                properties: {
+                    summary?: { distance?: number; duration?: number };
+                    segments?: Array<{
+                        steps?: Array<{
+                            distance: number;
+                            duration: number;
+                            type: number;
+                            instruction: string;
+                            name?: string;
+                        }>;
+                    }>;
+                };
+            }>;
+        };
+
+        const feature = data.features?.[0];
+        if (!feature || !feature.geometry?.coordinates || feature.geometry.coordinates.length < 2) {
+            return null;
+        }
+
+        const ts = Date.now();
+        const path: Coordinates[] = feature.geometry.coordinates.map(([lng, lat]) => ({ lat, lng, timestamp: ts }));
+
+        const steps: RouteStep[] = (feature.properties.segments ?? []).flatMap((seg) =>
+            (seg.steps ?? []).map((s) => ({
+                instruction: s.instruction || 'Continue',
+                distanceMeters: s.distance ?? 0,
+                durationSeconds: s.duration ?? 0,
+                maneuver: orsTypeToManeuver(s.type),
+                streetName: s.name && s.name !== '-' ? s.name : '',
+            })),
+        );
+
+        return {
+            path,
+            distanceMeters: feature.properties.summary?.distance ?? null,
+            durationSeconds: feature.properties.summary?.duration ?? null,
+            isFallback: false,
+            steps,
+        };
+    } catch {
+        return null;
+    }
+}
+
 export async function getRouteWithSteps(from: Coordinates, to: Coordinates): Promise<RouteWithSteps> {
+    // Prefer OpenRouteService when a key is configured; fall back to OSRM, then
+    // to a straight line, so routing degrades gracefully.
+    const ors = await getRouteWithStepsORS(from, to);
+    if (ors) return ors;
+
     const coords = `${from.lng},${from.lat};${to.lng},${to.lat}`;
     const url = `${OSRM_BASE}/${coords}?overview=full&geometries=geojson&steps=true&annotations=false`;
 

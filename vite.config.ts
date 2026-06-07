@@ -37,6 +37,7 @@ export default defineConfig(({ mode }) => ({
     'import.meta.env.VITE_API_MODE': JSON.stringify(process.env.VITE_API_MODE || 'mock'),
     'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL || '/api'),
     'import.meta.env.VITE_USE_EMULATOR': JSON.stringify(process.env.VITE_USE_EMULATOR || 'false'),
+    'import.meta.env.VITE_ORS_API_KEY': JSON.stringify(process.env.VITE_ORS_API_KEY || ''),
     __BUNDLED_DEV__: 'false',
     __SERVER_FORWARD_CONSOLE__: 'false',
   },

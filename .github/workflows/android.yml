@@ -26,6 +26,7 @@ jobs:
       run: npm run build
       env:
         VITE_API_MODE: real
+        VITE_ORS_API_KEY: ${{ secrets.VITE_ORS_API_KEY }}
 
     - name: Set up JDK 21
       uses: actions/setup-java@v4
