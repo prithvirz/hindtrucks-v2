@@ -36,6 +36,16 @@ function haversine(a: Coordinates, b: Coordinates): number {
   return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
 }
 
+// Closest distance (m) from a point to any vertex of a route path.
+function minDistanceToPath(p: Coordinates, path: Coordinates[]): number {
+  let min = Infinity;
+  for (const pt of path) {
+    const d = haversine(p, pt);
+    if (d < min) min = d;
+  }
+  return min;
+}
+
 function RoutedLiveMap({
   pickup,
   drop,
@@ -56,24 +66,43 @@ function RoutedLiveMap({
   isFullscreen?: boolean
 }) {
   const [routeData, setRouteData] = useState<RouteWithSteps | null>(null)
-  const routeOriginRef = useRef<Coordinates | null>(null)
+  const routeRef = useRef<{ path: Coordinates[]; dropKey: string } | null>(null)
 
-  // The route originates from the driver's LIVE position (falling back to the
-  // pickup city until the first GPS fix), so the drawn route + turn-by-turn
-  // steps always start from where the driver actually is. OSRM is a public
-  // rate-limited demo API, so we only re-route when the driver has moved >250m.
+  // Fetch a road-following route from the driver's live position (falling back
+  // to the pickup city until the first GPS fix) to the drop. We DON'T re-route
+  // on every GPS tick — the public OSRM demo is rate-limited and would start
+  // returning straight-line fallbacks. Instead we keep the route as the truck
+  // drives along it, and only re-route when the driver goes >600m off-route or
+  // the destination changes. Failed fetches retry so a transient error doesn't
+  // strand a straight line.
   const origin = driverPosition ?? pickup
 
   useEffect(() => {
-    const last = routeOriginRef.current
-    if (last && haversine(last, origin) <= 250) return
-    routeOriginRef.current = origin
+    const dropKey = `${drop.lat.toFixed(4)},${drop.lng.toFixed(4)}`
+    const prev = routeRef.current
+    const dropChanged = !prev || prev.dropKey !== dropKey
+    const offRoute = !!(driverPosition && prev?.path.length && minDistanceToPath(driverPosition, prev.path) > 600)
+    if (prev && !dropChanged && !offRoute) return
+
     let cancelled = false
-    getRouteWithSteps(origin, drop).then((r) => {
-      if (!cancelled) setRouteData(r)
-    })
+    let attempts = 0
+    const fetchRoute = () => {
+      getRouteWithSteps(origin, drop).then((r) => {
+        if (cancelled) return
+        // Retry transient routing failures (straight-line fallback) a couple times.
+        if (r.isFallback && attempts < 2) {
+          attempts += 1
+          setTimeout(fetchRoute, 1500 * attempts)
+          return
+        }
+        routeRef.current = { path: r.path, dropKey }
+        setRouteData(r)
+      })
+    }
+    fetchRoute()
     return () => { cancelled = true }
-  }, [origin.lat, origin.lng, drop.lat, drop.lng])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [driverPosition?.lat, driverPosition?.lng, drop.lat, drop.lng, pickup.lat, pickup.lng])
 
   const path = routeData?.path ?? [origin, drop]
   const steps = routeData?.steps ?? []
