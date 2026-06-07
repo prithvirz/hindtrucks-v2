@@ -108,6 +108,7 @@ export const tripService: ITripService = {
 
     const loadRef = doc(db, 'loads', loadId)
     const loadSnap = await getDoc(loadRef)
+    if (!loadSnap.exists()) throw new Error('Load not found')
     const loadData = loadSnap.data() as Record<string, unknown>
     const payoutAmount = (loadData?.price as number) ?? 0
 

@@ -2,10 +2,15 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Load board: any authenticated driver may browse and (via the seeder) create.
+    // Updates are limited to claiming an available load or modifying one you own,
+    // so a driver cannot overwrite or steal another driver's accepted load.
     match /loads/{id} {
       allow read: if request.auth != null;
       allow create: if request.auth != null;
-      allow update: if request.auth != null;
+      allow update: if request.auth != null
+        && request.resource.data.driverUid == request.auth.uid
+        && (resource.data.status == 'available' || resource.data.driverUid == request.auth.uid);
     }
 
     match /drivers/{uid} {
@@ -16,14 +21,20 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
 
+    // Trips belong to a single driver; a user may only create/read/write their own.
     match /trips/{id} {
       allow read, write: if request.auth != null && request.auth.uid == resource.data.driverUid;
-      allow create: if request.auth != null;
+      allow create: if request.auth != null && request.resource.data.driverUid == request.auth.uid;
     }
 
+    // Payouts are financial records. A user may only read and create their OWN
+    // payouts (driverUid must match the caller) — this blocks forging credited
+    // payouts for other drivers. Updates/deletes are never allowed client-side.
     match /payouts/{id} {
       allow read: if request.auth != null && request.auth.uid == resource.data.driverUid;
-      allow create: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.driverUid == request.auth.uid
+        && request.resource.data.amount is number;
     }
   }
 }

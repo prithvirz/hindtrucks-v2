@@ -12,6 +12,7 @@ import AIChatbot from './components/AIChatbot'
 import { OfflineIndicator } from './features/offline/components/OfflineIndicator'
 import { PermissionPrompt } from './features/notifications/components/PermissionPrompt'
 import { NotificationBanner } from './features/notifications/components/NotificationBanner'
+import ErrorBoundary from './components/ErrorBoundary'
 import { useAndroidBackButton } from './hooks/useAndroidBackButton'
 
 const Splash = lazy(() => import('./screens/Splash'))
@@ -165,22 +166,24 @@ function Shell() {
         )}
 
         <Suspense fallback={<div className="h-full w-full flex items-center justify-center"><div className="h-8 w-8 rounded-full border-2 border-accent border-t-transparent animate-spin" /></div>}>
-          <Routes>
-            <Route path="/" element={<Splash />} />
-            <Route path="/language" element={<LanguagePicker />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/otp" element={<Otp />} />
-            <Route path="/register" element={<RequireRegistration><Register /></RequireRegistration>} />
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/" element={<Splash />} />
+              <Route path="/language" element={<LanguagePicker />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/otp" element={<Otp />} />
+              <Route path="/register" element={<RequireRegistration><Register /></RequireRegistration>} />
 
-            <Route path="/home" element={<RequireAuth><Home /></RequireAuth>} />
-            <Route path="/loads" element={<RequireAuth><Loads /></RequireAuth>} />
-            <Route path="/loads/:id" element={<RequireAuth><LoadDetail /></RequireAuth>} />
-            <Route path="/trip" element={<RequireAuth><ActiveTrip /></RequireAuth>} />
-            <Route path="/earnings" element={<RequireAuth><Earnings /></RequireAuth>} />
-            <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+              <Route path="/home" element={<RequireAuth><Home /></RequireAuth>} />
+              <Route path="/loads" element={<RequireAuth><Loads /></RequireAuth>} />
+              <Route path="/loads/:id" element={<RequireAuth><LoadDetail /></RequireAuth>} />
+              <Route path="/trip" element={<RequireAuth><ActiveTrip /></RequireAuth>} />
+              <Route path="/earnings" element={<RequireAuth><Earnings /></RequireAuth>} />
+              <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
 
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </ErrorBoundary>
         </Suspense>
 
         {showTabs && <BottomTabBar />}

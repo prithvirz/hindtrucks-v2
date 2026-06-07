@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from 'react-leaflet';
+import { LocateFixed, Maximize2, Minimize2, Route as RouteIcon } from 'lucide-react';
 import L from 'leaflet';
 import type { Coordinates, RouteWaypoint } from '../types';
 import type { RoutePoI } from '../services/overpass';
@@ -108,6 +109,8 @@ interface LiveMapProps {
     interactive?: boolean;
     navMode?: boolean;
     className?: string;
+    onToggleFullscreen?: () => void;
+    isFullscreen?: boolean;
 }
 
 export function LiveMap({
@@ -119,6 +122,8 @@ export function LiveMap({
     interactive = true,
     navMode = false,
     className = '',
+    onToggleFullscreen,
+    isFullscreen = false,
 }: LiveMapProps) {
     const [leafletReady, setLeafletReady] = useState(false);
     const [poiFilter, setPoiFilter] = useState<Set<RoutePoI['category']>>(new Set(['fuel', 'dhaba', 'toll']));
@@ -150,9 +155,23 @@ export function LiveMap({
     function toggleFilter(cat: RoutePoI['category']) {
         setPoiFilter((prev) => {
             const next = new Set(prev);
-            next.has(cat) ? next.delete(cat) : next.add(cat);
+            if (next.has(cat)) next.delete(cat); else next.add(cat);
             return next;
         });
+    }
+
+    function recenterToDriver() {
+        if (!driverPosition) return;
+        _mapRef.current?.setView([driverPosition.lat, driverPosition.lng], 15, { animate: true });
+    }
+
+    function fitToRoute() {
+        const pts: [number, number][] = [
+            ...routePositions,
+            ...waypoints.map((w) => [w.coordinates.lat, w.coordinates.lng] as [number, number]),
+        ];
+        if (pts.length > 1) _mapRef.current?.fitBounds(L.latLngBounds(pts), { padding: [30, 30] });
+        else if (pts.length === 1) _mapRef.current?.setView(pts[0], 12);
     }
 
     return (
@@ -174,6 +193,35 @@ export function LiveMap({
                     ))}
                 </div>
             )}
+
+            {/* Map controls: locate-me, fit-route, fullscreen toggle (Google-Maps style) */}
+            <div className={`absolute right-3 z-[1000] flex flex-col gap-2 ${isFullscreen ? 'bottom-3' : 'top-14'}`}>
+                {driverPosition && (
+                    <button
+                        onClick={recenterToDriver}
+                        aria-label="Center on my location"
+                        className="w-10 h-10 rounded-full bg-surface shadow-pop border border-hairline flex items-center justify-center text-accent active:scale-95 transition-transform"
+                    >
+                        <LocateFixed size={18} />
+                    </button>
+                )}
+                <button
+                    onClick={fitToRoute}
+                    aria-label="Show full route"
+                    className="w-10 h-10 rounded-full bg-surface shadow-pop border border-hairline flex items-center justify-center text-ink active:scale-95 transition-transform"
+                >
+                    <RouteIcon size={18} />
+                </button>
+                {onToggleFullscreen && (
+                    <button
+                        onClick={onToggleFullscreen}
+                        aria-label={isFullscreen ? 'Exit fullscreen' : 'Fullscreen map'}
+                        className="w-10 h-10 rounded-full bg-accent text-white shadow-pop flex items-center justify-center active:scale-95 transition-transform"
+                    >
+                        {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+                    </button>
+                )}
+            </div>
 
             <MapContainer
                 ref={_mapRef}

@@ -8,7 +8,7 @@ interface EarningsState {
     payouts: Payout[]
     isLoading: boolean
     error: ApiError | null
-    withdrawWallet: (amount: number, upiId: string) => void
+    withdrawWallet: (amount: number, upiId: string) => Promise<boolean>
     refreshEarnings: () => Promise<void>
 }
 
@@ -70,7 +70,7 @@ export function EarningsProvider({ children }: { children: ReactNode }) {
         }
     }
 
-    const withdrawWallet = async (amount: number, upiId: string) => {
+    const withdrawWallet = async (amount: number, upiId: string): Promise<boolean> => {
         setError(null)
         setIsLoading(true)
 
@@ -79,23 +79,17 @@ export function EarningsProvider({ children }: { children: ReactNode }) {
             const result = await earningsService.withdraw({ amount, upiId })
             setWalletBalance(result.newBalance)
             setPayouts((prev) => [result.transaction, ...prev])
+            return true
         } catch (err) {
-            if (err instanceof ApiError) {
-                setError(err)
-            }
-            // Fallback to local state update even on error
-            setWalletBalance((prev) => Math.max(0, prev - amount))
-            setPayouts((prev) => [
-                {
-                    id: `P${Math.floor(9000 + Math.random() * 1000)}`,
-                    load: 'L1000',
-                    route: `Withdrawal to ${upiId}`,
-                    amount,
-                    status: 'credited',
-                    date: new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }),
-                },
-                ...prev,
-            ])
+            // Surface the failure and leave the wallet untouched. Optimistically
+            // debiting here would show money leaving on a rejected withdrawal
+            // (e.g. insufficient balance / not authenticated).
+            setError(
+                err instanceof ApiError
+                    ? err
+                    : new ApiError((err as Error)?.message || 'Withdrawal failed', 0, 'WITHDRAW_FAILED'),
+            )
+            return false
         } finally {
             setIsLoading(false)
         }

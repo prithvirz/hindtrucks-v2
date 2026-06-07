@@ -70,10 +70,10 @@ export default function Earnings() {
   function handleRequestWithdrawal() {
     if (!isFormValid) return
     setLoading(true)
-    setTimeout(() => {
-      withdrawWallet(amountVal, upiId)
+    setTimeout(async () => {
+      const ok = await withdrawWallet(amountVal, upiId)
       setLoading(false)
-      setSuccess(true)
+      setSuccess(ok)
     }, 1800)
   }
 

@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Phone, ArrowRight, PartyPopper, Navigation, Maximize2 } from 'lucide-react'
+import { Phone, ArrowRight, PartyPopper, Navigation } from 'lucide-react'
 import TopBar from '../components/TopBar'
 import Button from '../components/Button'
 import StatusStepper from '../components/StatusStepper'
@@ -43,6 +43,8 @@ function RoutedLiveMap({
   driverPosition,
   navMode,
   pois,
+  onToggleFullscreen,
+  isFullscreen,
 }: {
   pickup: Coordinates
   drop: Coordinates
@@ -50,6 +52,8 @@ function RoutedLiveMap({
   driverPosition: Coordinates | null
   navMode: boolean
   pois: RoutePoI[]
+  onToggleFullscreen?: () => void
+  isFullscreen?: boolean
 }) {
   const [routeData, setRouteData] = useState<RouteWithSteps | null>(null)
 
@@ -83,6 +87,8 @@ function RoutedLiveMap({
         height="100%"
         navMode={navMode}
         className="flex-1"
+        onToggleFullscreen={onToggleFullscreen}
+        isFullscreen={isFullscreen}
       />
       {navMode && (
         <NavHUD
@@ -118,6 +124,19 @@ export default function ActiveTrip() {
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null)
   const [navMode, setNavMode] = useState(false)
   const [pois, setPois] = useState<RoutePoI[]>([])
+
+  // Load POIs along the pickup→drop route. Hoisted above the early returns below
+  // so the hook runs unconditionally on every render (Rules of Hooks).
+  useEffect(() => {
+    const trip = role === 'owner'
+      ? activeTrips.find((t) => t.id === selectedTripId)
+      : activeLoad ? { load: activeLoad } : null
+    const load = trip?.load
+    if (!load) return
+    const pickup = lookupCity(load.fromCity) ?? { lat: 28.6139, lng: 77.209, timestamp: Date.now() }
+    const drop = lookupCity(load.toCity) ?? { lat: 26.9124, lng: 75.7873, timestamp: Date.now() }
+    fetchPoisAlongRoute([pickup, drop]).then(setPois).catch(() => {})
+  }, [role, selectedTripId, activeLoad, activeTrips])
 
   if (role === 'owner' && !selectedTripId) {
     return (
@@ -253,13 +272,6 @@ export default function ActiveTrip() {
   const pickupCoord = lookupCity(currentLoad.fromCity) ?? { lat: 28.6139, lng: 77.209, timestamp: Date.now() }
   const dropCoord = lookupCity(currentLoad.toCity) ?? { lat: 26.9124, lng: 75.7873, timestamp: Date.now() }
 
-  // Load POIs once route is known (pickup → drop path)
-  const poisLoadedRef = useCallback(() => {
-    fetchPoisAlongRoute([pickupCoord, dropCoord]).then(setPois).catch(() => {})
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pickupCoord.lat, pickupCoord.lng, dropCoord.lat, dropCoord.lng])
-  useEffect(() => { poisLoadedRef() }, [poisLoadedRef])
-
   const waypoints: RouteWaypoint[] = [
     {
       id: `pickup-${currentLoad.id}`,
@@ -283,7 +295,7 @@ export default function ActiveTrip() {
   const { geofenceStatus } = trackingState
 
   // Fullscreen nav mode — covers entire screen
-  if (navMode && trackingState.isTracking && trackingState.driverPosition) {
+  if (navMode) {
     return (
       <div className="h-full flex flex-col relative">
         <RoutedLiveMap
@@ -293,6 +305,8 @@ export default function ActiveTrip() {
           waypoints={waypoints}
           navMode={true}
           pois={pois}
+          onToggleFullscreen={() => setNavMode(false)}
+          isFullscreen={true}
         />
         {/* Exit nav mode button */}
         <button
@@ -331,6 +345,8 @@ export default function ActiveTrip() {
                 waypoints={waypoints}
                 navMode={false}
                 pois={pois}
+                onToggleFullscreen={() => setNavMode(true)}
+                isFullscreen={false}
               />
             ) : (
               <RouteMap progress={currentStep / 4} />
@@ -343,14 +359,6 @@ export default function ActiveTrip() {
               <span className="ml-auto text-xs text-ink-muted nums">
                 {currentLoad.distanceKm} {t('common.km')}
               </span>
-              {trackingState.isTracking && (
-                <button
-                  onClick={() => setNavMode(true)}
-                  className="ml-1 flex items-center gap-1 bg-accent text-white text-[11px] font-black px-2 py-1 rounded-xl"
-                >
-                  <Maximize2 size={11} /> Nav
-                </button>
-              )}
             </div>
           </LocationPermission>
 

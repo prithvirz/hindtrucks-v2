@@ -16,10 +16,27 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        // Release signing is driven entirely by env vars so no keystore or
+        // password is ever committed. CI sets HT_KEYSTORE (+ passwords/alias)
+        // from secrets; without them release builds stay unsigned, and debug
+        // builds are unaffected (they auto-sign with the debug key as usual).
+        release {
+            if (System.getenv("HT_KEYSTORE")) {
+                storeFile file(System.getenv("HT_KEYSTORE"))
+                storePassword System.getenv("HT_STORE_PASSWORD")
+                keyAlias System.getenv("HT_KEY_ALIAS")
+                keyPassword System.getenv("HT_KEY_PASSWORD")
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (System.getenv("HT_KEYSTORE")) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
