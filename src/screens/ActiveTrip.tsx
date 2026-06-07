@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Phone, ArrowRight, PartyPopper, Navigation } from 'lucide-react'
@@ -56,16 +56,26 @@ function RoutedLiveMap({
   isFullscreen?: boolean
 }) {
   const [routeData, setRouteData] = useState<RouteWithSteps | null>(null)
+  const routeOriginRef = useRef<Coordinates | null>(null)
+
+  // The route originates from the driver's LIVE position (falling back to the
+  // pickup city until the first GPS fix), so the drawn route + turn-by-turn
+  // steps always start from where the driver actually is. OSRM is a public
+  // rate-limited demo API, so we only re-route when the driver has moved >250m.
+  const origin = driverPosition ?? pickup
 
   useEffect(() => {
+    const last = routeOriginRef.current
+    if (last && haversine(last, origin) <= 250) return
+    routeOriginRef.current = origin
     let cancelled = false
-    getRouteWithSteps(pickup, drop).then((r) => {
+    getRouteWithSteps(origin, drop).then((r) => {
       if (!cancelled) setRouteData(r)
     })
     return () => { cancelled = true }
-  }, [pickup.lat, pickup.lng, drop.lat, drop.lng])
+  }, [origin.lat, origin.lng, drop.lat, drop.lng])
 
-  const path = routeData?.path ?? [pickup, drop]
+  const path = routeData?.path ?? [origin, drop]
   const steps = routeData?.steps ?? []
   const currentStep = driverPosition ? findCurrentStep(steps, driverPosition) : null
 
