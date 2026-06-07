@@ -9,6 +9,7 @@ import PhoneFrame from './components/PhoneFrame'
 import BottomTabBar from './components/BottomTabBar'
 import OnboardingTour from './components/OnboardingTour'
 import AIChatbot from './components/AIChatbot'
+import { FirstRunPermissions } from './components/FirstRunPermissions'
 import { OfflineIndicator } from './features/offline/components/OfflineIndicator'
 import { PermissionPrompt } from './features/notifications/components/PermissionPrompt'
 import { NotificationBanner } from './features/notifications/components/NotificationBanner'
@@ -187,6 +188,9 @@ function Shell() {
         </Suspense>
 
         {showTabs && <BottomTabBar />}
+
+        {/* One-time first-launch permission request (location + notifications) */}
+        {isLoggedIn && isAppScreen && <FirstRunPermissions />}
 
         {/* Global Guided Onboarding Tour - only when logged in and on app screens */}
         {isLoggedIn && isAppScreen && <OnboardingTour />}
