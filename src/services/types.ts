@@ -160,8 +160,17 @@ export interface SetOnlineStatusRequest {
     isOnline: boolean
 }
 
+export interface CreateDriverProfileRequest {
+    name: string
+    phone: string
+}
+
 export interface GetProfileResponse {
     profile: DriverProfile
+}
+
+export interface RegistrationStatusResponse {
+    registered: boolean
 }
 
 export interface SetOnlineStatusResponse {
@@ -170,6 +179,8 @@ export interface SetOnlineStatusResponse {
 
 export interface IProfileService {
     getProfile(): Promise<GetProfileResponse>
+    getRegistrationStatus(): Promise<RegistrationStatusResponse>
+    createDriverProfile(request: CreateDriverProfileRequest): Promise<GetProfileResponse>
     setOnlineStatus(request: SetOnlineStatusRequest): Promise<SetOnlineStatusResponse>
 }
 

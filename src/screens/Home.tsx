@@ -23,6 +23,8 @@ export default function Home() {
   const { isOnline, setOnline, driver, role, drivers } = useProfile()
   const { activeTrips, activeLoad } = useTrip()
   const nearby = MOCK_LOADS.slice(0, 2)
+  const driverName = driver.name || t('common.driver', 'Driver')
+  const truckLabel = driver.truck.regNumber || t('profile.truckPending', 'Truck setup pending')
 
   return (
     <div className="h-full app-scroll no-scrollbar pb-tabs">
@@ -45,14 +47,14 @@ export default function Home() {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <p className="font-black text-[17px] leading-tight tracking-tight truncate max-w-[120px] sm:max-w-none">
-                    {driver.name}
+                    {driverName}
                   </p>
                   <span className="inline-flex items-center text-[9px] font-bold uppercase tracking-wider text-white bg-gradient-to-r from-yellow-500 to-accent px-1.5 py-0.5 rounded-md shrink-0">
                     {role === 'owner' ? 'Fleet Owner' : 'BFC Elite'}
                   </span>
                 </div>
                 <p className="text-white/60 text-xs mt-0.5 font-bold tracking-wider truncate">
-                  {role === 'owner' ? `${driver.trucks.length} Trucks • ${drivers.length} Drivers` : driver.truck.regNumber}
+                  {role === 'owner' ? `${driver.trucks.length} Trucks • ${drivers.length} Drivers` : truckLabel}
                 </p>
               </div>
             </div>

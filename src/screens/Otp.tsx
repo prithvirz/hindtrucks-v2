@@ -4,13 +4,18 @@ import { useTranslation } from 'react-i18next'
 import TopBar from '../components/TopBar'
 import Button from '../components/Button'
 import { useAuth } from '../state/AuthContext'
+import { useProfile } from '../state/ProfileContext'
 
 export default function Otp() {
   const nav = useNavigate()
   const { t } = useTranslation()
-  const { verifyOtp, isLoading, error } = useAuth()
-  const { state } = useLocation() as { state?: { phone?: string } }
+  const { verifyOtp, sendOtp, isLoading, error } = useAuth()
+  const { createDriverProfile } = useProfile()
+  const { state } = useLocation() as {
+    state?: { phone?: string; intent?: 'login' | 'register'; name?: string }
+  }
   const rawPhone = state?.phone || '9876543210'
+  const intent = state?.intent || 'login'
   const displayPhone = '+91 ' + rawPhone
 
   const [digits, setDigits] = useState(['', '', '', '', '', ''])
@@ -44,16 +49,33 @@ export default function Otp() {
 
   async function verify() {
     try {
-      await verifyOtp(rawPhone, code)
-      nav('/home', { replace: true })
+      const { registered } = await verifyOtp(rawPhone, code)
+      if (registered) {
+        nav('/home', { replace: true })
+        return
+      }
+      if (intent === 'register' && state?.name) {
+        await createDriverProfile({ name: state.name, phone: rawPhone })
+        nav('/home', { replace: true })
+        return
+      }
+      nav('/register', { replace: true })
     } catch {
-      // error shown from auth context
+      // error shown from auth/profile context
+    }
+  }
+
+  async function resend() {
+    try {
+      await sendOtp(rawPhone, intent)
+    } catch {
+      // error displayed via auth context
     }
   }
 
   return (
     <div className="h-full flex flex-col bg-surface">
-      <TopBar title={t('otp.title')} back fallbackTo="/login" />
+      <TopBar title={t('otp.title')} back fallbackTo={intent === 'register' ? '/register' : '/login'} />
       <div className="flex-1 px-5 pt-6">
         <p className="text-ink-muted text-[15px]">
           {t('otp.subtitle', { phone: displayPhone })}
@@ -80,7 +102,9 @@ export default function Otp() {
         )}
 
         <div className="flex justify-end mt-6">
-          <button className="text-sm font-black text-accent hover:underline">{t('otp.resend')}</button>
+          <button onClick={resend} className="text-sm font-black text-accent hover:underline">
+            {t('otp.resend')}
+          </button>
         </div>
       </div>
 

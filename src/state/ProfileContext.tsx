@@ -12,8 +12,8 @@ const DEFAULT_DRIVER = {
     walletBalance: 0,
     truck: {
         regNumber: '',
-        type: '19 ft Container',
-        capacity: '9 Ton',
+        type: '',
+        capacity: '',
     },
     avatarId: '1633332755192-727a05c4013d',
     documents: {
@@ -153,13 +153,14 @@ interface ProfileState {
             capacity: string
         }
     }) => void
+    createDriverProfile: (params: { name: string; phone: string }) => Promise<void>
     refreshProfile: () => Promise<void>
 }
 
 const ProfileCtx = createContext<ProfileState | null>(null)
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
-    const { isLoggedIn, phone } = useAuth()
+    const { isLoggedIn, phone, registrationStatus, markRegistered } = useAuth()
     const [isOnline, setOnlineState] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<ApiError | null>(null)
@@ -196,7 +197,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
 
         if (
             import.meta.env.VITE_API_MODE === 'real' &&
-            localStorage.getItem(registeredKey(phone)) === '1'
+            registrationStatus === 'registered'
         ) {
             setIsLoading(true)
             import('../services/index')
@@ -228,7 +229,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         return () => {
             cancelled = true
         }
-    }, [isLoggedIn, phone])
+    }, [isLoggedIn, phone, registrationStatus])
 
     // Persist driver updates
     useEffect(() => {
@@ -340,6 +341,18 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
             }
             return {
                 ...prev,
+                truck: prev.truck.regNumber ? prev.truck : {
+                    regNumber: truckWithId.regNumber,
+                    type: truckWithId.type,
+                    capacity: truckWithId.capacity,
+                },
+                documents: prev.truck.regNumber ? prev.documents : {
+                    ...prev.documents,
+                    rc: {
+                        ...prev.documents.rc,
+                        id: truckWithId.regNumber,
+                    },
+                },
                 trucks: [...prev.trucks, truckWithId],
             }
         })
@@ -474,6 +487,59 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         }
     }
 
+    const createDriverProfile = async (params: { name: string; phone: string }) => {
+        if (!params.phone) return
+        setIsLoading(true)
+        setError(null)
+        try {
+            const apiMode = import.meta.env.VITE_API_MODE
+            if (apiMode === 'real') {
+                const { profileService } = await import('../services/index')
+                const { profile } = await profileService.createDriverProfile(params)
+                const newProfile: DriverWithExtras = {
+                    ...createDefaultDriver(params.phone),
+                    name: profile.name,
+                    phone: profile.phone || params.phone,
+                    rating: profile.rating,
+                    tripsToday: profile.tripsToday,
+                    earningsToday: profile.earningsToday,
+                    truck: {
+                        regNumber: profile.truck.regNumber,
+                        type: profile.truck.type,
+                        capacity: profile.truck.capacity,
+                    },
+                }
+                setDriver(newProfile)
+                setRoleState('driver')
+                setDrivers(DEFAULT_DRIVERS)
+                localStorage.setItem(registeredKey(params.phone), '1')
+                localStorage.setItem(driverKey(params.phone), JSON.stringify(newProfile))
+                localStorage.setItem(roleKey(params.phone), 'driver')
+                localStorage.setItem(ownerDriversKey(params.phone), JSON.stringify(DEFAULT_DRIVERS))
+            } else {
+                const newProfile: DriverWithExtras = {
+                    ...createDefaultDriver(params.phone),
+                    name: params.name,
+                    phone: params.phone,
+                }
+                setDriver(newProfile)
+                setRoleState('driver')
+                setDrivers(DEFAULT_DRIVERS)
+                localStorage.setItem(registeredKey(params.phone), '1')
+                localStorage.setItem(driverKey(params.phone), JSON.stringify(newProfile))
+                localStorage.setItem(roleKey(params.phone), 'driver')
+                localStorage.setItem(ownerDriversKey(params.phone), JSON.stringify(DEFAULT_DRIVERS))
+            }
+            markRegistered(params.phone)
+        } catch (err) {
+            if (err instanceof ApiError) setError(err)
+            else setError(new ApiError(err instanceof Error ? err.message : 'Failed to create profile', 0, 'UNKNOWN_ERROR'))
+            throw err
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     return (
         <ProfileCtx.Provider
             value={{
@@ -494,6 +560,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                 removeDriver,
                 assignDriverToTruck,
                 initializeProfile,
+                createDriverProfile,
                 refreshProfile,
             }}
         >

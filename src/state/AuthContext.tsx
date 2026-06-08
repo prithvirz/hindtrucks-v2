@@ -10,11 +10,14 @@ import { clearChatHistory } from '../features/chatbot/services/chatService'
 interface AuthState {
     isLoggedIn: boolean
     phone: string
+    registrationStatus: 'unknown' | 'registered' | 'unregistered'
+    authIntent: 'login' | 'register' | null
     isLoading: boolean
     error: ApiError | null
-    sendOtp: (phone: string) => Promise<void>
+    sendOtp: (phone: string, intent?: 'login' | 'register') => Promise<void>
     login: (phone: string) => void
-    verifyOtp: (phone: string, otp: string) => Promise<void>
+    verifyOtp: (phone: string, otp: string) => Promise<{ registered: boolean }>
+    markRegistered: (registeredPhone?: string) => void
     logout: () => void
 }
 
@@ -27,6 +30,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [phone, setPhone] = useState<string>(
         () => localStorage.getItem('ht_phone') || (localStorage.getItem('ht_auth') === '1' ? '9876543210' : ''),
     )
+    const [registrationStatus, setRegistrationStatus] = useState<'unknown' | 'registered' | 'unregistered'>('unknown')
+    const [authIntent, setAuthIntent] = useState<'login' | 'register' | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<ApiError | null>(null)
 
@@ -51,10 +56,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 .then((session) => {
                     if (!session.valid) {
                         setLoggedIn(false)
+                        setRegistrationStatus('unknown')
                         localStorage.removeItem('ht_auth_token')
                         localStorage.removeItem('ht_phone')
                     } else if (session.phone) {
                         setPhone(session.phone)
+                        import('../services/index')
+                            .then(({ profileService }) => profileService.getRegistrationStatus())
+                            .then(({ registered }) => setRegistrationStatus(registered ? 'registered' : 'unregistered'))
+                            .catch(() => setRegistrationStatus('unknown'))
                     }
                 })
                 .catch(() => {
@@ -63,9 +73,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     }, [])
 
-    const sendOtp = async (p: string): Promise<void> => {
+    const sendOtp = async (p: string, intent?: 'login' | 'register'): Promise<void> => {
         setError(null)
         setIsLoading(true)
+        if (intent) setAuthIntent(intent)
         try {
             const { authService } = await import('../services/index')
             await authService.sendOtp({ phone: p })
@@ -85,19 +96,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setError(null)
         setPhone(p)
         setLoggedIn(true)
+        setRegistrationStatus(localStorage.getItem('ht_registered_' + p) === '1' ? 'registered' : 'unregistered')
     }
 
-    const verifyOtp = async (p: string, otp: string): Promise<void> => {
+    const verifyOtp = async (p: string, otp: string): Promise<{ registered: boolean }> => {
         setError(null)
         setIsLoading(true)
         try {
-            const { authService } = await import('../services/index')
+            const { authService, profileService } = await import('../services/index')
             const result = await authService.verifyOtp({ phone: p, otp })
             if (result.success) {
                 localStorage.setItem('ht_auth_token', result.tokens.access.token)
+                localStorage.setItem('ht_phone', p)
                 setPhone(p)
                 setLoggedIn(true)
+                const { registered } = await profileService.getRegistrationStatus()
+                setRegistrationStatus(registered ? 'registered' : 'unregistered')
+                return { registered }
             }
+            return { registered: false }
         } catch (err) {
             if (err instanceof ApiError) {
                 setError(err)
@@ -112,6 +129,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } finally {
             setIsLoading(false)
         }
+    }
+
+    const markRegistered = (registeredPhone?: string) => {
+        setRegistrationStatus('registered')
+        const targetPhone = registeredPhone || phone
+        if (targetPhone) localStorage.setItem('ht_registered_' + targetPhone, '1')
     }
 
     const logout = () => {
@@ -130,13 +153,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         clearChatHistory().catch(() => { /* silent */ })
         setLoggedIn(false)
         setPhone('')
+        setRegistrationStatus('unknown')
+        setAuthIntent(null)
         setError(null)
         localStorage.removeItem('ht_auth_token')
         localStorage.removeItem('ht_phone')
     }
 
     return (
-        <AuthCtx.Provider value={{ isLoggedIn, phone, isLoading, error, sendOtp, login, verifyOtp, logout }}>
+        <AuthCtx.Provider value={{ isLoggedIn, phone, registrationStatus, authIntent, isLoading, error, sendOtp, login, verifyOtp, markRegistered, logout }}>
             {children}
         </AuthCtx.Provider>
     )

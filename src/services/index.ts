@@ -93,6 +93,8 @@ export const earningsService: IEarningsService = {
 
 export const profileService: IProfileService = {
     getProfile: (...args) => getServices().profile.getProfile(...args),
+    getRegistrationStatus: (...args) => getServices().profile.getRegistrationStatus(...args),
+    createDriverProfile: (...args) => getServices().profile.createDriverProfile(...args),
     setOnlineStatus: (...args) => getServices().profile.setOnlineStatus(...args),
 }
 

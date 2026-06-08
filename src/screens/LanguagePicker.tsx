@@ -27,7 +27,7 @@ export default function LanguagePicker() {
 
   function onContinue() {
     i18n.changeLanguage(selected)
-    nav('/login')
+    nav('/auth')
   }
 
   return (
@@ -60,4 +60,3 @@ export default function LanguagePicker() {
     </div>
   )
 }
-

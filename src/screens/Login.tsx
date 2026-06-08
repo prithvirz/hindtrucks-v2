@@ -17,8 +17,8 @@ export default function Login() {
   async function handleSendOtp() {
     const cleaned = phone.replace(/\D/g, '')
     try {
-      await sendOtp(cleaned)
-      nav('/otp', { state: { phone: cleaned } })
+      await sendOtp(cleaned, 'login')
+      nav('/otp', { state: { phone: cleaned, intent: 'login' } })
     } catch {
       // error displayed via auth context error state
     }

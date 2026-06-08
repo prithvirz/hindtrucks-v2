@@ -18,6 +18,7 @@ import { useAndroidBackButton } from './hooks/useAndroidBackButton'
 
 const Splash = lazy(() => import('./screens/Splash'))
 const LanguagePicker = lazy(() => import('./screens/LanguagePicker'))
+const AuthChoice = lazy(() => import('./screens/AuthChoice'))
 const Login = lazy(() => import('./screens/Login'))
 const Otp = lazy(() => import('./screens/Otp'))
 const Home = lazy(() => import('./screens/Home'))
@@ -31,21 +32,19 @@ const Register = lazy(() => import('./screens/Register'))
 // Tabs that should show the bottom navigation bar.
 const TAB_ROUTES = ['/home', '/loads', '/earnings', '/profile']
 
-function isRegisteredPhone(phone: string): boolean {
-  return localStorage.getItem('ht_registered_' + phone) === '1'
-}
-
 function RequireAuth({ children }: { children: JSX.Element }) {
-  const { isLoggedIn, phone } = useAuth()
+  const { isLoggedIn, registrationStatus } = useAuth()
   if (!isLoggedIn) return <Navigate to="/language" replace />
-  if (!isRegisteredPhone(phone)) return <Navigate to="/register" replace />
+  if (registrationStatus === 'unknown') {
+    return <div className="h-full w-full flex items-center justify-center bg-surface"><div className="h-8 w-8 rounded-full border-2 border-accent border-t-transparent animate-spin" /></div>
+  }
+  if (registrationStatus === 'unregistered') return <Navigate to="/register" replace />
   return children
 }
 
 function RequireRegistration({ children }: { children: JSX.Element }) {
-  const { isLoggedIn, phone } = useAuth()
-  if (!isLoggedIn) return <Navigate to="/language" replace />
-  if (isRegisteredPhone(phone)) return <Navigate to="/home" replace />
+  const { registrationStatus } = useAuth()
+  if (registrationStatus === 'registered') return <Navigate to="/home" replace />
   return children
 }
 
@@ -111,7 +110,7 @@ function Shell() {
   }, [isLoggedIn, pushPermissionState.needsPrompt])
 
   // Only render the chatbot and tour on actual app dashboard screens, not setup/login flows
-  const isAppScreen = !['/', '/language', '/login', '/otp', '/register'].includes(pathname)
+  const isAppScreen = !['/', '/language', '/auth', '/login', '/otp', '/register'].includes(pathname)
 
   return (
     <PhoneFrame>
@@ -171,6 +170,7 @@ function Shell() {
             <Routes>
               <Route path="/" element={<Splash />} />
               <Route path="/language" element={<LanguagePicker />} />
+              <Route path="/auth" element={<AuthChoice />} />
               <Route path="/login" element={<Login />} />
               <Route path="/otp" element={<Otp />} />
               <Route path="/register" element={<RequireRegistration><Register /></RequireRegistration>} />

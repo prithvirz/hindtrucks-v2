@@ -70,7 +70,12 @@ export default function Profile() {
 
   const current = LANGUAGES.find((l) => l.code === (i18n.language?.slice(0, 2) as LangCode))
 
-  const referLink = `https://hindtrucks.in/refer/${driver.truck.regNumber.replace(/\s+/g, '')}`
+  const referralId = (driver.truck.regNumber || driver.phone || 'driver').replace(/\s+/g, '')
+  const referLink = `https://hindtrucks.in/refer/${referralId}`
+  const truckRegLabel = driver.truck.regNumber || t('profile.truckPending', 'Truck setup pending')
+  const truckMetaLabel = driver.truck.type && driver.truck.capacity
+    ? `${driver.truck.type} • ${driver.truck.capacity}`
+    : t('profile.addTruckPrompt', 'Add truck details from Profile')
 
   function handleCopy() {
     navigator.clipboard.writeText(referLink)
@@ -146,7 +151,7 @@ export default function Profile() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-1.5">
-              <p className="text-lg font-black text-ink leading-tight truncate">{driver.name}</p>
+              <p className="text-lg font-black text-ink leading-tight truncate">{driver.name || t('common.driver', 'Driver')}</p>
               <span className="inline-flex items-center text-[9px] font-black uppercase text-accent bg-accent-soft px-1.5 py-0.5 boxed-rounded border border-accent shrink-0">
                 {role === 'owner' ? 'Fleet Owner' : 'BFC Elite'}
               </span>
@@ -193,8 +198,8 @@ export default function Profile() {
               <span className="text-[9px] font-black uppercase text-accent bg-accent-soft px-1.5 py-0.5 rounded border border-accent select-none">
                 {t('profile.activeTruck')}
               </span>
-              <p className="text-base font-extrabold text-ink mt-1.5 nums tracking-wide">{driver.truck.regNumber}</p>
-              <p className="text-xs text-ink-muted font-bold mt-0.5">{driver.truck.type} • {driver.truck.capacity}</p>
+              <p className="text-base font-extrabold text-ink mt-1.5 nums tracking-wide">{truckRegLabel}</p>
+              <p className="text-xs text-ink-muted font-bold mt-0.5">{truckMetaLabel}</p>
             </div>
             <div className="h-10 w-10 shrink-0 bg-surface-base border border-hairline rounded-lg flex items-center justify-center shadow-sm">
               <Truck size={18} className="text-accent" />
@@ -203,6 +208,11 @@ export default function Profile() {
 
           {/* List of Registered Fleet */}
           <div className="divide-y divide-hairline">
+            {driver.trucks.length === 0 && (
+              <div className="py-5 text-center text-xs text-ink-muted font-bold">
+                {t('profile.noTrucks')}
+              </div>
+            )}
             {driver.trucks.map((tk) => {
               if (role === 'owner') {
                 const isTruckActive = tk.isActive !== false
@@ -388,9 +398,15 @@ export default function Profile() {
                 <p className="text-sm font-black text-ink">{d.label}</p>
                 <p className="text-xs text-ink-faint truncate font-semibold">{d.id}</p>
               </div>
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-success bg-surface-base border border-success px-2 py-0.5 boxed-rounded shrink-0">
-                <BadgeCheck size={12} /> {t('profile.docValid')}
-              </span>
+              {d.id === 'PENDING' ? (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-ink-muted bg-surface-grey border border-hairline px-2 py-0.5 boxed-rounded shrink-0">
+                  {t('profile.pending', 'Pending')}
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-success bg-surface-base border border-success px-2 py-0.5 boxed-rounded shrink-0">
+                  <BadgeCheck size={12} /> {t('profile.docValid')}
+                </span>
+              )}
             </div>
           ))}
         </Section>

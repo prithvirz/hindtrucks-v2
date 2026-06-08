@@ -318,4 +318,35 @@ describe('useProfile', () => {
         expect(result.current.profile.driver.name).toBe('')
         expect(localStorage.getItem('ht_driver_9123456780')).not.toContain('Legacy Driver')
     })
+
+    it('creates a minimal first profile without truck details', async () => {
+        const { result } = renderHook(() => {
+            const auth = useAuth()
+            const profile = useProfile()
+            return { auth, profile }
+        }, {
+            wrapper: ({ children }) => (
+                <AuthProvider>
+                    <ProfileProvider>{children}</ProfileProvider>
+                </AuthProvider>
+            ),
+        })
+
+        act(() => {
+            result.current.auth.login('9988776655')
+        })
+
+        await act(async () => {
+            await result.current.profile.createDriverProfile({
+                name: 'Real Driver',
+                phone: '9988776655',
+            })
+        })
+
+        expect(result.current.profile.driver.name).toBe('Real Driver')
+        expect(result.current.profile.driver.phone).toBe('9988776655')
+        expect(result.current.profile.driver.truck.regNumber).toBe('')
+        expect(result.current.profile.driver.trucks).toHaveLength(0)
+        expect(localStorage.getItem('ht_registered_9988776655')).toBe('1')
+    })
 })

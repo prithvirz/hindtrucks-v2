@@ -34,6 +34,16 @@
     "sendOtp": "Send OTP",
     "terms": "By continuing you agree to our Terms & Privacy Policy"
   },
+  "auth": {
+    "title": "Start",
+    "heading": "Welcome to HindTrucks",
+    "subtitle": "New drivers can register. Existing drivers can login with the same number.",
+    "registerTitle": "Register",
+    "registerSubtitle": "First time on HindTrucks",
+    "loginTitle": "Login",
+    "loginSubtitle": "Already registered",
+    "primaryCta": "Register"
+  },
   "otp": {
     "title": "Verify your number",
     "subtitle": "Enter the 6-digit code sent to {{phone}}",
@@ -124,6 +134,9 @@
     "language": "Language",
     "support": "Help & support",
     "logout": "Log out",
+    "truckPending": "Truck setup pending",
+    "addTruckPrompt": "Add truck details from Profile",
+    "pending": "Pending",
     "regNumber": "Registration",
     "truckType": "Truck type",
     "capacity": "Capacity",
@@ -157,7 +170,8 @@
     "stepPersonal": "Personal",
     "stepTruck": "Truck",
     "welcomeTitle": "Welcome to HindTrucks!",
-    "welcomeSubtitle": "Tell us your role and basic details.",
+    "welcomeSubtitle": "Register your name and mobile number. Truck details can be added after login.",
+    "verifiedPhone": "Verified number: {{phone}}",
     "roleLabel": "Your Role",
     "roles": {
       "driver": {
