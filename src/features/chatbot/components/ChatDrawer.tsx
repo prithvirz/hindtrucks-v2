@@ -213,7 +213,7 @@ export function ChatDrawer() {
                 <div
                     id="chatbot-button"
                     onClick={toggleChat}
-                    className={`absolute left-1/2 -translate-x-1/2 z-40 transition-all duration-500 cursor-pointer select-none bottom-[calc(4.8rem+env(safe-area-inset-bottom))] ${
+                    className={`absolute left-1/2 -translate-x-1/2 z-40 transition-all duration-500 cursor-pointer select-none bottom-[calc(var(--app-bottom-nav-height)+var(--safe-bottom))] ${
                         isTourActive || hideClosedFab ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'
                     }`}
                 >

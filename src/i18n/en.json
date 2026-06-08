@@ -1,5 +1,7 @@
 {
-  "app": { "name": "HindTrucks" },
+  "app": {
+    "name": "HindTrucks"
+  },
   "common": {
     "continue": "Continue",
     "next": "Next",
@@ -150,6 +152,47 @@
     "fleetOnlineStatus": "FLEET ONLINE STATUS",
     "fleetOnlineStatusDesc": "Toggle to receive load matching alerts for the entire fleet"
   },
+  "register": {
+    "title": "Create Account",
+    "stepPersonal": "Personal",
+    "stepTruck": "Truck",
+    "welcomeTitle": "Welcome to HindTrucks!",
+    "welcomeSubtitle": "Tell us your role and basic details.",
+    "roleLabel": "Your Role",
+    "roles": {
+      "driver": {
+        "title": "Driver",
+        "description": "I drive my own / fleet vehicle."
+      },
+      "owner": {
+        "title": "Fleet Owner",
+        "description": "I own and manage a fleet."
+      }
+    },
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "e.g. Rajesh Kumar",
+    "licenseNumber": "Driving License Number",
+    "licensePlaceholder": "e.g. DL-14201234567",
+    "companyName": "Company Name",
+    "companyPlaceholder": "e.g. Shergill Logistics",
+    "firstTruckTitle": "Register First Truck",
+    "truckTitle": "Your Truck",
+    "truckSubtitle": "We match your truck type with the best loads.",
+    "truckRegNumber": "Truck Registration Number",
+    "truckRegPlaceholder": "e.g. PB10 AB 4521",
+    "truckType": "Truck Type",
+    "capacity": "Capacity",
+    "capacityPlaceholder": "e.g. 9 Ton",
+    "nextTruckDetails": "Next: Truck Details",
+    "createAccount": "Create Account",
+    "truckTypes": {
+      "ft19": "19 ft Container",
+      "ft32": "32 ft Container",
+      "open14": "Open Truck (14 Wheeler)",
+      "dumper": "Dumper Truck",
+      "trailer": "Trailer LPT"
+    }
+  },
   "goods": {
     "electronics": "Electronics",
     "furniture": "Furniture",
@@ -223,4 +266,3 @@
     "listening": "Listening... Speak now"
   }
 }
-

@@ -181,7 +181,7 @@ export default function ActiveTrip() {
     return (
       <div className="h-full flex flex-col">
         <TopBar title="Fleet Tracking" />
-        <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-4 pb-32 space-y-4">
+        <div className="flex-1 app-scroll no-scrollbar px-5 pt-4 pb-tabs space-y-4">
           <p className="text-xs font-black uppercase text-ink-muted">Ongoing Fleet Trips ({activeTrips.length})</p>
 
           {activeTrips.length === 0 ? (
@@ -365,7 +365,7 @@ export default function ActiveTrip() {
         back={role === 'owner'}
         onBack={role === 'owner' ? () => setSelectedTripId(null) : undefined}
       />
-      <div className="flex-1 overflow-y-auto no-scrollbar pb-28">
+      <div className="flex-1 app-scroll no-scrollbar pb-action">
         <div className="relative h-48">
           <LocationPermission
             onGranted={() => {

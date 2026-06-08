@@ -1,5 +1,7 @@
 {
-  "app": { "name": "हिंदट्रक्स" },
+  "app": {
+    "name": "हिंदट्रक्स"
+  },
   "common": {
     "continue": "आगे बढ़ें",
     "next": "अगला",
@@ -143,6 +145,47 @@
     "noTrucks": "कोई अन्य ट्रक पंजीकृत नहीं है।",
     "fleetOnlineStatus": "बेड़े की ऑनलाइन स्थिति",
     "fleetOnlineStatusDesc": "पूरे बेड़े के लिए लोड मैचिंग अलर्ट प्राप्त करने के लिए स्विच बदलें"
+  },
+  "register": {
+    "title": "खाता बनाएं",
+    "stepPersonal": "व्यक्तिगत",
+    "stepTruck": "ट्रक",
+    "welcomeTitle": "HindTrucks में आपका स्वागत है!",
+    "welcomeSubtitle": "अपनी भूमिका और बुनियादी जानकारी बताएं।",
+    "roleLabel": "आपकी भूमिका",
+    "roles": {
+      "driver": {
+        "title": "ड्राइवर",
+        "description": "मैं अपना या फ्लीट वाहन चलाता हूं।"
+      },
+      "owner": {
+        "title": "फ्लीट मालिक",
+        "description": "मैं फ्लीट का मालिक हूं और उसे संभालता हूं।"
+      }
+    },
+    "fullName": "पूरा नाम",
+    "fullNamePlaceholder": "जैसे राजेश कुमार",
+    "licenseNumber": "ड्राइविंग लाइसेंस नंबर",
+    "licensePlaceholder": "जैसे DL-14201234567",
+    "companyName": "कंपनी का नाम",
+    "companyPlaceholder": "जैसे शेरगिल लॉजिस्टिक्स",
+    "firstTruckTitle": "पहला ट्रक रजिस्टर करें",
+    "truckTitle": "आपका ट्रक",
+    "truckSubtitle": "हम आपके ट्रक प्रकार को सबसे अच्छे लोड से मिलाते हैं।",
+    "truckRegNumber": "ट्रक रजिस्ट्रेशन नंबर",
+    "truckRegPlaceholder": "जैसे PB10 AB 4521",
+    "truckType": "ट्रक प्रकार",
+    "capacity": "क्षमता",
+    "capacityPlaceholder": "जैसे 9 टन",
+    "nextTruckDetails": "आगे: ट्रक विवरण",
+    "createAccount": "खाता बनाएं",
+    "truckTypes": {
+      "ft19": "19 फीट कंटेनर",
+      "ft32": "32 फीट कंटेनर",
+      "open14": "ओपन ट्रक (14 व्हीलर)",
+      "dumper": "डंपर ट्रक",
+      "trailer": "ट्रेलर LPT"
+    }
   },
   "goods": {
     "electronics": "इलेक्ट्रॉनिक्स",

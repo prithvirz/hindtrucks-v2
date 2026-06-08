@@ -98,7 +98,7 @@ export default function Earnings() {
       `}</style>
 
       <TopBar title={t('earnings.title')} />
-      <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-4 pb-32 space-y-5">
+      <div className="flex-1 app-scroll no-scrollbar px-5 pt-4 pb-tabs space-y-5">
         {/* Wallet */}
         <div className="rounded-3xl bg-gradient-to-br from-[#064E3B] to-[#022C22] text-white p-5 shadow-pop relative overflow-hidden">
           <div className="pointer-events-none absolute -top-10 -right-8 h-32 w-32 rounded-full bg-white/5 blur-2xl" />
@@ -305,4 +305,3 @@ export default function Earnings() {
     </div>
   )
 }
-

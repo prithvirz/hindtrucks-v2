@@ -12,6 +12,47 @@
   "trip": { "title": "સક્રિય ટ્રિપ", "callShipper": "શિપરને કૉલ કરો", "steps": { "toPickup": "પિકઅપ તરફ જઈ રહ્યા છીએ", "loaded": "લોડ થયું", "transit": "પરિવહનમાં", "delivered": "ડિલિવર થયું" }, "markNext": "{{step}} તરીકે ચિહ્નિત કરો", "completed": "ટ્રિપ પૂર્ણ થઈ", "earned": "તમે કમાયા", "backHome": "હોમ પર પાછા જાઓ" },
   "earnings": { "title": "કમાણી", "balance": "વૉલેટ બેલેન્સ", "withdraw": "ઉપાડો", "thisWeek": "આ અઠવાડિયે", "history": "ચુકવણીનો ઇતિહાસ", "credited": "જમા થયું", "pending": "બાકી" },
   "profile": { "title": "પ્રોફાઇલ", "truck": "ટ્રકની વિગતો", "documents": "દસ્તાવેજો", "language": "ભાષા", "support": "મદદ અને સહાય", "logout": "લૉગ આઉટ", "regNumber": "નોંધણી", "truckType": "ટ્રકનો પ્રકાર", "capacity": "ક્ષમતા", "docRC": "RC (નોંધણી)", "docLicense": "ડ્રાઇવિંગ લાઇસન્સ", "docPermit": "રાષ્ટ્રીય પરમિટ", "docValid": "માન્ય", "editProfile": "પ્રોફાઇલ સંપાદિત કરો", "saveChanges": "ફેરફારો સાચવો", "editName": "પૂરું નામ", "editPhone": "ફોન નંબર", "editTruckNo": "ટ્રક નંબર", "editTruckType": "ટ્રકનો પ્રકાર", "editCapacity": "ક્ષમતા", "selectAvatar": "પ્રોફાઇલ ઇમેજ પસંદ કરો", "editCardDetails": "કાર્ડ વિગતો સંપાદિત કરો", "cardNo": "કાર્ડ નંબર", "validityDate": "માન્યતા તારીખ", "saveCard": "કાર્ડ સાચવો", "manageVehicles": "ટ્રક મેનેજ કરો", "addTruck": "નવી ટ્રક ઉમેરો", "removeTruck": "દૂર કરો", "activeTruck": "સક્રિય", "selectActive": "સક્રિય કરો", "noTrucks": "બીજી કોઈ ટ્રક નોંધાયેલ નથી.", "fleetOnlineStatus": "કાફલા ઓનલાઇન સ્થિતિ", "fleetOnlineStatusDesc": "આખા કાફલા માટે લોડ મેચિંગ એલર્ટ મેળવવા ટૉગલ કરો" },
+  "register": {
+    "title": "ખાતું બનાવો",
+    "stepPersonal": "વ્યક્તિગત",
+    "stepTruck": "ટ્રક",
+    "welcomeTitle": "HindTrucks માં આપનું સ્વાગત છે!",
+    "welcomeSubtitle": "તમારી ભૂમિકા અને મૂળભૂત વિગતો જણાવો.",
+    "roleLabel": "તમારી ભૂમિકા",
+    "roles": {
+      "driver": {
+        "title": "ડ્રાઇવર",
+        "description": "હું મારું પોતાનું અથવા ફ્લીટ વાહન ચલાવું છું."
+      },
+      "owner": {
+        "title": "ફ્લીટ માલિક",
+        "description": "હું ફ્લીટનો માલિક છું અને મેનેજ કરું છું."
+      }
+    },
+    "fullName": "પૂરું નામ",
+    "fullNamePlaceholder": "દા.ત. રાજેશ કુમાર",
+    "licenseNumber": "ડ્રાઇવિંગ લાઇસન્સ નંબર",
+    "licensePlaceholder": "દા.ત. DL-14201234567",
+    "companyName": "કંપનીનું નામ",
+    "companyPlaceholder": "દા.ત. Shergill Logistics",
+    "firstTruckTitle": "પ્રથમ ટ્રક નોંધાવો",
+    "truckTitle": "તમારો ટ્રક",
+    "truckSubtitle": "અમે તમારા ટ્રક પ્રકારને શ્રેષ્ઠ લોડ સાથે મેચ કરીએ છીએ.",
+    "truckRegNumber": "ટ્રક નોંધણી નંબર",
+    "truckRegPlaceholder": "દા.ત. PB10 AB 4521",
+    "truckType": "ટ્રકનો પ્રકાર",
+    "capacity": "ક્ષમતા",
+    "capacityPlaceholder": "દા.ત. 9 ટન",
+    "nextTruckDetails": "આગળ: ટ્રક વિગતો",
+    "createAccount": "ખાતું બનાવો",
+    "truckTypes": {
+      "ft19": "19 ફૂટ કન્ટેનર",
+      "ft32": "32 ફૂટ કન્ટેનર",
+      "open14": "ઓપન ટ્રક (14 વ્હીલર)",
+      "dumper": "ડમ્પર ટ્રક",
+      "trailer": "ટ્રેલર LPT"
+    }
+  },
   "goods": { "electronics": "ઇલેક્ટ્રોનિક્સ", "furniture": "ફર્નિચર", "containers": "કન્ટેનર કાર્ગો", "parcels": "પાર્સલ" },
   "tour": { "welcome": { "title": "HindTrucks માં આપનું સ્વાગત છે!", "content": "શરૂઆત કરવામાં મદદ માટે ચાલો મુખ્ય નેવિગેશન ટૅબ્સનો ઝડપી 1-મિનિટનો પ્રવાસ કરીએ." }, "navHome": { "title": "હોમ ડેશબોર્ડ", "content": "નજીકના લોડ શોધવા, દૈનિક આંકડા જોવા, મિત્રોને રેફર કરવા અને BFC ડ્રાઇવર લીડરબોર્ડ જોવા ઓનલાઇન થાઓ." }, "toggle": { "title": "ઓનલાઇન / ઓફલાઇન થાઓ", "content": "ઓનલાઇન થવા આ સ્વિચ ટૉગલ કરો. ઓનલાઇન હો ત્યારે, તમે તરત જ નજીકના વધુ ચુકવણીવાળા લોડ જોશો." }, "navLoads": { "title": "ઉપલબ્ધ લોડ", "content": "તમારી ટ્રક સાથે મેળ ખાતા સક્રિય લોડ બ્રાઉઝ કરો, રૂટ નકશા અને ચુકવણી વિભાજન જુઓ, અને નવી ટ્રિપ સ્વીકારો." }, "navEarnings": { "title": "વૉલેટ અને ચુકવણી", "content": "તમારી ચુકવણીનો ઇતિહાસ ટ્રૅક કરો, વૉલેટ બેલેન્સ જુઓ, અને સીધા તમારા UPI ID પર તાત્કાલિક ઉપાડની વિનંતી કરો." }, "navProfile": { "title": "ડ્રાઇવર પ્રોફાઇલ", "content": "સ્માર્ટ કાર્ડ વિગતો (લાઇસન્સ, RC, પરમિટ) ચકાસો, એપ્લિકેશન ભાષાઓ બદલો, અથવા લૉગ આઉટ કરો." } },
   "gps": { "permissionTitle": "GPS ટ્રેકિંગ સક્ષમ કરો", "permissionMessage": "ટ્રિપ ટ્રૅક કરવા અને ETA માટે સ્થાન ઍક્સેસ આપો.", "allow": "સ્થાન ઍક્સેસ આપો", "skip": "છોડો", "requesting": "વિનંતી...", "backgroundTitle": "ટ્રિપ દરમ્યાન ટ્રેકિંગ", "backgroundMessage": "HindTrucks background માં location collect કરે — app band hoy tyare pan — musafari shuru theki ant tak track thay. Aagali screen par 'hamesha anumati do' pasand karo.", "backgroundAllow": "આગળ વધો", "backgroundSkip": "ફક્ત app વાપરતી વખત", "deniedTitle": "સ્થાન ઍક્સેસ નકારી", "deniedMessage": "GPS ટ્રેકિંગ માટે device settings માં location access ચાલુ કરો.", "openSettings": "Settings ખોલો", "continueWithoutGps": "GPS વિના આગળ વધો" },

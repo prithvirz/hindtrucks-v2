@@ -12,6 +12,47 @@
   "trip": { "title": "ସକ୍ରିୟ ଯାତ୍ରା", "callShipper": "ଶିପର୍‌କୁ କଲ୍ କରନ୍ତୁ", "steps": { "toPickup": "ପିକଅପ୍‌କୁ ଯାଉଛି", "loaded": "ଲୋଡ୍ ହୋଇଛି", "transit": "ଯାତ୍ରାରେ", "delivered": "ଡେଲିଭର ହୋଇଛି" }, "markNext": "{{step}} ଭାବେ ଚିହ୍ନଟ କରନ୍ତୁ", "completed": "ଯାତ୍ରା ସମ୍ପୂର୍ଣ୍ଣ ହୋଇଛି", "earned": "ଆପଣ ରୋଜଗାର କଲେ", "backHome": "ହୋମ୍‌କୁ ଫେରନ୍ତୁ" },
   "earnings": { "title": "ରୋଜଗାର", "balance": "ୱାଲେଟ୍ ବାଲାନ୍ସ", "withdraw": "ଉଠାନ୍ତୁ", "thisWeek": "ଏହି ସପ୍ତାହ", "history": "ପେଆଉଟ୍ ଇତିହାସ", "credited": "ଜମା ହୋଇଛି", "pending": "ବାକି ଅଛି" },
   "profile": { "title": "ପ୍ରୋଫାଇଲ୍", "truck": "ଟ୍ରକ୍ ବିବରଣୀ", "documents": "ଦସ୍ତାବିଜ", "language": "ଭାଷା", "support": "ସାହାଯ୍ୟ ଓ ସମର୍ଥନ", "logout": "ଲଗ୍ ଆଉଟ୍", "regNumber": "ପଞ୍ଜୀକରଣ", "truckType": "ଟ୍ରକ୍ ପ୍ରକାର", "capacity": "କ୍ଷମତା", "docRC": "RC (ପଞ୍ଜୀକରଣ)", "docLicense": "ଡ୍ରାଇଭିଂ ଲାଇସେନ୍ସ", "docPermit": "ଜାତୀୟ ପର୍ମିଟ୍", "docValid": "ବୈଧ", "editProfile": "ପ୍ରୋଫାଇଲ୍ ସମ୍ପାଦନ", "saveChanges": "ପରିବର୍ତ୍ତନ ସେଭ୍ କରନ୍ତୁ", "editName": "ପୂରା ନାମ", "editPhone": "ଫୋନ୍ ନମ୍ବର", "editTruckNo": "ଟ୍ରକ୍ ନମ୍ବର", "editTruckType": "ଟ୍ରକ୍ ପ୍ରକାର", "editCapacity": "କ୍ଷମତା", "selectAvatar": "ପ୍ରୋଫାଇଲ୍ ଛବି ବାଛନ୍ତୁ", "editCardDetails": "କାର୍ଡ ବିବରଣୀ ସମ୍ପାଦନ", "cardNo": "କାର୍ଡ ନମ୍ବର", "validityDate": "ବୈଧତା ତାରିଖ", "saveCard": "କାର୍ଡ ସେଭ୍ କରନ୍ତୁ", "manageVehicles": "ଟ୍ରକ୍ ପରିଚାଳନା", "addTruck": "ନୂଆ ଟ୍ରକ୍ ଯୋଗ କରନ୍ତୁ", "removeTruck": "ବାହାର କରନ୍ତୁ", "activeTruck": "ସକ୍ରିୟ", "selectActive": "ସକ୍ରିୟ କରନ୍ତୁ", "noTrucks": "ଅନ୍ୟ କୌଣସି ଟ୍ରକ୍ ପଞ୍ଜୀକୃତ ନାହିଁ।", "fleetOnlineStatus": "ବହର ଅନଲାଇନ୍ ସ୍ଥିତି", "fleetOnlineStatusDesc": "ସମ୍ପୂର୍ଣ୍ଣ ବହର ପାଇଁ ଲୋଡ୍ ମେଳ ଆଲର୍ଟ ପାଇବାକୁ ଟୋଗଲ୍ କରନ୍ତୁ" },
+  "register": {
+    "title": "ଖାତା ସୃଷ୍ଟି କରନ୍ତୁ",
+    "stepPersonal": "ବ୍ୟକ୍ତିଗତ",
+    "stepTruck": "ଟ୍ରକ୍",
+    "welcomeTitle": "HindTrucks କୁ ସ୍ୱାଗତ!",
+    "welcomeSubtitle": "ଆପଣଙ୍କ ଭୂମିକା ଓ ମୂଳ ବିବରଣୀ ଦିଅନ୍ତୁ।",
+    "roleLabel": "ଆପଣଙ୍କ ଭୂମିକା",
+    "roles": {
+      "driver": {
+        "title": "ଡ୍ରାଇଭର",
+        "description": "ମୁଁ ନିଜ କିମ୍ବା ବହର ଯାନ ଚଳାଏ।"
+      },
+      "owner": {
+        "title": "ବହର ମାଲିକ",
+        "description": "ମୁଁ ବହରର ମାଲିକ ଓ ପରିଚାଳନା କରେ।"
+      }
+    },
+    "fullName": "ପୂରା ନାମ",
+    "fullNamePlaceholder": "ଉଦା. ରାଜେଶ କୁମାର",
+    "licenseNumber": "ଡ୍ରାଇଭିଂ ଲାଇସେନ୍ସ ନମ୍ବର",
+    "licensePlaceholder": "ଉଦା. DL-14201234567",
+    "companyName": "କମ୍ପାନୀ ନାମ",
+    "companyPlaceholder": "ଉଦା. Shergill Logistics",
+    "firstTruckTitle": "ପ୍ରଥମ ଟ୍ରକ୍ ପଞ୍ଜୀକରଣ କରନ୍ତୁ",
+    "truckTitle": "ଆପଣଙ୍କ ଟ୍ରକ୍",
+    "truckSubtitle": "ଆମେ ଆପଣଙ୍କ ଟ୍ରକ୍ ପ୍ରକାରକୁ ଭଲ ଲୋଡ୍ ସହିତ ମେଳ କରୁଛୁ।",
+    "truckRegNumber": "ଟ୍ରକ୍ ପଞ୍ଜୀକରଣ ନମ୍ବର",
+    "truckRegPlaceholder": "ଉଦା. PB10 AB 4521",
+    "truckType": "ଟ୍ରକ୍ ପ୍ରକାର",
+    "capacity": "କ୍ଷମତା",
+    "capacityPlaceholder": "ଉଦା. 9 ଟନ୍",
+    "nextTruckDetails": "ଆଗକୁ: ଟ୍ରକ୍ ବିବରଣୀ",
+    "createAccount": "ଖାତା ସୃଷ୍ଟି କରନ୍ତୁ",
+    "truckTypes": {
+      "ft19": "19 ଫୁଟ୍ କଣ୍ଟେନର",
+      "ft32": "32 ଫୁଟ୍ କଣ୍ଟେନର",
+      "open14": "ଓପନ୍ ଟ୍ରକ୍ (14 ଚକିଆ)",
+      "dumper": "ଡମ୍ପର ଟ୍ରକ୍",
+      "trailer": "ଟ୍ରେଲର LPT"
+    }
+  },
   "goods": { "electronics": "ଇଲେକ୍ଟ୍ରୋନିକ୍ସ", "furniture": "ଫର୍ନିଚର", "containers": "କଣ୍ଟେନର୍ କାର୍ଗୋ", "parcels": "ପାର୍ସେଲ" },
   "tour": { "welcome": { "title": "HindTrucks କୁ ସ୍ୱାଗତ!", "content": "ଆରମ୍ଭ କରିବାରେ ସାହାଯ୍ୟ ପାଇଁ ମୁଖ୍ୟ ନେଭିଗେସନ୍ ଟ୍ୟାବ୍‌ର ଏକ ଦ୍ରୁତ 1-ମିନିଟ୍ ଟୁର୍ ନେବା।" }, "navHome": { "title": "ହୋମ୍ ଡ୍ୟାସବୋର୍ଡ", "content": "ନିକଟରେ ଥିବା ଲୋଡ୍ ଖୋଜିବାକୁ, ଦୈନିକ ପରିସଂଖ୍ୟାନ ଦେଖିବାକୁ, ସାଙ୍ଗମାନଙ୍କୁ ରେଫର୍ କରିବାକୁ ଓ BFC ଡ୍ରାଇଭର ଲିଡରବୋର୍ଡ ଦେଖିବାକୁ ଅନଲାଇନ୍ ଆସନ୍ତୁ।" }, "toggle": { "title": "ଅନଲାଇନ୍ / ଅଫଲାଇନ୍ ଯାଆନ୍ତୁ", "content": "ଅନଲାଇନ୍ ଯିବାକୁ ଏହି ସୁଇଚ୍ ଟୋଗଲ୍ କରନ୍ତୁ। ଅନଲାଇନ୍ ଥିଲେ, ଆପଣ ତୁରନ୍ତ ନିକଟରେ ଥିବା ଅଧିକ-ଦେୟ ଲୋଡ୍ ଦେଖିବେ।" }, "navLoads": { "title": "ଉପଲବ୍ଧ ଲୋଡ୍", "content": "ଆପଣଙ୍କ ଟ୍ରକ୍ ସହିତ ମେଳ ଖାଉଥିବା ସକ୍ରିୟ ଲୋଡ୍ ବ୍ରାଉଜ୍ କରନ୍ତୁ, ରୁଟ୍ ମ୍ୟାପ୍ ଓ ପେମେଣ୍ଟ ବିଭାଜନ ଦେଖନ୍ତୁ, ଏବଂ ନୂଆ ଯାତ୍ରା ଗ୍ରହଣ କରନ୍ତୁ।" }, "navEarnings": { "title": "ୱାଲେଟ୍ ଓ ପେଆଉଟ୍", "content": "ଆପଣଙ୍କ ପେଆଉଟ୍ ଇତିହାସ ଟ୍ରାକ୍ କରନ୍ତୁ, ୱାଲେଟ୍ ବାଲାନ୍ସ ଦେଖନ୍ତୁ, ଏବଂ ସିଧାସଳଖ ଆପଣଙ୍କ UPI ID କୁ ତୁରନ୍ତ ଉଠାଣ ଅନୁରୋଧ କରନ୍ତୁ।" }, "navProfile": { "title": "ଡ୍ରାଇଭର ପ୍ରୋଫାଇଲ୍", "content": "ସ୍ମାର୍ଟ କାର୍ଡ ବିବରଣୀ (ଲାଇସେନ୍ସ, RC, ପର୍ମିଟ୍) ଯାଞ୍ଚ କରନ୍ତୁ, ଆପ୍ଲିକେସନ୍ ଭାଷା ବଦଳାନ୍ତୁ, କିମ୍ବା ଲଗ୍ ଆଉଟ୍ କରନ୍ତୁ।" } },
   "gps": { "permissionTitle": "GPS ଟ୍ରାକିଂ ସକ୍ଷମ କରନ୍ତୁ", "permissionMessage": "ଯାତ୍ରା ଟ୍ରାକ୍ ଓ ETA ପାଇଁ ସ୍ଥାନ ଅନୁମତି ଦିଅନ୍ତୁ।", "allow": "ସ୍ଥାନ ଅନୁମତି ଦିଅନ୍ତୁ", "skip": "ଛାଡ଼ନ୍ତୁ", "requesting": "ଅନୁରୋଧ ହେଉଛି...", "backgroundTitle": "ଯାତ୍ରା ଟ୍ରାକିଂ", "backgroundMessage": "HindTrucks background re location collect kare — app bonda hele ba screen bonda hele bi — yatra shuru ru sesh paryanta track hue. Agali screen re 'hamesha anumati diantun' pasanda karanti.", "backgroundAllow": "ଆଗକୁ ଯାଆନ୍ତୁ", "backgroundSkip": "App byabahara samaya matara", "deniedTitle": "ସ୍ଥାନ ଅନୁମତି ନାକଚ", "deniedMessage": "GPS tracking paain device settings re location access chalu karanti.", "openSettings": "Settings ଖୋଲନ୍ତୁ", "continueWithoutGps": "GPS bina agaku janti" },

@@ -14,7 +14,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-lg border font-extrabold tracking-normal transition-all duration-150 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30'
+  'inline-flex min-w-0 items-center justify-center gap-2 rounded-lg border font-extrabold tracking-normal leading-tight transition-all duration-150 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30'
 
 const variants: Record<Variant, string> = {
   primary: 'bg-accent text-white border-accent hover:bg-accent-press shadow-sm shadow-accent/15',
@@ -62,7 +62,7 @@ export default function Button({
       ) : (
         <>
           {leftIcon && <span className="shrink-0">{leftIcon}</span>}
-          <span className="truncate">{children}</span>
+          <span className="min-w-0 max-w-full text-center break-words">{children}</span>
           {rightIcon && <span className="shrink-0">{rightIcon}</span>}
         </>
       )}

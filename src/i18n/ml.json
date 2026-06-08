@@ -12,6 +12,47 @@
   "trip": { "title": "സജീവ യാത്ര", "callShipper": "ഷിപ്പറെ വിളിക്കുക", "steps": { "toPickup": "പിക്കപ്പിലേക്ക് പോകുന്നു", "loaded": "ലോഡ് ചെയ്തു", "transit": "യാത്രയിലാണ്", "delivered": "ഡെലിവർ ചെയ്തു" }, "markNext": "{{step}} ആയി അടയാളപ്പെടുത്തുക", "completed": "യാത്ര പൂർത്തിയായി", "earned": "നിങ്ങൾ നേടി", "backHome": "ഹോമിലേക്ക് മടങ്ങുക" },
   "earnings": { "title": "വരുമാനം", "balance": "വാലറ്റ് ബാലൻസ്", "withdraw": "പിൻവലിക്കുക", "thisWeek": "ഈ ആഴ്ച", "history": "പേയ്ഔട്ട് ചരിത്രം", "credited": "ക്രെഡിറ്റ് ചെയ്തു", "pending": "തീർച്ചപ്പെടാത്തത്" },
   "profile": { "title": "പ്രൊഫൈൽ", "truck": "ട്രക്ക് വിശദാംശങ്ങൾ", "documents": "രേഖകൾ", "language": "ഭാഷ", "support": "സഹായം", "logout": "ലോഗ് ഔട്ട്", "regNumber": "രജിസ്ട്രേഷൻ", "truckType": "ട്രക്ക് തരം", "capacity": "ശേഷി", "docRC": "RC (രജിസ്ട്രേഷൻ)", "docLicense": "ഡ്രൈവിംഗ് ലൈസൻസ്", "docPermit": "ദേശീയ പെർമിറ്റ്", "docValid": "സാധുവാണ്", "editProfile": "പ്രൊഫൈൽ എഡിറ്റ് ചെയ്യുക", "saveChanges": "മാറ്റങ്ങൾ സംരക്ഷിക്കുക", "editName": "പൂർണ്ണ നാമം", "editPhone": "ഫോൺ നമ്പർ", "editTruckNo": "ട്രക്ക് നമ്പർ", "editTruckType": "ട്രക്ക് തരം", "editCapacity": "ശേഷി", "selectAvatar": "പ്രൊഫൈൽ ചിത്രം തിരഞ്ഞെടുക്കുക", "editCardDetails": "കാർഡ് വിശദാംശങ്ങൾ എഡിറ്റ് ചെയ്യുക", "cardNo": "കാർഡ് നമ്പർ", "validityDate": "സാധുതാ തീയതി", "saveCard": "കാർഡ് സംരക്ഷിക്കുക", "manageVehicles": "ട്രക്കുകൾ കൈകാര്യം ചെയ്യുക", "addTruck": "പുതിയ ട്രക്ക് ചേർക്കുക", "removeTruck": "നീക്കം ചെയ്യുക", "activeTruck": "സജീവം", "selectActive": "സജീവമാക്കുക", "noTrucks": "മറ്റ് ട്രക്കുകളൊന്നും രജിസ്റ്റർ ചെയ്തിട്ടില്ല.", "fleetOnlineStatus": "ഫ്ലീറ്റ് ഓൺലൈൻ നില", "fleetOnlineStatusDesc": "മുഴുവൻ ഫ്ലീറ്റിനും ലോഡ് മാച്ചിംഗ് അലേർട്ടുകൾ ലഭിക്കാൻ ടോഗിൾ ചെയ്യുക" },
+  "register": {
+    "title": "അക്കൗണ്ട് സൃഷ്ടിക്കുക",
+    "stepPersonal": "വ്യക്തിഗതം",
+    "stepTruck": "ട്രക്ക്",
+    "welcomeTitle": "HindTrucks-ലേക്ക് സ്വാഗതം!",
+    "welcomeSubtitle": "നിങ്ങളുടെ പങ്കും അടിസ്ഥാന വിവരങ്ങളും പറയുക.",
+    "roleLabel": "നിങ്ങളുടെ പങ്ക്",
+    "roles": {
+      "driver": {
+        "title": "ഡ്രൈവർ",
+        "description": "ഞാൻ എന്റെ സ്വന്തം അല്ലെങ്കിൽ ഫ്ലീറ്റ് വാഹനം ഓടിക്കുന്നു."
+      },
+      "owner": {
+        "title": "ഫ്ലീറ്റ് ഉടമ",
+        "description": "ഞാൻ ഫ്ലീറ്റ് സ്വന്തമാക്കി നിയന്ത്രിക്കുന്നു."
+      }
+    },
+    "fullName": "പൂർണ്ണ പേര്",
+    "fullNamePlaceholder": "ഉദാ. രാജേഷ് കുമാർ",
+    "licenseNumber": "ഡ്രൈവിംഗ് ലൈസൻസ് നമ്പർ",
+    "licensePlaceholder": "ഉദാ. DL-14201234567",
+    "companyName": "കമ്പനി പേര്",
+    "companyPlaceholder": "ഉദാ. Shergill Logistics",
+    "firstTruckTitle": "ആദ്യ ട്രക്ക് രജിസ്റ്റർ ചെയ്യുക",
+    "truckTitle": "നിങ്ങളുടെ ട്രക്ക്",
+    "truckSubtitle": "നിങ്ങളുടെ ട്രക്ക് തരത്തിന് മികച്ച ലോഡുകൾ പൊരുത്തപ്പെടുത്തുന്നു.",
+    "truckRegNumber": "ട്രക്ക് രജിസ്ട്രേഷൻ നമ്പർ",
+    "truckRegPlaceholder": "ഉദാ. PB10 AB 4521",
+    "truckType": "ട്രക്ക് തരം",
+    "capacity": "ശേഷി",
+    "capacityPlaceholder": "ഉദാ. 9 ടൺ",
+    "nextTruckDetails": "അടുത്തത്: ട്രക്ക് വിവരങ്ങൾ",
+    "createAccount": "അക്കൗണ്ട് സൃഷ്ടിക്കുക",
+    "truckTypes": {
+      "ft19": "19 അടി കണ്ടെയ്നർ",
+      "ft32": "32 അടി കണ്ടെയ്നർ",
+      "open14": "ഓപ്പൺ ട്രക്ക് (14 വീലർ)",
+      "dumper": "ഡമ്പർ ട്രക്ക്",
+      "trailer": "ട്രെയിലർ LPT"
+    }
+  },
   "goods": { "electronics": "ഇലക്ട്രോണിക്സ്", "furniture": "ഫർണിച്ചർ", "containers": "കണ്ടെയ്നർ ചരക്ക്", "parcels": "പാർസലുകൾ" },
   "tour": { "welcome": { "title": "HindTrucks ലേക്ക് സ്വാഗതം!", "content": "ആരംഭിക്കാൻ സഹായിക്കുന്നതിന് പ്രധാന നാവിഗേഷൻ ടാബുകളിലൂടെ ഒരു മിനിറ്റ് ടൂർ നടത്താം." }, "navHome": { "title": "ഹോം ഡാഷ്ബോർഡ്", "content": "സമീപമുള്ള ലോഡുകൾ കണ്ടെത്താൻ, ദൈനംദിന സ്ഥിതിവിവരക്കണക്കുകൾ കാണാൻ, സുഹൃത്തുക്കളെ റഫർ ചെയ്യാൻ, BFC ഡ്രൈവർ ലീഡർബോർഡ് കാണാൻ ഓൺലൈനാകുക." }, "toggle": { "title": "ഓൺലൈൻ / ഓഫ്‌ലൈൻ ആകുക", "content": "ഓൺലൈനാകാൻ ഈ സ്വിച്ച് ടോഗിൾ ചെയ്യുക. ഓൺലൈനായാൽ ഉടൻ സമീപമുള്ള ഉയർന്ന വരുമാനമുള്ള ലോഡുകൾ കാണാം." }, "navLoads": { "title": "ലഭ്യമായ ലോഡുകൾ", "content": "നിങ്ങളുടെ ട്രക്കിന് യോജിക്കുന്ന സജീവ ലോഡുകൾ ബ്രൗസ് ചെയ്യുക, റൂട്ട് മാപ്പുകളും പേയ്മെന്റ് വിഭജനവും കാണുക, പുതിയ യാത്രകൾ സ്വീകരിക്കുക." }, "navEarnings": { "title": "വാലറ്റും പേയ്ഔട്ടും", "content": "നിങ്ങളുടെ പേയ്ഔട്ട് ചരിത്രം ട്രാക്ക് ചെയ്യുക, വാലറ്റ് ബാലൻസ് കാണുക, UPI ID യിലേക്ക് ഉടനടി പിൻവലിക്കൽ അഭ്യർത്ഥിക്കുക." }, "navProfile": { "title": "ഡ്രൈവർ പ്രൊഫൈൽ", "content": "സ്മാർട്ട് കാർഡ് വിശദാംശങ്ങൾ (ലൈസൻസ്, RC, പെർമിറ്റുകൾ) പരിശോധിക്കുക, ആപ്ലിക്കേഷൻ ഭാഷ മാറ്റുക, അല്ലെങ്കിൽ ലോഗ് ഔട്ട് ചെയ്യുക." } },
   "gps": { "permissionTitle": "GPS ട്രാക്കിംഗ് പ്രവർത്തനക്ഷമമാക്കുക", "permissionMessage": "യാത്ര ട്രാക്ക് ചെയ്യാനും ETA നൽകാനും ലൊക്കേഷൻ ആക്സസ് അനുമതി നൽകുക.", "allow": "ലൊക്കേഷൻ അനുമതി നൽകുക", "skip": "ഒഴിവാക്കുക", "requesting": "അഭ്യർത്ഥിക്കുന്നു...", "backgroundTitle": "യാത്രയ്ക്കിടെ ട്രാക്കിംഗ്", "backgroundMessage": "HindTrucks background ൽ location ശേഖരിക്കുന്നു — app അടച്ചിരിക്കുമ്പോഴും screen ഓഫ് ആകുമ്പോഴും. അടുത്ത screen ൽ 'Always allow' തിരഞ്ഞെടുക്കുക.", "backgroundAllow": "തുടരുക", "backgroundSkip": "App ഉപയോഗിക്കുമ്പോൾ മാത്രം", "deniedTitle": "ലൊക്കേഷൻ ആക്സസ് നിഷേധിച്ചു", "deniedMessage": "GPS ട്രാക്കിംഗിന് device settings ൽ location access പ്രവർത്തനക്ഷമമാക്കുക.", "openSettings": "Settings തുറക്കുക", "continueWithoutGps": "GPS ഇല്ലാതെ തുടരുക" },

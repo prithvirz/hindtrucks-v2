@@ -12,6 +12,47 @@
   "trip": { "title": "ಸಕ್ರಿಯ ಪ್ರಯಾಣ", "callShipper": "ಶಿಪ್ಪರ್‌ಗೆ ಕರೆ ಮಾಡಿ", "steps": { "toPickup": "ಪಿಕಪ್‌ಗೆ ಹೋಗುತ್ತಿದೆ", "loaded": "ಲೋಡ್ ಆಗಿದೆ", "transit": "ಸಾಗಣೆಯಲ್ಲಿ", "delivered": "ತಲುಪಿಸಲಾಗಿದೆ" }, "markNext": "{{step}} ಎಂದು ಗುರುತಿಸಿ", "completed": "ಪ್ರಯಾಣ ಪೂರ್ಣಗೊಂಡಿದೆ", "earned": "ನೀವು ಗಳಿಸಿದ್ದು", "backHome": "ಮುಖಪುಟಕ್ಕೆ ಹಿಂದಿರುಗಿ" },
   "earnings": { "title": "ಗಳಿಕೆ", "balance": "ವಾಲೆಟ್ ಬ್ಯಾಲೆನ್ಸ್", "withdraw": "ಹಿಂಪಡೆಯಿರಿ", "thisWeek": "ಈ ವಾರ", "history": "ಪಾವತಿ ಇತಿಹಾಸ", "credited": "ಜಮಾ ಆಗಿದೆ", "pending": "ಬಾಕಿ ಇದೆ" },
   "profile": { "title": "ಪ್ರೊಫೈಲ್", "truck": "ಟ್ರಕ್ ವಿವರಗಳು", "documents": "ದಾಖಲೆಗಳು", "language": "ಭಾಷೆ", "support": "ಸಹಾಯ ಮತ್ತು ಬೆಂಬಲ", "logout": "ಲಾಗ್ ಔಟ್", "regNumber": "ನೋಂದಣಿ", "truckType": "ಟ್ರಕ್ ಪ್ರಕಾರ", "capacity": "ಸಾಮರ್ಥ್ಯ", "docRC": "RC (ನೋಂದಣಿ)", "docLicense": "ಚಾಲನಾ ಪರವಾನಗಿ", "docPermit": "ರಾಷ್ಟ್ರೀಯ ಪರ್ಮಿಟ್", "docValid": "ಮಾನ್ಯ", "editProfile": "ಪ್ರೊಫೈಲ್ ಸಂಪಾದಿಸಿ", "saveChanges": "ಬದಲಾವಣೆ ಉಳಿಸಿ", "editName": "ಪೂರ್ಣ ಹೆಸರು", "editPhone": "ಫೋನ್ ಸಂಖ್ಯೆ", "editTruckNo": "ಟ್ರಕ್ ಸಂಖ್ಯೆ", "editTruckType": "ಟ್ರಕ್ ಪ್ರಕಾರ", "editCapacity": "ಸಾಮರ್ಥ್ಯ", "selectAvatar": "ಪ್ರೊಫೈಲ್ ಚಿತ್ರ ಆಯ್ಕೆಮಾಡಿ", "editCardDetails": "ಕಾರ್ಡ್ ವಿವರ ಸಂಪಾದಿಸಿ", "cardNo": "ಕಾರ್ಡ್ ಸಂಖ್ಯೆ", "validityDate": "ಮಾನ್ಯತಾ ದಿನಾಂಕ", "saveCard": "ಕಾರ್ಡ್ ಉಳಿಸಿ", "manageVehicles": "ಟ್ರಕ್‌ಗಳನ್ನು ನಿರ್ವಹಿಸಿ", "addTruck": "ಹೊಸ ಟ್ರಕ್ ಸೇರಿಸಿ", "removeTruck": "ತೆಗೆದುಹಾಕಿ", "activeTruck": "ಸಕ್ರಿಯ", "selectActive": "ಸಕ್ರಿಯಗೊಳಿಸಿ", "noTrucks": "ಬೇರೆ ಯಾವುದೇ ಟ್ರಕ್ ನೋಂದಣಿಯಾಗಿಲ್ಲ.", "fleetOnlineStatus": "ಫ್ಲೀಟ್ ಆನ್‌ಲೈನ್ ಸ್ಥಿತಿ", "fleetOnlineStatusDesc": "ಸಂಪೂರ್ಣ ಫ್ಲೀಟ್‌ಗೆ ಲೋಡ್ ಹೊಂದಾಣಿಕೆ ಎಚ್ಚರಿಕೆ ಪಡೆಯಲು ಟಾಗಲ್ ಮಾಡಿ" },
+  "register": {
+    "title": "ಖಾತೆ ರಚಿಸಿ",
+    "stepPersonal": "ವೈಯಕ್ತಿಕ",
+    "stepTruck": "ಟ್ರಕ್",
+    "welcomeTitle": "HindTrucks ಗೆ ಸ್ವಾಗತ!",
+    "welcomeSubtitle": "ನಿಮ್ಮ ಪಾತ್ರ ಮತ್ತು ಮೂಲ ವಿವರಗಳನ್ನು ತಿಳಿಸಿ.",
+    "roleLabel": "ನಿಮ್ಮ ಪಾತ್ರ",
+    "roles": {
+      "driver": {
+        "title": "ಚಾಲಕ",
+        "description": "ನಾನು ನನ್ನದೇ ಅಥವಾ ಫ್ಲೀಟ್ ವಾಹನ ಓಡಿಸುತ್ತೇನೆ."
+      },
+      "owner": {
+        "title": "ಫ್ಲೀಟ್ ಮಾಲೀಕ",
+        "description": "ನಾನು ಫ್ಲೀಟ್‌ನ ಮಾಲೀಕ ಮತ್ತು ನಿರ್ವಹಿಸುತ್ತೇನೆ."
+      }
+    },
+    "fullName": "ಪೂರ್ಣ ಹೆಸರು",
+    "fullNamePlaceholder": "ಉದಾ. ರಾಜೇಶ್ ಕುಮಾರ್",
+    "licenseNumber": "ಚಾಲನಾ ಪರವಾನಗಿ ಸಂಖ್ಯೆ",
+    "licensePlaceholder": "ಉದಾ. DL-14201234567",
+    "companyName": "ಕಂಪನಿ ಹೆಸರು",
+    "companyPlaceholder": "ಉದಾ. Shergill Logistics",
+    "firstTruckTitle": "ಮೊದಲ ಟ್ರಕ್ ನೋಂದಣಿ ಮಾಡಿ",
+    "truckTitle": "ನಿಮ್ಮ ಟ್ರಕ್",
+    "truckSubtitle": "ನಿಮ್ಮ ಟ್ರಕ್ ಪ್ರಕಾರಕ್ಕೆ ಉತ್ತಮ ಲೋಡ್‌ಗಳನ್ನು ಹೊಂದಿಸುತ್ತೇವೆ.",
+    "truckRegNumber": "ಟ್ರಕ್ ನೋಂದಣಿ ಸಂಖ್ಯೆ",
+    "truckRegPlaceholder": "ಉದಾ. PB10 AB 4521",
+    "truckType": "ಟ್ರಕ್ ಪ್ರಕಾರ",
+    "capacity": "ಸಾಮರ್ಥ್ಯ",
+    "capacityPlaceholder": "ಉದಾ. 9 ಟನ್",
+    "nextTruckDetails": "ಮುಂದೆ: ಟ್ರಕ್ ವಿವರಗಳು",
+    "createAccount": "ಖಾತೆ ರಚಿಸಿ",
+    "truckTypes": {
+      "ft19": "19 ಅಡಿ ಕಂಟೇನರ್",
+      "ft32": "32 ಅಡಿ ಕಂಟೇನರ್",
+      "open14": "ಓಪನ್ ಟ್ರಕ್ (14 ವೀಲರ್)",
+      "dumper": "ಡಂಪರ್ ಟ್ರಕ್",
+      "trailer": "ಟ್ರೇಲರ್ LPT"
+    }
+  },
   "goods": { "electronics": "ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್", "furniture": "ಪೀಠೋಪಕರಣ", "containers": "ಕಂಟೈನರ್ ಸರಕು", "parcels": "ಪಾರ್ಸೆಲ್‌ಗಳು" },
   "tour": { "welcome": { "title": "HindTrucks ಗೆ ಸ್ವಾಗತ!", "content": "ಪ್ರಾರಂಭಿಸಲು ಸಹಾಯ ಮಾಡಲು ಮುಖ್ಯ ನ್ಯಾವಿಗೇಶನ್ ಟ್ಯಾಬ್‌ಗಳ 1-ನಿಮಿಷದ ಪರಿಚಯ ಮಾಡಿಕೊಳ್ಳೋಣ." }, "navHome": { "title": "ಹೋಮ್ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್", "content": "ಹತ್ತಿರದ ಲೋಡ್‌ಗಳನ್ನು ಹುಡುಕಲು, ದೈನಂದಿನ ಅಂಕಿಅಂಶ ನೋಡಲು, ಸ್ನೇಹಿತರನ್ನು ಶಿಫಾರಸು ಮಾಡಲು ಮತ್ತು BFC ಚಾಲಕ ಲೀಡರ್‌ಬೋರ್ಡ್ ನೋಡಲು ಆನ್‌ಲೈನ್ ಆಗಿ." }, "toggle": { "title": "ಆನ್‌ಲೈನ್ / ಆಫ್‌ಲೈನ್ ಆಗಿ", "content": "ಆನ್‌ಲೈನ್ ಆಗಲು ಈ ಸ್ವಿಚ್ ಟಾಗಲ್ ಮಾಡಿ. ಆನ್‌ಲೈನ್ ಆದಾಗ, ನೀವು ತಕ್ಷಣ ಹತ್ತಿರದ ಹೆಚ್ಚಿನ ಪಾವತಿಯ ಲೋಡ್‌ಗಳನ್ನು ನೋಡುತ್ತೀರಿ." }, "navLoads": { "title": "ಲಭ್ಯ ಲೋಡ್‌ಗಳು", "content": "ನಿಮ್ಮ ಟ್ರಕ್‌ಗೆ ಹೊಂದುವ ಸಕ್ರಿಯ ಲೋಡ್‌ಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ, ಮಾರ್ಗ ನಕ್ಷೆ ಮತ್ತು ಪಾವತಿ ವಿಭಜನೆ ನೋಡಿ ಮತ್ತು ಹೊಸ ಪ್ರಯಾಣ ಸ್ವೀಕರಿಸಿ." }, "navEarnings": { "title": "ವಾಲೆಟ್ ಮತ್ತು ಪಾವತಿ", "content": "ನಿಮ್ಮ ಪಾವತಿ ಇತಿಹಾಸ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ, ವಾಲೆಟ್ ಬ್ಯಾಲೆನ್ಸ್ ನೋಡಿ ಮತ್ತು ನೇರವಾಗಿ ನಿಮ್ಮ UPI ID ಗೆ ತಕ್ಷಣ ಹಿಂಪಡೆಯುವಿಕೆ ವಿನಂತಿಸಿ." }, "navProfile": { "title": "ಚಾಲಕ ಪ್ರೊಫೈಲ್", "content": "ಸ್ಮಾರ್ಟ್ ಕಾರ್ಡ್ ವಿವರಗಳನ್ನು (ಪರವಾನಗಿ, RC, ಪರ್ಮಿಟ್) ಪರಿಶೀಲಿಸಿ, ಅಪ್ಲಿಕೇಶನ್ ಭಾಷೆ ಬದಲಾಯಿಸಿ ಅಥವಾ ಲಾಗ್ ಔಟ್ ಮಾಡಿ." } },
   "gps": { "permissionTitle": "GPS ಟ್ರ್ಯಾಕಿಂಗ್ ಸಕ್ರಿಯಗೊಳಿಸಿ", "permissionMessage": "ಟ್ರಿಪ್ ಟ್ರ್ಯಾಕ್ ಮಾಡಲು ಮತ್ತು ETA ಗೆ ಸ್ಥಳ ಪ್ರವೇಶ ಅನುಮತಿಸಿ.", "allow": "ಸ್ಥಳ ಅನುಮತಿ ನೀಡಿ", "skip": "ಬಿಡಿ", "requesting": "ವಿನಂತಿಸಲಾಗುತ್ತಿದೆ...", "backgroundTitle": "ಟ್ರಿಪ್ ಸಮಯದಲ್ಲಿ ಟ್ರ್ಯಾಕಿಂಗ್", "backgroundMessage": "HindTrucks background ನಲ್ಲಿ location collect ಮಾಡುತ್ತದೆ — app ಮುಚ್ಚಿದ್ದರೂ screen ಆಫ್ ಆಗಿದ್ದರೂ. ಮುಂದಿನ screen ನಲ್ಲಿ 'Always allow' ಆಯ್ಕೆ ಮಾಡಿ.", "backgroundAllow": "ಮುಂದುವರಿಸಿ", "backgroundSkip": "App ಬಳಸುವಾಗ ಮಾತ್ರ", "deniedTitle": "ಸ್ಥಳ ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ", "deniedMessage": "GPS ಟ್ರ್ಯಾಕಿಂಗ್ ಗಾಗಿ device settings ನಲ್ಲಿ location access ಸಕ್ರಿಯಗೊಳಿಸಿ.", "openSettings": "Settings ತೆರೆಯಿರಿ", "continueWithoutGps": "GPS ಇಲ್ಲದೆ ಮುಂದುವರಿಸಿ" },

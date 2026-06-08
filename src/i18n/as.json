@@ -12,6 +12,47 @@
   "trip": { "title": "সক্ৰিয় যাত্ৰা", "callShipper": "শিপাৰক ফোন কৰক", "steps": { "toPickup": "পিকআপলৈ গৈ আছে", "loaded": "ল'ড কৰা হ'ল", "transit": "ট্ৰানজিটত", "delivered": "ডেলিভাৰ কৰা হ'ল" }, "markNext": "{{step}} হিচাপে চিহ্নিত কৰক", "completed": "যাত্ৰা সম্পূৰ্ণ", "earned": "আপুনি উপাৰ্জন কৰিলে", "backHome": "ঘৰলৈ উভতি যাওক" },
   "earnings": { "title": "উপাৰ্জন", "balance": "ৱালেট বেলেন্স", "withdraw": "উলিয়াওক", "thisWeek": "এই সপ্তাহ", "history": "পেআউট ইতিহাস", "credited": "জমা কৰা হ'ল", "pending": "বাকী আছে" },
   "profile": { "title": "প্ৰ'ফাইল", "truck": "ট্ৰাকৰ বিৱৰণ", "documents": "নথি-পত্ৰ", "language": "ভাষা", "support": "সহায় আৰু সমৰ্থন", "logout": "লগ আউট", "regNumber": "পঞ্জীয়ন", "truckType": "ট্ৰাকৰ প্ৰকাৰ", "capacity": "ক্ষমতা", "docRC": "RC (পঞ্জীয়ন)", "docLicense": "ড্ৰাইভিং লাইচেন্স", "docPermit": "ৰাষ্ট্ৰীয় পাৰমিট", "docValid": "বৈধ", "editProfile": "প্ৰ'ফাইল সম্পাদনা কৰক", "saveChanges": "সাল-সলনি সংৰক্ষণ কৰক", "editName": "সম্পূৰ্ণ নাম", "editPhone": "ফোন নম্বৰ", "editTruckNo": "ট্ৰাক নম্বৰ", "editTruckType": "ট্ৰাকৰ প্ৰকাৰ", "editCapacity": "ক্ষমতা", "selectAvatar": "প্ৰ'ফাইল ছবি বাছনি কৰক", "editCardDetails": "কাৰ্ডৰ বিৱৰণ সম্পাদনা কৰক", "cardNo": "কাৰ্ড নম্বৰ", "validityDate": "বৈধতাৰ তাৰিখ", "saveCard": "কাৰ্ড সংৰক্ষণ কৰক", "manageVehicles": "ট্ৰাক পৰিচালনা কৰক", "addTruck": "নতুন ট্ৰাক যোগ কৰক", "removeTruck": "আঁতৰাওক", "activeTruck": "সক্ৰিয়", "selectActive": "সক্ৰিয় কৰক", "noTrucks": "আন কোনো ট্ৰাক পঞ্জীয়ন কৰা নাই।", "fleetOnlineStatus": "বহৰ অনলাইন স্থিতি", "fleetOnlineStatusDesc": "গোটেই বহৰৰ বাবে ল'ড মিলোৱা সতৰ্কবাণী পাবলৈ ট'গল কৰক" },
+  "register": {
+    "title": "একাউণ্ট সৃষ্টি কৰক",
+    "stepPersonal": "ব্যক্তিগত",
+    "stepTruck": "ট্ৰাক",
+    "welcomeTitle": "HindTrucks লৈ স্বাগতম!",
+    "welcomeSubtitle": "আপোনাৰ ভূমিকা আৰু প্ৰাথমিক বিৱৰণ দিয়ক।",
+    "roleLabel": "আপোনাৰ ভূমিকা",
+    "roles": {
+      "driver": {
+        "title": "ড্ৰাইভাৰ",
+        "description": "মই নিজৰ বা ফ্লীটৰ বাহন চলাওঁ।"
+      },
+      "owner": {
+        "title": "ফ্লীট মালিক",
+        "description": "মই এটা ফ্লীটৰ মালিক আৰু পৰিচালনা কৰোঁ।"
+      }
+    },
+    "fullName": "সম্পূৰ্ণ নাম",
+    "fullNamePlaceholder": "যেনে ৰাজেশ কুমাৰ",
+    "licenseNumber": "ড্ৰাইভিং লাইচেন্স নম্বৰ",
+    "licensePlaceholder": "যেনে DL-14201234567",
+    "companyName": "কোম্পানীৰ নাম",
+    "companyPlaceholder": "যেনে Shergill Logistics",
+    "firstTruckTitle": "প্ৰথম ট্ৰাক পঞ্জীয়ন কৰক",
+    "truckTitle": "আপোনাৰ ট্ৰাক",
+    "truckSubtitle": "আমি আপোনাৰ ট্ৰাকৰ প্ৰকাৰ অনুসৰি সৰ্বোত্তম ল'ড মিলা কৰোঁ।",
+    "truckRegNumber": "ট্ৰাক পঞ্জীয়ন নম্বৰ",
+    "truckRegPlaceholder": "যেনে PB10 AB 4521",
+    "truckType": "ট্ৰাকৰ প্ৰকাৰ",
+    "capacity": "ক্ষমতা",
+    "capacityPlaceholder": "যেনে 9 টন",
+    "nextTruckDetails": "পৰৱৰ্তী: ট্ৰাকৰ বিৱৰণ",
+    "createAccount": "একাউণ্ট সৃষ্টি কৰক",
+    "truckTypes": {
+      "ft19": "19 ফুট কণ্টেইনাৰ",
+      "ft32": "32 ফুট কণ্টেইনাৰ",
+      "open14": "অপেন ট্ৰাক (14 চকা)",
+      "dumper": "ডাম্পাৰ ট্ৰাক",
+      "trailer": "ট্ৰেইলাৰ LPT"
+    }
+  },
   "goods": { "electronics": "ইলেক্ট্ৰনিক্স", "furniture": "আচবাব", "containers": "কণ্টেইনাৰ কাৰ্গো", "parcels": "পাৰ্চেল" },
   "tour": { "welcome": { "title": "HindTrucks লৈ স্বাগতম!", "content": "আৰম্ভ কৰাত সহায় কৰিবলৈ মূল নেভিগেচন টেবসমূহৰ এটা দ্ৰুত 1-মিনিটৰ ভ্ৰমণ লওঁ আহক।" }, "navHome": { "title": "ঘৰ ডেচব'ৰ্ড", "content": "ওচৰৰ ল'ড বিচাৰিবলৈ অনলাইন হওক, দৈনিক পৰিসংখ্যা চাওক, বন্ধুক ৰেফাৰ কৰক, আৰু BFC ড্ৰাইভাৰ লিডাৰব'ৰ্ড চাওক।" }, "toggle": { "title": "অনলাইন / অফলাইন হওক", "content": "অনলাইন হ'বলৈ এই ছুইচটো ট'গল কৰক। অনলাইন থাকিলে, আপুনি লগে লগে ওচৰৰ বেছি পইচা দিয়া ল'ড দেখিব।" }, "navLoads": { "title": "উপলব্ধ ল'ড", "content": "আপোনাৰ ট্ৰাকৰ সৈতে মিলা সক্ৰিয় ল'ড ব্ৰাউজ কৰক, ৰুট মেপ আৰু পৰিশোধ বিভাজন চাওক, আৰু নতুন যাত্ৰা গ্ৰহণ কৰক।" }, "navEarnings": { "title": "ৱালেট আৰু পেআউট", "content": "আপোনাৰ পেআউট ইতিহাস ট্ৰেক কৰক, ৱালেট বেলেন্স চাওক, আৰু পোনে পোনে আপোনাৰ UPI ID লৈ তৎক্ষণাৎ উলিয়াবলৈ অনুৰোধ কৰক।" }, "navProfile": { "title": "ড্ৰাইভাৰ প্ৰ'ফাইল", "content": "স্মাৰ্ট কাৰ্ডৰ বিৱৰণ (লাইচেন্স, RC, পাৰমিট) সত্যাপন কৰক, এপ্লিকেচনৰ ভাষা সলনি কৰক, বা লগ আউট কৰক।" } },
   "gps": { "permissionTitle": "GPS ট্ৰেকিং সক্ৰিয় কৰক", "permissionMessage": "যাত্ৰা ট্ৰেক কৰিবলৈ আৰু ETA দিবলৈ অৱস্থান অনুমতি দিয়ক।", "allow": "অৱস্থান অনুমতি দিয়ক", "skip": "এৰি দিয়ক", "requesting": "অনুৰোধ হৈ আছে...", "backgroundTitle": "যাত্ৰাৰ সময়ত ট্ৰেকিং", "backgroundMessage": "HindTrucks background ত location সংগ্ৰহ কৰে — app বন্ধ থাকিলেও screen বন্ধ থাকিলেও — যাত্ৰা আৰম্ভৰ পৰা শেষলৈকে track হয়। পৰৱৰ্তী screen ত 'Always allow' বাছক।", "backgroundAllow": "আগবাঢ়ক", "backgroundSkip": "App ব্যৱহাৰৰ সময়তহে", "deniedTitle": "অৱস্থান অনুমতি অস্বীকৃত", "deniedMessage": "GPS ট্ৰেকিঙৰ বাবে device settings ত location access চালু কৰক।", "openSettings": "Settings খোলক", "continueWithoutGps": "GPS অবিহনে আগবাঢ়ক" },

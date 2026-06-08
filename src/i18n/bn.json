@@ -1,5 +1,7 @@
 {
-  "app": { "name": "হিন্ডট্রাকস" },
+  "app": {
+    "name": "হিন্ডট্রাকস"
+  },
   "common": {
     "continue": "চালিয়ে যান",
     "next": "পরবর্তী",
@@ -146,6 +148,47 @@
     "activeTruck": "সক্রিয়",
     "selectActive": "সক্রিয় করুন",
     "noTrucks": "অন্য কোনো ট্রাক নিবন্ধিত নেই।"
+  },
+  "register": {
+    "title": "অ্যাকাউন্ট তৈরি করুন",
+    "stepPersonal": "ব্যক্তিগত",
+    "stepTruck": "ট্রাক",
+    "welcomeTitle": "HindTrucks-এ স্বাগতম!",
+    "welcomeSubtitle": "আপনার ভূমিকা ও মৌলিক তথ্য জানান।",
+    "roleLabel": "আপনার ভূমিকা",
+    "roles": {
+      "driver": {
+        "title": "ড্রাইভার",
+        "description": "আমি নিজের বা ফ্লিটের গাড়ি চালাই।"
+      },
+      "owner": {
+        "title": "ফ্লিট মালিক",
+        "description": "আমি একটি ফ্লিটের মালিক ও পরিচালনা করি।"
+      }
+    },
+    "fullName": "পুরো নাম",
+    "fullNamePlaceholder": "যেমন রাজেশ কুমার",
+    "licenseNumber": "ড্রাইভিং লাইসেন্স নম্বর",
+    "licensePlaceholder": "যেমন DL-14201234567",
+    "companyName": "কোম্পানির নাম",
+    "companyPlaceholder": "যেমন Shergill Logistics",
+    "firstTruckTitle": "প্রথম ট্রাক রেজিস্টার করুন",
+    "truckTitle": "আপনার ট্রাক",
+    "truckSubtitle": "আমরা আপনার ট্রাকের ধরন অনুযায়ী সেরা লোড মিলিয়ে দিই।",
+    "truckRegNumber": "ট্রাক রেজিস্ট্রেশন নম্বর",
+    "truckRegPlaceholder": "যেমন PB10 AB 4521",
+    "truckType": "ট্রাকের ধরন",
+    "capacity": "ক্ষমতা",
+    "capacityPlaceholder": "যেমন 9 টন",
+    "nextTruckDetails": "পরবর্তী: ট্রাকের বিবরণ",
+    "createAccount": "অ্যাকাউন্ট তৈরি করুন",
+    "truckTypes": {
+      "ft19": "19 ফুট কন্টেইনার",
+      "ft32": "32 ফুট কন্টেইনার",
+      "open14": "ওপেন ট্রাক (14 চাকা)",
+      "dumper": "ডাম্পার ট্রাক",
+      "trailer": "ট্রেলার LPT"
+    }
   },
   "goods": {
     "electronics": "ইলেকট্রনিক্স",

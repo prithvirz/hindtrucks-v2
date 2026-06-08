@@ -25,9 +25,9 @@ export default function Home() {
   const nearby = MOCK_LOADS.slice(0, 2)
 
   return (
-    <div className="h-full overflow-y-auto no-scrollbar pb-32">
+    <div className="h-full app-scroll no-scrollbar pb-tabs">
       {/* Sticky status area cover */}
-      <div className="sticky top-0 z-20 h-[env(safe-area-inset-top,0px)] bg-night-900 w-full shrink-0" />
+      <div className="sticky top-0 z-20 h-[var(--safe-top)] bg-night-900 w-full shrink-0" />
 
       {/* Header with Tour ID - Premium Deep Gradient */}
       <div id="driver-profile" className="relative px-5 pt-6 pb-7 bg-gradient-to-br from-night-900 via-night-800 to-night-700 text-white overflow-hidden">

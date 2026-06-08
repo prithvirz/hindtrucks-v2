@@ -1,29 +1,129 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
-import { DRIVER } from '../data/mockLoads'
 import { useAuth } from './AuthContext'
 import { ApiError } from '../services/errors'
 import { type UserRole, type Driver } from './types'
 
 const DEFAULT_DRIVER = {
-    ...DRIVER,
+    name: '',
+    phone: '',
+    rating: 5.0,
+    tripsToday: 0,
+    earningsToday: 0,
+    walletBalance: 0,
+    truck: {
+        regNumber: '',
+        type: '19 ft Container',
+        capacity: '9 Ton',
+    },
     avatarId: '1633332755192-727a05c4013d',
     documents: {
-        license: { id: 'DL-0420 1198 7654', validity: '15-08-2035' },
-        rc: { id: 'PB10 AB 4521', validity: '12-10-2031' },
-        permit: { id: 'NP-2026-PB-8841', validity: '31-12-2030' },
+        license: { id: 'PENDING', validity: '15-08-2035' },
+        rc: { id: 'PENDING', validity: '12-10-2031' },
+        permit: { id: 'PENDING', validity: '31-12-2030' },
     },
-    trucks: [
-        { id: '1', regNumber: 'PB10 AB 4521', type: '19 ft Container', capacity: '9 Ton', isActive: true },
-        { id: '2', regNumber: 'HR55 CX 8812', type: '32 ft Container', capacity: '15 Ton', isActive: true },
-    ],
+    trucks: [] as Array<{ id: string; regNumber: string; type: string; capacity: string; isActive: boolean }>,
 }
 
-const DEFAULT_DRIVERS: Driver[] = [
-    { id: 'd1', name: 'Rajesh Kumar', phone: '+91 98765 43210', licenseNumber: 'DL-14201234567', assignedTruckId: '1' },
-    { id: 'd2', name: 'Gurpreet Singh', phone: '+91 87654 32109', licenseNumber: 'DL-12201987654', assignedTruckId: '2' },
-]
+const DEFAULT_DRIVERS: Driver[] = []
 
 export type DriverWithExtras = typeof DEFAULT_DRIVER
+
+const LEGACY_DRIVER_KEY = 'ht_driver'
+const LEGACY_ROLE_KEY = 'ht_user_role'
+const LEGACY_OWNER_DRIVERS_KEY = 'ht_owner_drivers'
+
+const driverKey = (phone: string) => `ht_driver_${phone}`
+const roleKey = (phone: string) => `ht_user_role_${phone}`
+const ownerDriversKey = (phone: string) => `ht_owner_drivers_${phone}`
+const registeredKey = (phone: string) => `ht_registered_${phone}`
+
+function createDefaultDriver(phone = ''): DriverWithExtras {
+    return {
+        ...DEFAULT_DRIVER,
+        phone,
+        truck: { ...DEFAULT_DRIVER.truck },
+        documents: {
+            license: { ...DEFAULT_DRIVER.documents.license },
+            rc: { ...DEFAULT_DRIVER.documents.rc },
+            permit: { ...DEFAULT_DRIVER.documents.permit },
+        },
+        trucks: [],
+    }
+}
+
+function parseStoredDriver(value: string | null, phone: string): DriverWithExtras | null {
+    if (!value) return null
+    try {
+        const parsed = JSON.parse(value)
+        if (!parsed || !Array.isArray(parsed.trucks) || !parsed.documents) return null
+        const base = createDefaultDriver(phone)
+        return {
+            ...base,
+            ...parsed,
+            phone: parsed.phone || phone,
+            truck: { ...base.truck, ...parsed.truck },
+            documents: {
+                license: { ...base.documents.license, ...parsed.documents.license },
+                rc: { ...base.documents.rc, ...parsed.documents.rc },
+                permit: { ...base.documents.permit, ...parsed.documents.permit },
+            },
+            trucks: parsed.trucks,
+        }
+    } catch {
+        return null
+    }
+}
+
+function readStoredDrivers(phone: string): Driver[] {
+    const saved = localStorage.getItem(ownerDriversKey(phone))
+    if (!saved) return DEFAULT_DRIVERS
+    try {
+        const parsed = JSON.parse(saved)
+        return Array.isArray(parsed) ? parsed : DEFAULT_DRIVERS
+    } catch {
+        return DEFAULT_DRIVERS
+    }
+}
+
+function readStoredRole(phone: string): UserRole {
+    const saved = localStorage.getItem(roleKey(phone))
+    return saved === 'owner' || saved === 'driver' ? saved : 'driver'
+}
+
+function clearLegacyActiveProfile() {
+    localStorage.removeItem(LEGACY_DRIVER_KEY)
+    localStorage.removeItem(LEGACY_ROLE_KEY)
+    localStorage.removeItem(LEGACY_OWNER_DRIVERS_KEY)
+}
+
+function normalizePhone(value: string): string {
+    const digits = value.replace(/\D/g, '')
+    return digits.length > 10 ? digits.slice(-10) : digits
+}
+
+function migrateLegacyProfileForPhone(phone: string): DriverWithExtras | null {
+    const legacyProfile = parseStoredDriver(localStorage.getItem(LEGACY_DRIVER_KEY), phone)
+    if (!legacyProfile) return null
+
+    if (normalizePhone(legacyProfile.phone) !== normalizePhone(phone)) {
+        return null
+    }
+
+    localStorage.setItem(driverKey(phone), JSON.stringify(legacyProfile))
+
+    const legacyRole = localStorage.getItem(LEGACY_ROLE_KEY)
+    if (legacyRole === 'owner' || legacyRole === 'driver') {
+        localStorage.setItem(roleKey(phone), legacyRole)
+    }
+
+    const legacyDrivers = localStorage.getItem(LEGACY_OWNER_DRIVERS_KEY)
+    if (legacyDrivers) {
+        localStorage.setItem(ownerDriversKey(phone), legacyDrivers)
+    }
+
+    clearLegacyActiveProfile()
+    return legacyProfile
+}
 
 interface ProfileState {
     driver: DriverWithExtras
@@ -64,92 +164,90 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<ApiError | null>(null)
 
-    const [role, setRoleState] = useState<UserRole>(() => {
-        const saved = localStorage.getItem('ht_user_role')
-        return (saved as UserRole) || 'driver'
-    })
+    const [role, setRoleState] = useState<UserRole>('driver')
+    const [drivers, setDrivers] = useState<Driver[]>(DEFAULT_DRIVERS)
+    const [driver, setDriver] = useState<DriverWithExtras>(() => createDefaultDriver())
 
-    const [drivers, setDrivers] = useState<Driver[]>(() => {
-        const saved = localStorage.getItem('ht_owner_drivers')
-        if (saved) {
-            try {
-                return JSON.parse(saved)
-            } catch {
-                // Fall through
-            }
-        }
-        return DEFAULT_DRIVERS
-    })
-
-    const [driver, setDriver] = useState<DriverWithExtras>(() => {
-        const saved = localStorage.getItem('ht_driver')
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved)
-                if (parsed && Array.isArray(parsed.trucks) && parsed.documents) {
-                    return { ...DEFAULT_DRIVER, ...parsed }
-                }
-            } catch {
-                // Fall through
-            }
-        }
-        return DEFAULT_DRIVER
-    })
-
-    // Load profile from service on mount (mock returns same data)
+    // Load the active account profile from phone-scoped storage. Mock profiles
+    // are intentionally not fetched here because they contain demo identities.
     useEffect(() => {
-        if (isLoggedIn) {
+        let cancelled = false
+
+        if (!isLoggedIn || !phone) {
+            setOnlineState(false)
+            setDriver(createDefaultDriver())
+            setRoleState('driver')
+            setDrivers(DEFAULT_DRIVERS)
+            setError(null)
+            setIsLoading(false)
+            clearLegacyActiveProfile()
+            return () => {
+                cancelled = true
+            }
+        }
+
+        const stored =
+            parseStoredDriver(localStorage.getItem(driverKey(phone)), phone) ||
+            migrateLegacyProfileForPhone(phone)
+        setDriver(stored || createDefaultDriver(phone))
+        setRoleState(readStoredRole(phone))
+        setDrivers(readStoredDrivers(phone))
+        setError(null)
+
+        if (
+            import.meta.env.VITE_API_MODE === 'real' &&
+            localStorage.getItem(registeredKey(phone)) === '1'
+        ) {
             setIsLoading(true)
             import('../services/index')
                 .then(({ profileService }) => profileService.getProfile())
                 .then(({ profile }) => {
+                    if (cancelled) return
                     setDriver((prev) => ({
                         ...prev,
-                        name: profile.name,
-                        phone: profile.phone,
+                        name: profile.name || prev.name,
+                        phone: profile.phone || phone,
                         rating: profile.rating,
                         tripsToday: profile.tripsToday,
                         earningsToday: profile.earningsToday,
                         truck: {
-                            regNumber: profile.truck.regNumber,
-                            type: profile.truck.type,
-                            capacity: profile.truck.capacity,
+                            regNumber: profile.truck.regNumber || prev.truck.regNumber,
+                            type: profile.truck.type || prev.truck.type,
+                            capacity: profile.truck.capacity || prev.truck.capacity,
                         },
                     }))
                 })
                 .catch((err) => {
-                    if (err instanceof ApiError) setError(err)
+                    if (!cancelled && err instanceof ApiError) setError(err)
                 })
-                .finally(() => setIsLoading(false))
+                .finally(() => {
+                    if (!cancelled) setIsLoading(false)
+                })
         }
-    }, [isLoggedIn])
+
+        return () => {
+            cancelled = true
+        }
+    }, [isLoggedIn, phone])
 
     // Persist driver updates
     useEffect(() => {
-        localStorage.setItem('ht_driver', JSON.stringify(driver))
-    }, [driver])
-
-    useEffect(() => {
-        localStorage.setItem('ht_user_role', role)
-    }, [role])
-
-    useEffect(() => {
-        localStorage.setItem('ht_owner_drivers', JSON.stringify(drivers))
-    }, [drivers])
-
-    // Self-cleanup on logout
-    useEffect(() => {
-        if (!isLoggedIn) {
-            setOnlineState(false)
-            setDriver(DEFAULT_DRIVER)
-            setRoleState('driver')
-            setDrivers(DEFAULT_DRIVERS)
-            setError(null)
-            localStorage.removeItem('ht_driver')
-            localStorage.removeItem('ht_user_role')
-            localStorage.removeItem('ht_owner_drivers')
+        if (isLoggedIn && phone) {
+            localStorage.setItem(driverKey(phone), JSON.stringify(driver))
         }
-    }, [isLoggedIn])
+    }, [driver, isLoggedIn, phone])
+
+    useEffect(() => {
+        if (isLoggedIn && phone) {
+            localStorage.setItem(roleKey(phone), role)
+        }
+    }, [role, isLoggedIn, phone])
+
+    useEffect(() => {
+        if (isLoggedIn && phone) {
+            localStorage.setItem(ownerDriversKey(phone), JSON.stringify(drivers))
+        }
+    }, [drivers, isLoggedIn, phone])
 
     const setRole = (r: UserRole) => {
         setRoleState(r)
@@ -182,6 +280,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     }
 
     const refreshProfile = async () => {
+        if (import.meta.env.VITE_API_MODE !== 'real') return
         setIsLoading(true)
         setError(null)
         try {
@@ -304,8 +403,9 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
             capacity: string
         }
     }) => {
+        if (!phone) return
         const newProfile: DriverWithExtras = {
-            ...DEFAULT_DRIVER,
+            ...createDefaultDriver(phone),
             name: params.name,
             phone: phone,
             rating: 5.0,
@@ -332,14 +432,15 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                 permit: { id: 'NP-' + Date.now().toString().slice(-6), validity: '31-12-2030' },
             }
         }
+        const nextDrivers = DEFAULT_DRIVERS
         setDriver(newProfile)
         setRoleState(params.role)
-        if (params.role === 'owner') {
-            setDrivers([])
-        } else {
-            setDrivers(DEFAULT_DRIVERS)
-        }
-        localStorage.setItem('ht_registered_' + phone, '1')
+        setDrivers(nextDrivers)
+        localStorage.setItem(registeredKey(phone), '1')
+        localStorage.setItem(driverKey(phone), JSON.stringify(newProfile))
+        localStorage.setItem(roleKey(phone), params.role)
+        localStorage.setItem(ownerDriversKey(phone), JSON.stringify(nextDrivers))
+        clearLegacyActiveProfile()
 
         const apiMode = import.meta.env.VITE_API_MODE
         if (apiMode === 'real') {

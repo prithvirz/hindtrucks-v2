@@ -1,28 +1,30 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { User, Truck, Building2, Check, ArrowRight, ArrowLeft } from 'lucide-react'
 import Button from '../components/Button'
 import TopBar from '../components/TopBar'
 import { useProfile } from '../state/ProfileContext'
 
-const TRUCK_TYPES = [
-  '19 ft Container',
-  '32 ft Container',
-  'Open Truck (14 Wheeler)',
-  'Dumper Truck',
-  'Trailer LPT',
-]
+const TRUCK_TYPE_OPTIONS = [
+  { value: '19 ft Container', labelKey: 'register.truckTypes.ft19' },
+  { value: '32 ft Container', labelKey: 'register.truckTypes.ft32' },
+  { value: 'Open Truck (14 Wheeler)', labelKey: 'register.truckTypes.open14' },
+  { value: 'Dumper Truck', labelKey: 'register.truckTypes.dumper' },
+  { value: 'Trailer LPT', labelKey: 'register.truckTypes.trailer' },
+] as const
 
-const TYPE_CAPACITIES: Record<string, string> = {
-  '19 ft Container': '9 Ton',
-  '32 ft Container': '15 Ton',
-  'Open Truck (14 Wheeler)': '15 Ton',
-  'Dumper Truck': '12 Ton',
-  'Trailer LPT': '25 Ton',
+const TYPE_CAPACITY_TONS: Record<string, string> = {
+  '19 ft Container': '9',
+  '32 ft Container': '15',
+  'Open Truck (14 Wheeler)': '15',
+  'Dumper Truck': '12',
+  'Trailer LPT': '25',
 }
 
 export default function Register() {
   const nav = useNavigate()
+  const { t } = useTranslation()
   const { initializeProfile } = useProfile()
 
   const [step, setStep] = useState<1 | 2>(1)
@@ -34,10 +36,10 @@ export default function Register() {
 
   const [truckReg, setTruckReg] = useState('')
   const [truckType, setTruckType] = useState('19 ft Container')
-  const [truckCapacity, setTruckCapacity] = useState('9 Ton')
+  const [truckCapacityTons, setTruckCapacityTons] = useState('9')
 
   useEffect(() => {
-    if (TYPE_CAPACITIES[truckType]) setTruckCapacity(TYPE_CAPACITIES[truckType])
+    if (TYPE_CAPACITY_TONS[truckType]) setTruckCapacityTons(TYPE_CAPACITY_TONS[truckType])
   }, [truckType])
 
   const isStep1Valid =
@@ -45,7 +47,7 @@ export default function Register() {
     (role === 'owner' || license.trim().length >= 5) &&
     (role === 'driver' || companyName.trim().length >= 3)
 
-  const isStep2Valid = truckReg.trim().length >= 6
+  const isStep2Valid = truckReg.trim().length >= 6 && truckCapacityTons.trim().length > 0
 
   function handleCreateAccount() {
     if (!isStep1Valid || !isStep2Valid) return
@@ -54,14 +56,14 @@ export default function Register() {
       role,
       licenseNumber: role === 'driver' ? license.trim().toUpperCase() : undefined,
       companyName: role === 'owner' ? companyName.trim() : undefined,
-      truck: { regNumber: truckReg.trim().toUpperCase(), type: truckType, capacity: truckCapacity },
+      truck: { regNumber: truckReg.trim().toUpperCase(), type: truckType, capacity: `${truckCapacityTons.trim()} Ton` },
     })
     nav('/home', { replace: true })
   }
 
   return (
     <div className="h-full flex flex-col bg-surface-grey font-bold text-ink">
-      <TopBar title="Create Account" />
+      <TopBar title={t('register.title')} />
 
       {/* Step indicator */}
       <div className="bg-surface px-5 py-4 border-b border-hairline shrink-0">
@@ -73,7 +75,7 @@ export default function Register() {
                 {step > s ? <Check size={14} strokeWidth={3.5} /> : s}
               </div>
               <span className={`text-[11px] font-black uppercase tracking-wider ${step >= s ? 'text-ink' : 'text-ink-faint'}`}>
-                {s === 1 ? 'Personal' : 'Truck'}
+                {s === 1 ? t('register.stepPersonal') : t('register.stepTruck')}
               </span>
               {s < 2 && <div className={`flex-1 h-0.5 w-8 ${step > 1 ? 'bg-accent' : 'bg-ink/10'}`} />}
             </div>
@@ -81,18 +83,18 @@ export default function Register() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-4 pb-28 space-y-5">
+      <div className="flex-1 app-scroll no-scrollbar px-5 pt-4 pb-action space-y-5">
 
         {/* STEP 1 */}
         {step === 1 && (
           <div className="space-y-5 animate-scale-in">
             <div className="bg-surface p-4 rounded-2xl border border-hairline shadow-card">
-              <h2 className="text-lg font-black text-ink">Welcome to HindTrucks!</h2>
-              <p className="text-xs text-ink-muted mt-1 font-bold">Tell us your role and basic details.</p>
+              <h2 className="text-lg font-black text-ink">{t('register.welcomeTitle')}</h2>
+              <p className="text-xs text-ink-muted mt-1 font-bold">{t('register.welcomeSubtitle')}</p>
             </div>
 
             <div className="space-y-2">
-              <label className="block text-xs font-black uppercase text-ink-muted">Your Role</label>
+              <label className="block text-xs font-black uppercase text-ink-muted">{t('register.roleLabel')}</label>
               <div className="grid grid-cols-2 gap-3">
                 {(['driver', 'owner'] as const).map((r) => (
                   <button key={r} type="button" onClick={() => setRole(r)}
@@ -105,9 +107,9 @@ export default function Register() {
                       {role === r && <span className="h-5 w-5 rounded-full bg-accent text-white flex items-center justify-center"><Check size={12} strokeWidth={3.5} /></span>}
                     </div>
                     <div>
-                      <p className="font-black text-sm text-ink">{r === 'driver' ? 'Driver' : 'Fleet Owner'}</p>
+                      <p className="font-black text-sm text-ink">{t(`register.roles.${r}.title`)}</p>
                       <p className="text-[10px] text-ink-muted font-bold mt-0.5 leading-normal">
-                        {r === 'driver' ? 'I drive my own / fleet vehicle.' : 'I own and manage a fleet.'}
+                        {t(`register.roles.${r}.description`)}
                       </p>
                     </div>
                   </button>
@@ -117,10 +119,10 @@ export default function Register() {
 
             <div className="bg-surface p-5 rounded-2xl border border-hairline shadow-card space-y-4">
               <div className="space-y-1.5">
-                <label className="block text-xs font-black uppercase text-ink-muted">Full Name</label>
+                <label className="block text-xs font-black uppercase text-ink-muted">{t('register.fullName')}</label>
                 <div className="flex items-center gap-2 h-12 rounded-xl bg-surface-grey border border-hairline px-3 focus-within:ring-2 focus-within:ring-accent/40 transition-all">
                   <User size={16} className="text-ink-faint" />
-                  <input type="text" placeholder="e.g. Rajesh Kumar" value={name}
+                  <input type="text" placeholder={t('register.fullNamePlaceholder')} value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="flex-1 bg-transparent outline-none text-ink text-[15px] font-bold placeholder:text-ink-faint" />
                 </div>
@@ -128,20 +130,20 @@ export default function Register() {
 
               {role === 'driver' ? (
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-black uppercase text-ink-muted">Driving License Number</label>
+                  <label className="block text-xs font-black uppercase text-ink-muted">{t('register.licenseNumber')}</label>
                   <div className="flex items-center gap-2 h-12 rounded-xl bg-surface-grey border border-hairline px-3 focus-within:ring-2 focus-within:ring-accent/40 transition-all">
                     <Truck size={16} className="text-ink-faint" />
-                    <input type="text" placeholder="e.g. DL-14201234567" value={license}
+                    <input type="text" placeholder={t('register.licensePlaceholder')} value={license}
                       onChange={(e) => setLicense(e.target.value)}
                       className="flex-1 bg-transparent outline-none text-ink text-[15px] font-bold placeholder:text-ink-faint uppercase" />
                   </div>
                 </div>
               ) : (
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-black uppercase text-ink-muted">Company Name</label>
+                  <label className="block text-xs font-black uppercase text-ink-muted">{t('register.companyName')}</label>
                   <div className="flex items-center gap-2 h-12 rounded-xl bg-surface-grey border border-hairline px-3 focus-within:ring-2 focus-within:ring-accent/40 transition-all">
                     <Building2 size={16} className="text-ink-faint" />
-                    <input type="text" placeholder="e.g. Shergill Logistics" value={companyName}
+                    <input type="text" placeholder={t('register.companyPlaceholder')} value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                       className="flex-1 bg-transparent outline-none text-ink text-[15px] font-bold placeholder:text-ink-faint" />
                   </div>
@@ -157,19 +159,19 @@ export default function Register() {
             <div className="bg-surface p-4 rounded-2xl border border-hairline shadow-card">
               <h3 className="text-sm font-black text-ink flex items-center gap-1.5">
                 <Truck size={16} className="text-accent" />
-                {role === 'owner' ? 'Register First Truck' : 'Your Truck'}
+                {role === 'owner' ? t('register.firstTruckTitle') : t('register.truckTitle')}
               </h3>
               <p className="text-xs text-ink-muted mt-1 font-bold">
-                We match your truck type with the best loads.
+                {t('register.truckSubtitle')}
               </p>
             </div>
 
             <div className="bg-surface p-5 rounded-2xl border border-hairline shadow-card space-y-4">
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-black uppercase text-ink-muted">Truck Registration Number</label>
+                <label className="block text-[10px] font-black uppercase text-ink-muted">{t('register.truckRegNumber')}</label>
                 <div className="flex items-center gap-2 h-12 rounded-xl bg-surface-grey border border-hairline px-3 focus-within:ring-2 focus-within:ring-accent/40 transition-all">
                   <span className="text-xs font-bold text-ink-faint">IND</span>
-                  <input type="text" placeholder="e.g. PB10 AB 4521" value={truckReg}
+                  <input type="text" placeholder={t('register.truckRegPlaceholder')} value={truckReg}
                     onChange={(e) => setTruckReg(e.target.value)}
                     className="flex-1 bg-transparent outline-none text-ink text-[15px] font-bold placeholder:text-ink-faint uppercase" />
                 </div>
@@ -177,17 +179,25 @@ export default function Register() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black uppercase text-ink-muted">Truck Type</label>
+                  <label className="block text-[10px] font-black uppercase text-ink-muted">{t('register.truckType')}</label>
                   <select value={truckType} onChange={(e) => setTruckType(e.target.value)}
                     className="w-full h-12 px-3 bg-surface-grey text-ink font-bold rounded-xl border border-hairline focus:ring-2 focus:ring-accent/40 outline-none text-xs">
-                    {TRUCK_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+                    {TRUCK_TYPE_OPTIONS.map(({ value, labelKey }) => (
+                      <option key={value} value={value}>{t(labelKey)}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block text-[10px] font-black uppercase text-ink-muted">Capacity</label>
-                  <input type="text" value={truckCapacity} onChange={(e) => setTruckCapacity(e.target.value)}
-                    placeholder="e.g. 9 Ton"
-                    className="w-full h-12 px-3 bg-surface-grey text-ink font-bold rounded-xl border border-hairline focus:ring-2 focus:ring-accent/40 outline-none text-xs" />
+                  <label className="block text-[10px] font-black uppercase text-ink-muted">{t('register.capacity')}</label>
+                  <div className="relative">
+                    <input type="text" inputMode="decimal" value={truckCapacityTons}
+                      onChange={(e) => setTruckCapacityTons(e.target.value.replace(/[^\d.]/g, '').slice(0, 5))}
+                      placeholder={t('register.capacityPlaceholder')}
+                      className="w-full h-12 pl-3 pr-11 bg-surface-grey text-ink font-bold rounded-xl border border-hairline focus:ring-2 focus:ring-accent/40 outline-none text-xs" />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-black text-ink-muted pointer-events-none">
+                      {t('common.ton')}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -198,14 +208,14 @@ export default function Register() {
       <div className="absolute bottom-0 inset-x-0 p-5 bg-surface/95 backdrop-blur border-t border-hairline safe-bottom z-10 flex gap-3">
         {step === 1 && (
           <Button full disabled={!isStep1Valid} onClick={() => setStep(2)} rightIcon={<ArrowRight size={16} />}>
-            Next: Truck Details
+            {t('register.nextTruckDetails')}
           </Button>
         )}
         {step === 2 && (
           <>
-            <Button variant="secondary" onClick={() => setStep(1)} leftIcon={<ArrowLeft size={16} />}>Back</Button>
+            <Button variant="secondary" onClick={() => setStep(1)} leftIcon={<ArrowLeft size={16} />}>{t('common.back')}</Button>
             <Button className="flex-1" disabled={!isStep2Valid} onClick={handleCreateAccount}>
-              Create Account
+              {t('register.createAccount')}
             </Button>
           </>
         )}

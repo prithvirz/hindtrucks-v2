@@ -18,6 +18,12 @@
   --color-success-soft: #E8F5EC;
   --color-success: #16A34A;
   --color-overlay: rgba(11, 11, 15, 0.4);
+  --safe-top: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --safe-right: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
+  --safe-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  --safe-left: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+  --app-bottom-nav-height: 5.75rem;
+  --app-edge-x: clamp(1rem, 4vw, 1.25rem);
 }
 
 @layer base {
@@ -25,6 +31,13 @@
   body,
   #root {
     height: 100%;
+    min-height: 100%;
+  }
+  html {
+    background: var(--color-canvas);
+    overflow: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   body {
     margin: 0;
@@ -33,10 +46,14 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     font-family: 'Inter', 'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Telugu',
-      'Noto Sans Gurmukhi', system-ui, sans-serif;
+      'Noto Sans Gurmukhi', 'Noto Sans Bengali', 'Noto Sans Gujarati', 'Noto Sans Kannada',
+      'Noto Sans Malayalam', 'Noto Sans Oriya', system-ui, sans-serif;
     /* Regular body weight — hierarchy comes from weight contrast, not blanket bold. */
     font-weight: 400;
-    letter-spacing: -0.011em;
+    letter-spacing: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: manipulation;
   }
   * {
     -webkit-tap-highlight-color: transparent;
@@ -45,15 +62,50 @@
   /* Sensible heading default; utility classes (font-bold/extrabold) still win. */
   h1, h2, h3, h4, h5, h6 {
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
   }
   button, input, select, textarea {
     font-family: inherit;
     font-weight: 500;
+    font-size: 16px;
+  }
+  button, a, input, select, textarea {
+    touch-action: manipulation;
   }
 }
 
 @layer utilities {
+  .app-viewport {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  .app-shell {
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+  }
+  .app-scroll {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .app-x {
+    padding-left: max(var(--app-edge-x), var(--safe-left));
+    padding-right: max(var(--app-edge-x), var(--safe-right));
+  }
+  .pb-tabs {
+    padding-bottom: calc(var(--app-bottom-nav-height) + var(--safe-bottom) + 1rem);
+  }
+  .pb-action {
+    padding-bottom: calc(5.25rem + var(--safe-bottom));
+  }
+  .tracking-tight,
+  .tracking-wide,
+  .tracking-wider {
+    letter-spacing: 0 !important;
+  }
   /* Hide scrollbars but keep scroll — app-like feel */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -63,16 +115,16 @@
     scrollbar-width: none;
   }
   .safe-bottom {
-    padding-bottom: max(env(safe-area-inset-bottom), 12px);
+    padding-bottom: max(var(--safe-bottom), 12px);
   }
   .safe-top {
-    padding-top: env(safe-area-inset-top, 0px);
+    padding-top: var(--safe-top);
   }
   .safe-top-padding {
-    padding-top: calc(env(safe-area-inset-top, 0px) + 1.25rem);
+    padding-top: calc(var(--safe-top) + 1.25rem);
   }
   .home-safe-top {
-    padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem);
+    padding-top: calc(var(--safe-top) + 1.5rem);
   }
   /* Tabular figures so currency/stat digits never jitter. */
   .nums {
@@ -136,6 +188,23 @@
     transform: translateX(-100%);
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     animation: shimmer 1.4s infinite;
+  }
+}
+
+@media (min-width: 640px) {
+  :root {
+    --app-bottom-nav-height: 5.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

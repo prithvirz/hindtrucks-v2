@@ -1,8 +1,12 @@
-import { renderHook, act } from '@testing-library/react'
-import { AuthProvider } from '../state/AuthContext'
+import { renderHook, act, waitFor } from '@testing-library/react'
+import { AuthProvider, useAuth } from '../state/AuthContext'
 import { ProfileProvider, useProfile } from '../state/ProfileContext'
 
 describe('useProfile', () => {
+    beforeEach(() => {
+        localStorage.clear()
+    })
+
     it('returns driver object on initial render', () => {
         const { result } = renderHook(() => useProfile(), {
             wrapper: ({ children }) => (
@@ -102,7 +106,11 @@ describe('useProfile', () => {
     })
 
     it('toggles a truck active status correctly', () => {
-        const { result } = renderHook(() => useProfile(), {
+        const { result } = renderHook(() => {
+            const auth = useAuth()
+            const profile = useProfile()
+            return { auth, profile }
+        }, {
             wrapper: ({ children }) => (
                 <AuthProvider>
                     <ProfileProvider>{children}</ProfileProvider>
@@ -110,21 +118,38 @@ describe('useProfile', () => {
             ),
         })
 
-        const truck1 = result.current.driver.trucks.find(t => t.id === '1')
+        act(() => {
+            result.current.auth.login('9876543210')
+        })
+
+        act(() => {
+            result.current.profile.initializeProfile({
+                name: 'Fresh Driver',
+                role: 'driver',
+                licenseNumber: 'DL-14201234567',
+                truck: {
+                    regNumber: 'PB10 AB 4521',
+                    type: '19 ft Container',
+                    capacity: '9 Ton',
+                },
+            })
+        })
+
+        const truck1 = result.current.profile.driver.trucks.find(t => t.id === '1')
         expect(truck1?.isActive).toBe(true)
 
         act(() => {
-            result.current.toggleTruckActive('1')
+            result.current.profile.toggleTruckActive('1')
         })
 
-        const truck1Toggled = result.current.driver.trucks.find(t => t.id === '1')
+        const truck1Toggled = result.current.profile.driver.trucks.find(t => t.id === '1')
         expect(truck1Toggled?.isActive).toBe(false)
 
         act(() => {
-            result.current.toggleTruckActive('1')
+            result.current.profile.toggleTruckActive('1')
         })
 
-        const truck1ToggledBack = result.current.driver.trucks.find(t => t.id === '1')
+        const truck1ToggledBack = result.current.profile.driver.trucks.find(t => t.id === '1')
         expect(truck1ToggledBack?.isActive).toBe(true)
     })
 
@@ -137,7 +162,23 @@ describe('useProfile', () => {
             ),
         })
 
-        expect(result.current.drivers.length).toBeGreaterThan(1)
+        act(() => {
+            result.current.addDriver({
+                name: 'Driver One',
+                phone: '9876543210',
+                licenseNumber: 'DL-14201234567',
+            })
+        })
+
+        act(() => {
+            result.current.addDriver({
+                name: 'Driver Two',
+                phone: '9876543211',
+                licenseNumber: 'DL-14201234568',
+            })
+        })
+
+        expect(result.current.drivers.length).toBe(2)
 
         const driver1Id = result.current.drivers[0].id
         const driver2Id = result.current.drivers[1].id
@@ -156,5 +197,125 @@ describe('useProfile', () => {
 
         expect(d1?.assignedTruckId).toBe(truckId)
         expect(d2?.assignedTruckId).toBe(truckId)
+    })
+
+    it('does not carry a previous account name into a fresh registration', async () => {
+        const { result } = renderHook(() => {
+            const auth = useAuth()
+            const profile = useProfile()
+            return { auth, profile }
+        }, {
+            wrapper: ({ children }) => (
+                <AuthProvider>
+                    <ProfileProvider>{children}</ProfileProvider>
+                </AuthProvider>
+            ),
+        })
+
+        act(() => {
+            result.current.auth.login('9876543210')
+        })
+
+        await waitFor(() => {
+            expect(result.current.profile.driver.phone).toBe('9876543210')
+        })
+
+        act(() => {
+            result.current.profile.initializeProfile({
+                name: 'Old Driver',
+                role: 'driver',
+                licenseNumber: 'DL-14201234567',
+                truck: {
+                    regNumber: 'PB10 AB 4521',
+                    type: '19 ft Container',
+                    capacity: '9 Ton',
+                },
+            })
+        })
+
+        expect(result.current.profile.driver.name).toBe('Old Driver')
+
+        act(() => {
+            result.current.auth.logout()
+        })
+
+        await waitFor(() => {
+            expect(result.current.profile.driver.name).toBe('')
+            expect(result.current.profile.driver.trucks).toHaveLength(0)
+        })
+
+        act(() => {
+            result.current.auth.login('9123456780')
+        })
+
+        await waitFor(() => {
+            expect(result.current.profile.driver.phone).toBe('9123456780')
+        })
+
+        expect(result.current.profile.driver.name).toBe('')
+
+        act(() => {
+            result.current.profile.initializeProfile({
+                name: 'New Driver',
+                role: 'driver',
+                licenseNumber: 'DL-24201234567',
+                truck: {
+                    regNumber: 'MH12 AB 4521',
+                    type: '32 ft Container',
+                    capacity: '15 Ton',
+                },
+            })
+        })
+
+        expect(result.current.profile.driver.name).toBe('New Driver')
+        expect(result.current.profile.driver.truck.regNumber).toBe('MH12 AB 4521')
+        expect(localStorage.getItem('ht_driver')).toBeNull()
+    })
+
+    it('does not migrate a legacy profile to a different phone number', async () => {
+        localStorage.setItem('ht_driver', JSON.stringify({
+            name: 'Legacy Driver',
+            phone: '+91 98765 43210',
+            rating: 4.8,
+            tripsToday: 2,
+            earningsToday: 23800,
+            walletBalance: 41250,
+            truck: {
+                regNumber: 'PB10 AB 4521',
+                type: '19 ft Container',
+                capacity: '9 Ton',
+            },
+            documents: {
+                license: { id: 'DL-14201234567', validity: '15-08-2035' },
+                rc: { id: 'PB10 AB 4521', validity: '12-10-2031' },
+                permit: { id: 'NP-2026-PB-8841', validity: '31-12-2030' },
+            },
+            trucks: [
+                { id: '1', regNumber: 'PB10 AB 4521', type: '19 ft Container', capacity: '9 Ton', isActive: true },
+            ],
+        }))
+
+        const { result } = renderHook(() => {
+            const auth = useAuth()
+            const profile = useProfile()
+            return { auth, profile }
+        }, {
+            wrapper: ({ children }) => (
+                <AuthProvider>
+                    <ProfileProvider>{children}</ProfileProvider>
+                </AuthProvider>
+            ),
+        })
+
+        act(() => {
+            result.current.auth.login('9123456780')
+        })
+
+        await waitFor(() => {
+            expect(result.current.profile.driver.phone).toBe('9123456780')
+        })
+
+        expect(result.current.profile.driver.name).toBe('')
+        expect(localStorage.getItem('ht_driver_9123456780')).not.toContain('Legacy Driver')
     })
 })

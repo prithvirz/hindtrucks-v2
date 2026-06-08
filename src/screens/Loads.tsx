@@ -74,7 +74,7 @@ export default function Loads() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-4 pb-32">
+      <div className="flex-1 app-scroll no-scrollbar px-5 pt-4 pb-tabs">
         <p className="text-sm text-ink-muted mb-4">
           {t('loads.subtitle', { count: filteredLoads.length })}
         </p>

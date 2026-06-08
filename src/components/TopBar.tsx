@@ -27,18 +27,18 @@ export default function TopBar({ title, back, right, onBack, fallbackTo }: Props
   }
 
   return (
-    <header className="sticky top-0 z-10 bg-surface/85 backdrop-blur-xl border-b border-hairline safe-top">
-      <div className="h-14 flex items-center gap-2 px-3">
+    <header className="sticky top-0 z-10 bg-surface/90 backdrop-blur-xl border-b border-hairline safe-top">
+      <div className="min-h-14 flex items-center gap-2 app-x py-1.5">
         {back && (
           <button
             onClick={handleBack}
-            className="h-10 w-10 -ml-1 flex items-center justify-center rounded-xl bg-surface-grey hover:bg-surface-sunken active:scale-95 transition-all"
+            className="min-h-11 min-w-11 -ml-2 flex items-center justify-center rounded-xl bg-surface-grey hover:bg-surface-sunken active:scale-95 transition-all"
             aria-label="Back"
           >
             <ChevronLeft size={22} strokeWidth={2.5} />
           </button>
         )}
-        <h1 className="text-[17px] font-extrabold text-ink truncate flex-1">{title}</h1>
+        <h1 className="text-[17px] font-extrabold text-ink truncate flex-1 leading-tight">{title}</h1>
         {right}
       </div>
     </header>

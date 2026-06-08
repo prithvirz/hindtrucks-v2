@@ -1,5 +1,7 @@
 {
-  "app": { "name": "హింద్‌ట్రక్స్" },
+  "app": {
+    "name": "హింద్‌ట్రక్స్"
+  },
   "common": {
     "continue": "కొనసాగించు",
     "next": "తదుపరి",
@@ -140,6 +142,47 @@
     "activeTruck": "క్రియాశీల",
     "selectActive": "సక్రియం చేయి",
     "noTrucks": "ఇతర ట్రక్కులు నమోదు చేయబడలేదు."
+  },
+  "register": {
+    "title": "ఖాతా సృష్టించండి",
+    "stepPersonal": "వ్యక్తిగతం",
+    "stepTruck": "ట్రక్",
+    "welcomeTitle": "HindTrucks కు స్వాగతం!",
+    "welcomeSubtitle": "మీ పాత్ర మరియు ప్రాథమిక వివరాలు చెప్పండి.",
+    "roleLabel": "మీ పాత్ర",
+    "roles": {
+      "driver": {
+        "title": "డ్రైవర్",
+        "description": "నేను నా లేదా ఫ్లీట్ వాహనం నడుపుతాను."
+      },
+      "owner": {
+        "title": "ఫ్లీట్ యజమాని",
+        "description": "నేను ఫ్లీట్‌ను యజమానిగా నిర్వహిస్తాను."
+      }
+    },
+    "fullName": "పూర్తి పేరు",
+    "fullNamePlaceholder": "ఉదా. రాజేష్ కుమార్",
+    "licenseNumber": "డ్రైవింగ్ లైసెన్స్ నంబర్",
+    "licensePlaceholder": "ఉదా. DL-14201234567",
+    "companyName": "కంపెనీ పేరు",
+    "companyPlaceholder": "ఉదా. Shergill Logistics",
+    "firstTruckTitle": "మొదటి ట్రక్ నమోదు చేయండి",
+    "truckTitle": "మీ ట్రక్",
+    "truckSubtitle": "మీ ట్రక్ రకాన్ని ఉత్తమ లోడ్లతో సరిపోలుస్తాము.",
+    "truckRegNumber": "ట్రక్ రిజిస్ట్రేషన్ నంబర్",
+    "truckRegPlaceholder": "ఉదా. PB10 AB 4521",
+    "truckType": "ట్రక్ రకం",
+    "capacity": "సామర్థ్యం",
+    "capacityPlaceholder": "ఉదా. 9 టన్",
+    "nextTruckDetails": "తర్వాత: ట్రక్ వివరాలు",
+    "createAccount": "ఖాతా సృష్టించండి",
+    "truckTypes": {
+      "ft19": "19 అడుగుల కంటైనర్",
+      "ft32": "32 అడుగుల కంటైనర్",
+      "open14": "ఓపెన్ ట్రక్ (14 వీలర్)",
+      "dumper": "డంపర్ ట్రక్",
+      "trailer": "ట్రైలర్ LPT"
+    }
   },
   "goods": {
     "electronics": "ఎలక్ట్రానిక్స్",

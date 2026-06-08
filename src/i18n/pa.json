@@ -1,5 +1,7 @@
 {
-  "app": { "name": "ਹਿੰਦਟਰੱਕਸ" },
+  "app": {
+    "name": "ਹਿੰਦਟਰੱਕਸ"
+  },
   "common": {
     "continue": "ਅੱਗੇ ਵਧੋ",
     "next": "ਅਗਲਾ",
@@ -140,6 +142,47 @@
     "activeTruck": "ਸਰਗਰਮ",
     "selectActive": "ਸਰਗਰਮ ਕਰੋ",
     "noTrucks": "ਕੋਈ ਹੋਰ ਟਰੱਕ ਰਜਿਸਟਰਡ ਨਹੀਂ ਹੈ।"
+  },
+  "register": {
+    "title": "ਖਾਤਾ ਬਣਾਓ",
+    "stepPersonal": "ਨਿੱਜੀ",
+    "stepTruck": "ਟਰੱਕ",
+    "welcomeTitle": "HindTrucks ਵਿੱਚ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ!",
+    "welcomeSubtitle": "ਆਪਣੀ ਭੂਮਿਕਾ ਅਤੇ ਬੁਨਿਆਦੀ ਵੇਰਵੇ ਦੱਸੋ।",
+    "roleLabel": "ਤੁਹਾਡੀ ਭੂਮਿਕਾ",
+    "roles": {
+      "driver": {
+        "title": "ਡਰਾਈਵਰ",
+        "description": "ਮੈਂ ਆਪਣਾ ਜਾਂ ਫਲੀਟ ਵਾਹਨ ਚਲਾਉਂਦਾ ਹਾਂ।"
+      },
+      "owner": {
+        "title": "ਫਲੀਟ ਮਾਲਕ",
+        "description": "ਮੈਂ ਫਲੀਟ ਦਾ ਮਾਲਕ ਹਾਂ ਅਤੇ ਸੰਭਾਲਦਾ ਹਾਂ।"
+      }
+    },
+    "fullName": "ਪੂਰਾ ਨਾਮ",
+    "fullNamePlaceholder": "ਜਿਵੇਂ ਰਾਜੇਸ਼ ਕੁਮਾਰ",
+    "licenseNumber": "ਡਰਾਈਵਿੰਗ ਲਾਇਸੈਂਸ ਨੰਬਰ",
+    "licensePlaceholder": "ਜਿਵੇਂ DL-14201234567",
+    "companyName": "ਕੰਪਨੀ ਦਾ ਨਾਮ",
+    "companyPlaceholder": "ਜਿਵੇਂ ਸ਼ੇਰਗਿੱਲ ਲਾਜਿਸਟਿਕਸ",
+    "firstTruckTitle": "ਪਹਿਲਾ ਟਰੱਕ ਰਜਿਸਟਰ ਕਰੋ",
+    "truckTitle": "ਤੁਹਾਡਾ ਟਰੱਕ",
+    "truckSubtitle": "ਅਸੀਂ ਤੁਹਾਡੇ ਟਰੱਕ ਦੀ ਕਿਸਮ ਨੂੰ ਸਭ ਤੋਂ ਵਧੀਆ ਲੋਡ ਨਾਲ ਮਿਲਾਉਂਦੇ ਹਾਂ।",
+    "truckRegNumber": "ਟਰੱਕ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਨੰਬਰ",
+    "truckRegPlaceholder": "ਜਿਵੇਂ PB10 AB 4521",
+    "truckType": "ਟਰੱਕ ਦੀ ਕਿਸਮ",
+    "capacity": "ਸਮਰੱਥਾ",
+    "capacityPlaceholder": "ਜਿਵੇਂ 9 ਟਨ",
+    "nextTruckDetails": "ਅੱਗੇ: ਟਰੱਕ ਵੇਰਵੇ",
+    "createAccount": "ਖਾਤਾ ਬਣਾਓ",
+    "truckTypes": {
+      "ft19": "19 ਫੁੱਟ ਕੰਟੇਨਰ",
+      "ft32": "32 ਫੁੱਟ ਕੰਟੇਨਰ",
+      "open14": "ਓਪਨ ਟਰੱਕ (14 ਵ੍ਹੀਲਰ)",
+      "dumper": "ਡੰਪਰ ਟਰੱਕ",
+      "trailer": "ਟ੍ਰੇਲਰ LPT"
+    }
   },
   "goods": {
     "electronics": "ਇਲੈਕਟ੍ਰਾਨਿਕਸ",

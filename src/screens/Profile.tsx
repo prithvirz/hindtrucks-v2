@@ -99,7 +99,7 @@ export default function Profile() {
   return (
     <div className="h-full flex flex-col relative">
       <TopBar title={t('profile.title')} />
-      <div className="flex-1 overflow-y-auto no-scrollbar px-5 pt-4 pb-36 space-y-5 text-left">
+      <div className="flex-1 app-scroll no-scrollbar px-5 pt-4 pb-tabs space-y-5 text-left">
 
         {/* App Mode Toggle */}
         <div className="bg-surface p-3.5 boxed-rounded boxed-border shadow-card flex flex-col gap-2">

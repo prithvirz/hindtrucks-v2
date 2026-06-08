@@ -12,6 +12,47 @@
   "trip": { "title": "सुरू असलेली ट्रिप", "callShipper": "शिपरला कॉल करा", "steps": { "toPickup": "पिकअपकडे जात आहे", "loaded": "लोड झाले", "transit": "वाहतुकीत", "delivered": "पोहोचवले" }, "markNext": "{{step}} म्हणून चिन्हांकित करा", "completed": "ट्रिप पूर्ण झाली", "earned": "तुम्ही कमावले", "backHome": "होमवर परत" },
   "earnings": { "title": "कमाई", "balance": "वॉलेट शिल्लक", "withdraw": "काढा", "thisWeek": "या आठवड्यात", "history": "पेआउट इतिहास", "credited": "जमा झाले", "pending": "प्रलंबित" },
   "profile": { "title": "प्रोफाइल", "truck": "ट्रक तपशील", "documents": "कागदपत्रे", "language": "भाषा", "support": "मदत व सपोर्ट", "logout": "लॉग आउट", "regNumber": "नोंदणी", "truckType": "ट्रक प्रकार", "capacity": "क्षमता", "docRC": "RC (नोंदणी)", "docLicense": "ड्रायव्हिंग लायसन्स", "docPermit": "राष्ट्रीय परमिट", "docValid": "वैध", "editProfile": "प्रोफाइल संपादित करा", "saveChanges": "बदल जतन करा", "editName": "पूर्ण नाव", "editPhone": "फोन नंबर", "editTruckNo": "ट्रक नंबर", "editTruckType": "ट्रक प्रकार", "editCapacity": "क्षमता", "selectAvatar": "प्रोफाइल इमेज निवडा", "editCardDetails": "कार्ड तपशील संपादित करा", "cardNo": "कार्ड नंबर", "validityDate": "वैधता तारीख", "saveCard": "कार्ड जतन करा", "manageVehicles": "ट्रक व्यवस्थापित करा", "addTruck": "नवीन ट्रक जोडा", "removeTruck": "काढा", "activeTruck": "सक्रिय", "selectActive": "सक्रिय करा", "noTrucks": "इतर कोणताही ट्रक नोंदणीकृत नाही.", "fleetOnlineStatus": "फ्लीट ऑनलाइन स्थिती", "fleetOnlineStatusDesc": "संपूर्ण फ्लीटसाठी लोड जुळणीचे अलर्ट मिळवण्यासाठी टॉगल करा" },
+  "register": {
+    "title": "खाते तयार करा",
+    "stepPersonal": "वैयक्तिक",
+    "stepTruck": "ट्रक",
+    "welcomeTitle": "HindTrucks मध्ये स्वागत आहे!",
+    "welcomeSubtitle": "तुमची भूमिका आणि मूलभूत माहिती सांगा.",
+    "roleLabel": "तुमची भूमिका",
+    "roles": {
+      "driver": {
+        "title": "ड्रायव्हर",
+        "description": "मी माझे स्वतःचे किंवा फ्लीट वाहन चालवतो."
+      },
+      "owner": {
+        "title": "फ्लीट मालक",
+        "description": "मी फ्लीटचा मालक आहे आणि व्यवस्थापन करतो."
+      }
+    },
+    "fullName": "पूर्ण नाव",
+    "fullNamePlaceholder": "उदा. राजेश कुमार",
+    "licenseNumber": "ड्रायव्हिंग लायसन्स नंबर",
+    "licensePlaceholder": "उदा. DL-14201234567",
+    "companyName": "कंपनीचे नाव",
+    "companyPlaceholder": "उदा. Shergill Logistics",
+    "firstTruckTitle": "पहिला ट्रक नोंदवा",
+    "truckTitle": "तुमचा ट्रक",
+    "truckSubtitle": "आम्ही तुमच्या ट्रक प्रकाराशी सर्वोत्तम लोड जुळवतो.",
+    "truckRegNumber": "ट्रक नोंदणी क्रमांक",
+    "truckRegPlaceholder": "उदा. PB10 AB 4521",
+    "truckType": "ट्रक प्रकार",
+    "capacity": "क्षमता",
+    "capacityPlaceholder": "उदा. 9 टन",
+    "nextTruckDetails": "पुढे: ट्रक तपशील",
+    "createAccount": "खाते तयार करा",
+    "truckTypes": {
+      "ft19": "19 फूट कंटेनर",
+      "ft32": "32 फूट कंटेनर",
+      "open14": "ओपन ट्रक (14 व्हीलर)",
+      "dumper": "डंपर ट्रक",
+      "trailer": "ट्रेलर LPT"
+    }
+  },
   "goods": { "electronics": "इलेक्ट्रॉनिक्स", "furniture": "फर्निचर", "containers": "कंटेनर माल", "parcels": "पार्सल" },
   "tour": { "welcome": { "title": "HindTrucks मध्ये आपले स्वागत आहे!", "content": "सुरुवात करण्यासाठी मुख्य नेव्हिगेशन टॅबचा 1-मिनिटाचा झटपट फेरफटका घेऊया." }, "navHome": { "title": "होम डॅशबोर्ड", "content": "जवळचे लोड शोधण्यासाठी ऑनलाइन व्हा, रोजची आकडेवारी पाहा, मित्रांना रेफर करा आणि BFC ड्रायव्हर लीडरबोर्ड पाहा." }, "toggle": { "title": "ऑनलाइन / ऑफलाइन व्हा", "content": "ऑनलाइन होण्यासाठी हा स्विच टॉगल करा. ऑनलाइन असताना तुम्हाला लगेच जवळचे जास्त पैसे देणारे लोड दिसतील." }, "navLoads": { "title": "उपलब्ध लोड", "content": "तुमच्या ट्रकशी जुळणारे सक्रिय लोड पाहा, मार्ग नकाशे व पेमेंट विभाजन पाहा आणि नवीन ट्रिप स्वीकारा." }, "navEarnings": { "title": "वॉलेट व पेआउट", "content": "तुमचा पेआउट इतिहास पाहा, वॉलेट शिल्लक पाहा आणि थेट तुमच्या UPI ID वर झटपट पैसे काढण्याची विनंती करा." }, "navProfile": { "title": "ड्रायव्हर प्रोफाइल", "content": "स्मार्ट कार्ड तपशील (लायसन्स, RC, परमिट) पडताळा, अॅप्लिकेशनची भाषा बदला किंवा लॉग आउट करा." } },
   "gps": { "permissionTitle": "GPS ट्रॅकिंग सुरू करा", "permissionMessage": "तुमच्या प्रवासाचा मागोवा घेण्यासाठी आणि ETA साठी स्थान अनुमती द्या.", "allow": "स्थान अनुमती द्या", "skip": "वगळा", "requesting": "विनंती होत आहे...", "backgroundTitle": "प्रवासादरम्यान ट्रॅकिंगला अनुमती द्या", "backgroundMessage": "HindTrucks पार्श्वभूमीत स्थान गोळा करते — ॲप बंद असताना किंवा स्क्रीन बंद असताना देखील — तुमचा प्रवास सुरुवातीपासून शेवटपर्यंत ट्रॅक होण्यासाठी. पुढील स्क्रीनवर 'नेहमी अनुमती द्या' निवडा.", "backgroundAllow": "पुढे चला", "backgroundSkip": "ॲप वापरताना फक्त", "deniedTitle": "स्थान अनुमती नाकारली", "deniedMessage": "GPS ट्रॅकिंगसाठी डिव्हाइस सेटिंग्जमध्ये स्थान अनुमती सुरू करा.", "openSettings": "सेटिंग्ज उघडा", "continueWithoutGps": "GPS शिवाय पुढे चला" },

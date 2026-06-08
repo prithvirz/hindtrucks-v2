@@ -1,5 +1,7 @@
 {
-  "app": { "name": "ஹிந்த்டிரக்ஸ்" },
+  "app": {
+    "name": "ஹிந்த்டிரக்ஸ்"
+  },
   "common": {
     "continue": "தொடரவும்",
     "next": "அடுத்து",
@@ -140,6 +142,47 @@
     "activeTruck": "செயலில் உள்ளது",
     "selectActive": "செயல்படுத்து",
     "noTrucks": "வேறு டிரக்குகள் பதிவு செய்யப்படவில்லை."
+  },
+  "register": {
+    "title": "கணக்கு உருவாக்கவும்",
+    "stepPersonal": "தனிப்பட்ட",
+    "stepTruck": "லாரி",
+    "welcomeTitle": "HindTrucks-க்கு வரவேற்கிறோம்!",
+    "welcomeSubtitle": "உங்கள் பங்கு மற்றும் அடிப்படை விவரங்களை சொல்லுங்கள்.",
+    "roleLabel": "உங்கள் பங்கு",
+    "roles": {
+      "driver": {
+        "title": "ஓட்டுநர்",
+        "description": "நான் என் சொந்த அல்லது குழு வாகனத்தை ஓட்டுகிறேன்."
+      },
+      "owner": {
+        "title": "குழு உரிமையாளர்",
+        "description": "நான் ஒரு வாகனக் குழுவை வைத்தும் நிர்வகித்தும் வருகிறேன்."
+      }
+    },
+    "fullName": "முழு பெயர்",
+    "fullNamePlaceholder": "உதா. ராஜேஷ் குமார்",
+    "licenseNumber": "ஓட்டுநர் உரிமம் எண்",
+    "licensePlaceholder": "உதா. DL-14201234567",
+    "companyName": "நிறுவன பெயர்",
+    "companyPlaceholder": "உதா. Shergill Logistics",
+    "firstTruckTitle": "முதல் லாரியை பதிவு செய்யவும்",
+    "truckTitle": "உங்கள் லாரி",
+    "truckSubtitle": "உங்கள் லாரி வகைக்கு பொருத்தமான சிறந்த லோட்களை இணைக்கிறோம்.",
+    "truckRegNumber": "லாரி பதிவு எண்",
+    "truckRegPlaceholder": "உதா. PB10 AB 4521",
+    "truckType": "லாரி வகை",
+    "capacity": "கொள்ளளவு",
+    "capacityPlaceholder": "உதா. 9 டன்",
+    "nextTruckDetails": "அடுத்து: லாரி விவரங்கள்",
+    "createAccount": "கணக்கு உருவாக்கவும்",
+    "truckTypes": {
+      "ft19": "19 அடி கண்டெய்னர்",
+      "ft32": "32 அடி கண்டெய்னர்",
+      "open14": "திறந்த லாரி (14 சக்கரம்)",
+      "dumper": "டம்பர் லாரி",
+      "trailer": "ட்ரெய்லர் LPT"
+    }
   },
   "goods": {
     "electronics": "மின்னணுப் பொருட்கள்",

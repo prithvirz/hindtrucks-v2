@@ -68,7 +68,7 @@ export default function LoadDetail() {
   return (
     <div className="h-full flex flex-col relative">
       <TopBar title={t('loadDetail.title')} back fallbackTo="/loads" />
-      <div className="flex-1 overflow-y-auto no-scrollbar pb-28">
+      <div className="flex-1 app-scroll no-scrollbar pb-action">
         {/* Hero */}
         <div className="relative h-40">
           <img src={load.image} alt="" className="h-full w-full object-cover" />
