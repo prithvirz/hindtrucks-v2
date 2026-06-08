@@ -263,6 +263,8 @@
     "redirecting_in": "Opening in {{count}}s...",
     "go_now": "Go Now",
     "placeholder": "Type message or tap Mic...",
-    "listening": "Listening... Speak now"
+    "listening": "Listening... Speak now",
+    "ttsLanguageMissing": "Voice is temporarily unavailable for this language.",
+    "ttsUnavailable": "Voice playback is not available on this device."
   }
 }

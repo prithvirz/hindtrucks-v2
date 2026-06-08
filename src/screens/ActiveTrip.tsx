@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Phone, ArrowRight, PartyPopper, Navigation } from 'lucide-react'
+import { Phone, ArrowRight, PartyPopper, Navigation, MapPinned } from 'lucide-react'
 import TopBar from '../components/TopBar'
 import Button from '../components/Button'
 import StatusStepper from '../components/StatusStepper'
@@ -20,6 +20,10 @@ import { getRouteWithSteps } from '../features/tracking/services/routing'
 import type { RouteWithSteps, RouteStep } from '../features/tracking/services/routing'
 import { fetchPoisAlongRoute } from '../features/tracking/services/overpass'
 import type { RoutePoI } from '../features/tracking/services/overpass'
+import {
+  getNavigationTarget,
+  openTurnByTurnNavigation,
+} from '../features/tracking/services/navigationLauncher'
 
 // Finds the current step the driver is on based on distance to next maneuver
 function findCurrentStep(steps: RouteStep[], _pos: Coordinates): RouteStep | null {
@@ -163,6 +167,7 @@ export default function ActiveTrip() {
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null)
   const [navMode, setNavMode] = useState(false)
   const [pois, setPois] = useState<RoutePoI[]>([])
+  const [openingNavigation, setOpeningNavigation] = useState(false)
 
   // Load POIs along the pickup→drop route. Hoisted above the early returns below
   // so the hook runs unconditionally on every render (Rules of Hooks).
@@ -332,6 +337,21 @@ export default function ActiveTrip() {
 
   const routeCoords = waypoints.map((wp) => wp.coordinates)
   const { geofenceStatus } = trackingState
+  const navigationTarget = getNavigationTarget(
+    currentStep,
+    { coordinates: pickupCoord, label: `${currentLoad.fromCity}, ${currentLoad.fromArea}`, stage: 'pickup' },
+    { coordinates: dropCoord, label: `${currentLoad.toCity}, ${currentLoad.toArea}`, stage: 'drop' },
+  )
+
+  async function handleStartNavigation() {
+    if (!navigationTarget) return
+    setOpeningNavigation(true)
+    try {
+      await openTurnByTurnNavigation(navigationTarget.coordinates)
+    } finally {
+      setOpeningNavigation(false)
+    }
+  }
 
   // Fullscreen nav mode — covers entire screen
   if (navMode) {
@@ -456,6 +476,29 @@ export default function ActiveTrip() {
                   {t('trip.callShipper')}
                 </Button>
               </div>
+
+              {navigationTarget && (
+                <button
+                  type="button"
+                  onClick={handleStartNavigation}
+                  disabled={openingNavigation}
+                  className="mb-5 w-full rounded-2xl bg-night-900 text-white shadow-card border border-night-700 p-4 flex items-center gap-3 text-left active:scale-[0.99] transition-all disabled:opacity-60"
+                >
+                  <span className="h-11 w-11 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                    <MapPinned size={20} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-black">
+                      {openingNavigation ? 'Opening Google Maps...' : 'Start navigation'}
+                    </span>
+                    <span className="mt-0.5 block text-xs font-semibold text-white/65 truncate">
+                      {navigationTarget.stage === 'pickup' ? 'To pickup: ' : 'To drop: '}
+                      {navigationTarget.label}
+                    </span>
+                  </span>
+                  <ArrowRight size={18} className="shrink-0 text-accent" />
+                </button>
+              )}
 
               <StatusStepper steps={steps} current={done} />
             </>

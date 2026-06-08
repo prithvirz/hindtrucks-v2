@@ -201,19 +201,6 @@ export default function OnboardingTour() {
           fill="rgba(11, 11, 15, 0.78)"
           mask="url(#spotlight-mask)"
         />
-        {/* Neon Orange Box Outline around target */}
-        {coords && (
-          <rect
-            x={coords.left - 8}
-            y={coords.top - 8}
-            width={coords.width + 16}
-            height={coords.height + 16}
-            rx="14"
-            fill="none"
-            stroke="#F26A1B"
-            strokeWidth="3.5"
-          />
-        )}
       </svg>
 
       {/* Tooltip Card with Glassmorphism */}

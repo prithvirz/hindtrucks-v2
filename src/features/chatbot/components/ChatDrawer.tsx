@@ -125,9 +125,10 @@ export function ChatDrawer() {
         }
     }, [messages, isOpen])
     const { t } = useTranslation()
-    const { speak, cancel: cancelTts } = useTTS()
+    const { speak, cancel: cancelTts, isSupported: hasTtsSupport } = useTTS()
 
     const [inputValue, setInputValue] = useState('')
+    const [ttsNotice, setTtsNotice] = useState<string | null>(null)
     const [isMuted, setIsMuted] = useState(() => {
         return localStorage.getItem('ht_bot_muted') === 'true'
     })
@@ -154,6 +155,12 @@ export function ChatDrawer() {
         if (isMuted) cancelTts()
     }, [isMuted, cancelTts])
 
+    useEffect(() => {
+        if (!ttsNotice) return
+        const timer = window.setTimeout(() => setTtsNotice(null), 7000)
+        return () => window.clearTimeout(timer)
+    }, [ttsNotice])
+
     // Cancel TTS/STT when closing
     useEffect(() => {
         if (!isOpen) {
@@ -171,9 +178,27 @@ export function ChatDrawer() {
         handleSend(qText)
     }
 
-    function handlePlayTts(text: string, lang: string) {
-        if (!isMuted) {
-            speak(text, lang)
+    async function handlePlayTts(text: string, lang: string) {
+        if (isMuted) {
+            setIsMuted(false)
+        }
+        setTtsNotice(null)
+        const result = await speak(text, lang)
+
+        if (result.status === 'missing-language') {
+            setTtsNotice(
+                t(
+                    'bot.ttsLanguageMissing',
+                    'Voice is temporarily unavailable for this language.'
+                )
+            )
+        } else if (result.status === 'failed' || result.status === 'unsupported') {
+            setTtsNotice(
+                t(
+                    'bot.ttsUnavailable',
+                    'Voice playback is not available on this device.'
+                )
+            )
         }
     }
 
@@ -286,13 +311,19 @@ export function ChatDrawer() {
                             </div>
                         </div>
 
+                        {ttsNotice && (
+                            <div className="bg-amber-50 text-amber-800 border-b border-amber-200 px-4 py-2 text-[11px] font-extrabold leading-snug">
+                                {ttsNotice}
+                            </div>
+                        )}
+
                         {/* Chat Body Messages */}
                         <div ref={containerRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-surface-grey no-scrollbar">
                             {messages.map((msg) => (
                                 <ChatMessage
                                     key={msg.id}
                                     message={msg}
-                                    ttsEnabled={!isMuted}
+                                    ttsEnabled={hasTtsSupport}
                                     onPlayTts={handlePlayTts}
                                 />
                             ))}
