@@ -13,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import org.json.JSONException;
 
 @CapacitorPlugin(name = "HindTrucksTts")
 public class HindTrucksTtsPlugin extends Plugin {
@@ -90,12 +91,16 @@ public class HindTrucksTtsPlugin extends Plugin {
                 }
             }
 
-            JSObject result = new JSObject();
-            result.put("languages", new JSArray(available.toArray()));
-            result.put("configuredLanguages", new JSArray(CONFIGURED_LANGUAGES.toArray()));
-            result.put("engine", "android-text-to-speech");
-            result.put("ready", engineReady);
-            call.resolve(result);
+            try {
+                JSObject result = new JSObject();
+                result.put("languages", new JSArray(available.toArray()));
+                result.put("configuredLanguages", new JSArray(CONFIGURED_LANGUAGES.toArray()));
+                result.put("engine", "android-text-to-speech");
+                result.put("ready", engineReady);
+                call.resolve(result);
+            } catch (JSONException ex) {
+                call.reject("Unable to read TTS languages", "TTS_LANGUAGES_ERROR", ex);
+            }
         });
     }
 
