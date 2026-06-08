@@ -11,7 +11,7 @@ import { isTruckCompatible } from '../lib/matching'
 export default function Loads() {
   const nav = useNavigate()
   const { t } = useTranslation()
-  const { driver, role } = useProfile()
+  const { driver } = useProfile()
   const [loading, setLoading] = useState(true)
   const [selectedTruckId, setSelectedTruckId] = useState<string>('all')
 
@@ -23,20 +23,15 @@ export default function Loads() {
   // Filter loads based on chosen truck pill
   const filteredLoads = MOCK_LOADS.filter((load) => {
     if (selectedTruckId === 'all') {
-      if (role === 'owner') {
-        const activeTrucks = (driver.trucks || []).filter((t) => t.isActive !== false)
-        return activeTrucks.some((truck) => isTruckCompatible(load, truck))
-      }
-      return true
+      const activeTrucks = (driver.trucks || []).filter((t) => t.isActive !== false)
+      return activeTrucks.length === 0 || activeTrucks.some((truck) => isTruckCompatible(load, truck))
     }
     const truck = (driver.trucks || []).find((t) => t.id === selectedTruckId)
     if (!truck) return true
     return isTruckCompatible(load, truck)
   })
 
-  const visibleTrucks = role === 'owner'
-    ? (driver.trucks || []).filter((t) => t.isActive !== false)
-    : (driver.trucks || [])
+  const visibleTrucks = (driver.trucks || []).filter((t) => t.isActive !== false)
 
   return (
     <div className="h-full flex flex-col">
@@ -66,7 +61,7 @@ export default function Loads() {
                   : 'bg-surface-sunken text-ink-muted border-hairline hover:bg-surface'
                 }`}
             >
-              {isActive && role !== 'owner' && <span className="w-1.5 h-1.5 rounded-full bg-[#39E990] animate-pulse" />}
+              {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#39E990] animate-pulse" />}
               {truck.regNumber} ({parseFloat(truck.capacity)}T)
             </button>
           )

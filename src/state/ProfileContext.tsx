@@ -87,7 +87,7 @@ function readStoredDrivers(phone: string): Driver[] {
 
 function readStoredRole(phone: string): UserRole {
     const saved = localStorage.getItem(roleKey(phone))
-    return saved === 'owner' || saved === 'driver' ? saved : 'driver'
+    return saved === 'owner' || saved === 'driver' ? saved : 'owner'
 }
 
 function clearLegacyActiveProfile() {
@@ -165,7 +165,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<ApiError | null>(null)
 
-    const [role, setRoleState] = useState<UserRole>('driver')
+    const [role, setRoleState] = useState<UserRole>('owner')
     const [drivers, setDrivers] = useState<Driver[]>(DEFAULT_DRIVERS)
     const [driver, setDriver] = useState<DriverWithExtras>(() => createDefaultDriver())
 
@@ -177,7 +177,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         if (!isLoggedIn || !phone) {
             setOnlineState(false)
             setDriver(createDefaultDriver())
-            setRoleState('driver')
+            setRoleState('owner')
             setDrivers(DEFAULT_DRIVERS)
             setError(null)
             setIsLoading(false)
@@ -212,9 +212,9 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                         tripsToday: profile.tripsToday,
                         earningsToday: profile.earningsToday,
                         truck: {
-                            regNumber: profile.truck.regNumber || prev.truck.regNumber,
-                            type: profile.truck.type || prev.truck.type,
-                            capacity: profile.truck.capacity || prev.truck.capacity,
+                            regNumber: profile.truck.regNumber,
+                            type: profile.truck.type,
+                            capacity: profile.truck.capacity,
                         },
                     }))
                 })
@@ -510,11 +510,11 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                     },
                 }
                 setDriver(newProfile)
-                setRoleState('driver')
+                setRoleState('owner')
                 setDrivers(DEFAULT_DRIVERS)
                 localStorage.setItem(registeredKey(params.phone), '1')
                 localStorage.setItem(driverKey(params.phone), JSON.stringify(newProfile))
-                localStorage.setItem(roleKey(params.phone), 'driver')
+                localStorage.setItem(roleKey(params.phone), 'owner')
                 localStorage.setItem(ownerDriversKey(params.phone), JSON.stringify(DEFAULT_DRIVERS))
             } else {
                 const newProfile: DriverWithExtras = {
@@ -523,11 +523,11 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                     phone: params.phone,
                 }
                 setDriver(newProfile)
-                setRoleState('driver')
+                setRoleState('owner')
                 setDrivers(DEFAULT_DRIVERS)
                 localStorage.setItem(registeredKey(params.phone), '1')
                 localStorage.setItem(driverKey(params.phone), JSON.stringify(newProfile))
-                localStorage.setItem(roleKey(params.phone), 'driver')
+                localStorage.setItem(roleKey(params.phone), 'owner')
                 localStorage.setItem(ownerDriversKey(params.phone), JSON.stringify(DEFAULT_DRIVERS))
             }
             markRegistered(params.phone)

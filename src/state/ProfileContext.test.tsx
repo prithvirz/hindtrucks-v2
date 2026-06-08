@@ -75,7 +75,7 @@ describe('useProfile', () => {
         expect(typeof result.current.setActiveTruck).toBe('function')
     })
 
-    it('provides role and setRole function', () => {
+    it('provides operator role and setRole compatibility function', () => {
         const { result } = renderHook(() => useProfile(), {
             wrapper: ({ children }) => (
                 <AuthProvider>
@@ -83,7 +83,7 @@ describe('useProfile', () => {
                 </AuthProvider>
             ),
         })
-        expect(result.current.role).toBe('driver')
+        expect(result.current.role).toBe('owner')
         expect(typeof result.current.setRole).toBe('function')
     })
 

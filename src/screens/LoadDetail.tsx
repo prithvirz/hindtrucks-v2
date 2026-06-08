@@ -27,7 +27,7 @@ export default function LoadDetail() {
   const nav = useNavigate()
   const { t } = useTranslation()
   const { acceptLoad, acceptLoadOwner } = useTrip()
-  const { driver, setOnline, setActiveTruck, role, drivers } = useProfile()
+  const { driver, setOnline, setActiveTruck, drivers } = useProfile()
   const [assignOpen, setAssignOpen] = useState(false)
   const load = MOCK_LOADS.find((l) => l.id === id)
 
@@ -41,8 +41,7 @@ export default function LoadDetail() {
   }
 
   const compatibleTrucks = getCompatibleTrucks(load, driver.trucks || []).filter((t) => {
-    if (role === 'owner') return t.isActive !== false
-    return true
+    return t.isActive !== false
   })
 
   function accept() {
@@ -172,7 +171,7 @@ export default function LoadDetail() {
           onClose={() => setAssignOpen(false)}
           compatibleTrucks={compatibleTrucks}
           activeTruck={driver.truck}
-          role={role}
+          role="owner"
           drivers={drivers}
           onConfirm={handleConfirmAssignment}
           onConfirmOwner={handleConfirmAssignmentOwner}

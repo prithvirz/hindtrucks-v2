@@ -50,12 +50,12 @@ export default function Otp() {
   async function verify() {
     try {
       const { registered } = await verifyOtp(rawPhone, code)
-      if (registered) {
+      if (intent === 'register' && state?.name) {
+        await createDriverProfile({ name: state.name, phone: rawPhone })
         nav('/home', { replace: true })
         return
       }
-      if (intent === 'register' && state?.name) {
-        await createDriverProfile({ name: state.name, phone: rawPhone })
+      if (registered) {
         nav('/home', { replace: true })
         return
       }

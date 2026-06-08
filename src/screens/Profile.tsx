@@ -44,8 +44,6 @@ export default function Profile() {
     addTruck,
     removeTruck,
     setActiveTruck,
-    role,
-    setRole,
     drivers,
     addDriver,
     removeDriver,
@@ -106,35 +104,14 @@ export default function Profile() {
       <TopBar title={t('profile.title')} />
       <div className="flex-1 app-scroll no-scrollbar px-5 pt-4 pb-tabs space-y-5 text-left">
 
-        {/* App Mode Toggle */}
-        <div className="bg-surface p-3.5 boxed-rounded boxed-border shadow-card flex flex-col gap-2">
-          <p className="text-sm font-black text-ink">APP MODE</p>
-          <div className="grid w-full grid-cols-2 bg-surface-grey border border-hairline p-1 rounded-xl font-extrabold text-[10px]">
-            <button
-              onClick={() => setRole('driver')}
-              className={`min-w-0 px-1 py-1.5 rounded-lg transition-colors text-center whitespace-nowrap ${role === 'driver' ? 'bg-accent text-white font-black' : 'text-ink-muted'
-                }`}
-            >
-              Driver Mode
-            </button>
-            <button
-              onClick={() => setRole('owner')}
-              className={`min-w-0 px-1 py-1.5 rounded-lg transition-colors text-center whitespace-nowrap ${role === 'owner' ? 'bg-accent text-white font-black' : 'text-ink-muted'
-                }`}
-            >
-              Fleet Owner Mode
-            </button>
-          </div>
-        </div>
-
-        {/* Fleet Online Status Toggle */}
+        {/* Online Status Toggle */}
         <div className="bg-surface p-4 boxed-rounded boxed-border shadow-card flex items-center justify-between">
           <div className="flex-1 pr-3 text-left">
             <p className="text-sm font-black text-ink uppercase tracking-wider">
-              {role === 'owner' ? t('profile.fleetOnlineStatus') : (isOnline ? t('common.online') : t('common.offline'))}
+              {isOnline ? t('common.online') : t('common.offline')}
             </p>
             <p className="text-xs text-ink-muted font-bold mt-1 leading-snug">
-              {role === 'owner' ? t('profile.fleetOnlineStatusDesc') : (isOnline ? t('home.statusOnline') : t('home.statusOffline'))}
+              {isOnline ? t('home.statusOnline') : t('home.statusOffline')}
             </p>
           </div>
           <Toggle on={isOnline} onChange={setOnline} />
@@ -153,7 +130,7 @@ export default function Profile() {
             <div className="flex flex-wrap items-center gap-1.5">
               <p className="text-lg font-black text-ink leading-tight truncate">{driver.name || t('common.driver', 'Driver')}</p>
               <span className="inline-flex items-center text-[9px] font-black uppercase text-accent bg-accent-soft px-1.5 py-0.5 boxed-rounded border border-accent shrink-0">
-                {role === 'owner' ? 'Fleet Owner' : 'BFC Elite'}
+                Owner Operator
               </span>
             </div>
             <p className="text-sm text-ink-muted font-bold">{driver.phone}</p>
@@ -214,24 +191,33 @@ export default function Profile() {
               </div>
             )}
             {driver.trucks.map((tk) => {
-              if (role === 'owner') {
-                const isTruckActive = tk.isActive !== false
-                return (
-                  <div key={tk.id} className="py-3 flex items-center justify-between gap-3 text-left">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-black text-ink nums tracking-wide">{tk.regNumber}</p>
-                        {isTruckActive && (
-                          <span className="text-[9px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success select-none">
-                            Active
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-xs text-ink-faint font-semibold mt-0.5">{tk.type} ({tk.capacity})</p>
+              const isTruckActive = tk.isActive !== false
+              const isSelected = tk.regNumber === driver.truck.regNumber
+              return (
+                <div key={tk.id} className="py-3 flex items-center justify-between gap-3 text-left">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-black text-ink nums tracking-wide">{tk.regNumber}</p>
+                      {isSelected && (
+                        <span className="text-[9px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success select-none">
+                          {t('profile.activeTruck')}
+                        </span>
+                      )}
                     </div>
+                    <p className="text-xs text-ink-faint font-semibold mt-0.5">{tk.type} ({tk.capacity})</p>
+                  </div>
 
-                    <div className="flex items-center gap-3 shrink-0">
-                      <Toggle on={isTruckActive} onChange={() => toggleTruckActive(tk.id)} />
+                  <div className="flex items-center gap-2 shrink-0">
+                    {!isSelected && (
+                      <button
+                        onClick={() => setActiveTruck(tk.id)}
+                        className="h-8 px-2.5 bg-surface hover:bg-surface-grey text-[11px] font-extrabold text-ink border border-hairline rounded-lg active:scale-95 transition-all"
+                      >
+                        {t('profile.selectActive')}
+                      </button>
+                    )}
+                    <Toggle on={isTruckActive} onChange={() => toggleTruckActive(tk.id)} />
+                    {!isSelected ? (
                       <button
                         onClick={() => removeTruck(tk.id)}
                         className="h-8 w-8 text-ink-faint hover:text-red-600 bg-surface hover:bg-red-50 border border-hairline hover:border-red-200 rounded-lg active:scale-95 transition-all flex items-center justify-center shrink-0"
@@ -239,120 +225,81 @@ export default function Profile() {
                       >
                         <X size={14} strokeWidth={3} />
                       </button>
-                    </div>
+                    ) : (
+                      <span className="h-7 w-7 rounded-full bg-success/15 text-success flex items-center justify-center select-none">
+                        <Check size={15} strokeWidth={3.5} />
+                      </span>
+                    )}
                   </div>
-                )
-              } else {
-                const isActive = tk.regNumber === driver.truck.regNumber
+                </div>
+              )
+            })}
+          </div>
+        </Section>
+
+        <Section
+          title="Manage Drivers"
+          icon={<Users size={16} className="text-accent" />}
+          action={
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setAddDriverOpen(true)}
+            >
+              + Add Driver
+            </Button>
+          }
+        >
+          <div className="divide-y divide-hairline">
+            {drivers.length === 0 ? (
+              <div className="py-4 text-center text-xs text-ink-faint font-bold">
+                Add yourself or another driver with licence and phone details.
+              </div>
+            ) : (
+              drivers.map((drv) => {
+                const assignedTruck = driver.trucks.find(t => t.id === drv.assignedTruckId)
                 return (
-                  <div key={tk.id} className="py-3 flex items-center justify-between gap-3 text-left">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-black text-ink nums tracking-wide">{tk.regNumber}</p>
-                        {isActive && (
-                          <span className="text-[9px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success select-none">
-                            {t('profile.activeTruck')}
-                          </span>
-                        )}
+                  <div key={drv.id} className="py-3 flex flex-col gap-2.5 text-left">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-black text-ink">{drv.name}</p>
+                        <p className="text-xs text-ink-muted font-bold mt-0.5">{drv.phone} • Lic: {drv.licenseNumber}</p>
                       </div>
-                      <p className="text-xs text-ink-faint font-semibold mt-0.5">{tk.type} ({tk.capacity})</p>
+                      <button
+                        onClick={() => removeDriver(drv.id)}
+                        className="h-8 w-8 text-ink-faint hover:text-red-600 bg-surface hover:bg-red-50 border border-hairline hover:border-red-200 rounded-lg active:scale-95 transition-all flex items-center justify-center shrink-0"
+                        title="Remove Driver"
+                      >
+                        <X size={14} strokeWidth={3} />
+                      </button>
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0">
-                      {!isActive ? (
-                        <>
-                          <button
-                            onClick={() => setActiveTruck(tk.id)}
-                            className="h-8 px-2.5 bg-surface hover:bg-surface-grey text-[11px] font-extrabold text-ink border border-hairline rounded-lg active:scale-95 transition-all"
-                          >
-                            {t('profile.selectActive')}
-                          </button>
-                          <button
-                            onClick={() => removeTruck(tk.id)}
-                            className="h-8 w-8 text-ink-faint hover:text-red-600 bg-surface hover:bg-red-50 border border-hairline hover:border-red-200 rounded-lg active:scale-95 transition-all flex items-center justify-center shrink-0"
-                            title={t('profile.removeTruck')}
-                          >
-                            <X size={14} strokeWidth={3} />
-                          </button>
-                        </>
-                      ) : (
-                        <span className="h-7 w-7 rounded-full bg-success/15 text-success flex items-center justify-center select-none">
-                          <Check size={15} strokeWidth={3.5} />
+                    <div className="flex flex-wrap items-center gap-2 bg-surface-grey/50 p-2 rounded-xl border border-hairline/10">
+                      <span className="text-[10px] font-black uppercase text-ink-muted shrink-0">Truck:</span>
+                      <select
+                        value={drv.assignedTruckId || ''}
+                        onChange={(e) => assignDriverToTruck(drv.id, e.target.value || null)}
+                        className="min-w-0 flex-1 bg-surface-sunken border border-hairline rounded-lg text-xs font-bold px-2 py-1 outline-none text-ink cursor-pointer"
+                      >
+                        <option value="">Unassigned</option>
+                        {driver.trucks.map((tk) => (
+                          <option key={tk.id} value={tk.id}>
+                            {tk.regNumber} ({tk.capacity})
+                          </option>
+                        ))}
+                      </select>
+                      {assignedTruck && (
+                        <span className="text-[10px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success shrink-0">
+                          Assigned
                         </span>
                       )}
                     </div>
                   </div>
                 )
-              }
-            })}
+              })
+            )}
           </div>
         </Section>
-
-        {role === 'owner' && (
-          <Section
-            title="Manage Drivers"
-            icon={<Users size={16} className="text-accent" />}
-            action={
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => setAddDriverOpen(true)}
-              >
-                + Add Driver
-              </Button>
-            }
-          >
-            <div className="divide-y divide-hairline">
-              {drivers.length === 0 ? (
-                <div className="py-4 text-center text-xs text-ink-faint font-bold">
-                  No drivers registered. Add a driver to start assigning loads.
-                </div>
-              ) : (
-                drivers.map((drv) => {
-                  const assignedTruck = driver.trucks.find(t => t.id === drv.assignedTruckId)
-                  return (
-                    <div key={drv.id} className="py-3 flex flex-col gap-2.5 text-left">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-black text-ink">{drv.name}</p>
-                          <p className="text-xs text-ink-muted font-bold mt-0.5">{drv.phone} • Lic: {drv.licenseNumber}</p>
-                        </div>
-                        <button
-                          onClick={() => removeDriver(drv.id)}
-                          className="h-8 w-8 text-ink-faint hover:text-red-600 bg-surface hover:bg-red-50 border border-hairline hover:border-red-200 rounded-lg active:scale-95 transition-all flex items-center justify-center shrink-0"
-                          title="Remove Driver"
-                        >
-                          <X size={14} strokeWidth={3} />
-                        </button>
-                      </div>
-
-                      <div className="flex flex-wrap items-center gap-2 bg-surface-grey/50 p-2 rounded-xl border border-hairline/10">
-                        <span className="text-[10px] font-black uppercase text-ink-muted shrink-0">Truck:</span>
-                        <select
-                          value={drv.assignedTruckId || ''}
-                          onChange={(e) => assignDriverToTruck(drv.id, e.target.value || null)}
-                          className="min-w-0 flex-1 bg-surface-sunken border border-hairline rounded-lg text-xs font-bold px-2 py-1 outline-none text-ink cursor-pointer"
-                        >
-                          <option value="">Unassigned</option>
-                          {driver.trucks.map((tk) => (
-                            <option key={tk.id} value={tk.id}>
-                              {tk.regNumber} ({tk.capacity})
-                            </option>
-                          ))}
-                        </select>
-                        {assignedTruck && (
-                          <span className="text-[10px] font-bold text-success bg-success-soft px-1.5 py-0.5 rounded border border-success shrink-0">
-                            Assigned
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  )
-                })
-              )}
-            </div>
-          </Section>
-        )}
 
         {/* Refer & Earn - Premium Obsidian Card Style */}
         <div id="refer-card" className="bg-gradient-to-br from-night-900 via-night-800 to-night-700 text-white border border-white/10 boxed-shadow boxed-rounded-lg p-5 relative overflow-hidden text-left">

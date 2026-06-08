@@ -149,7 +149,7 @@ function RoutedLiveMap({
 export default function ActiveTrip() {
   const nav = useNavigate()
   const { t } = useTranslation()
-  const { role, drivers, driver, refreshProfile } = useProfile()
+  const { drivers, driver, refreshProfile } = useProfile()
   const { refreshEarnings } = useEarnings()
   const {
     activeLoad,
@@ -172,17 +172,15 @@ export default function ActiveTrip() {
   // Load POIs along the pickup→drop route. Hoisted above the early returns below
   // so the hook runs unconditionally on every render (Rules of Hooks).
   useEffect(() => {
-    const trip = role === 'owner'
-      ? activeTrips.find((t) => t.id === selectedTripId)
-      : activeLoad ? { load: activeLoad } : null
+    const trip = activeTrips.find((t) => t.id === selectedTripId) || (activeLoad ? { load: activeLoad } : null)
     const load = trip?.load
     if (!load) return
     const pickup = lookupCity(load.fromCity) ?? { lat: 28.6139, lng: 77.209, timestamp: Date.now() }
     const drop = lookupCity(load.toCity) ?? { lat: 26.9124, lng: 75.7873, timestamp: Date.now() }
     fetchPoisAlongRoute([pickup, drop]).then(setPois).catch(() => {})
-  }, [role, selectedTripId, activeLoad, activeTrips])
+  }, [selectedTripId, activeLoad, activeTrips])
 
-  if (role === 'owner' && !selectedTripId) {
+  if (!selectedTripId && activeTrips.length > 0) {
     return (
       <div className="h-full flex flex-col">
         <TopBar title="Fleet Tracking" />
@@ -261,9 +259,7 @@ export default function ActiveTrip() {
     )
   }
 
-  const activeTrip = role === 'owner'
-    ? activeTrips.find(t => t.id === selectedTripId)
-    : activeLoad ? { id: 't_self', load: activeLoad, step: tripStep } : null
+  const activeTrip = activeTrips.find(t => t.id === selectedTripId) || (activeLoad ? { id: 't_self', load: activeLoad, step: tripStep } : null)
 
   if (!activeTrip) {
     return (
@@ -290,7 +286,7 @@ export default function ActiveTrip() {
   const done = currentStep
 
   function finish() {
-    if (role === 'owner') {
+    if (selectedTripId) {
       resetTripOwner(tripId)
       setSelectedTripId(null)
     } else {
@@ -304,7 +300,7 @@ export default function ActiveTrip() {
   }
 
   function handleAdvance() {
-    if (role === 'owner') {
+    if (selectedTripId) {
       advanceTripOwner(tripId)
     } else {
       advanceTrip()
@@ -381,9 +377,9 @@ export default function ActiveTrip() {
   return (
     <div className="h-full flex flex-col">
       <TopBar
-        title={role === 'owner' ? `Trip Detail: ${currentLoad.id}` : t('trip.title')}
-        back={role === 'owner'}
-        onBack={role === 'owner' ? () => setSelectedTripId(null) : undefined}
+        title={selectedTripId ? `Trip Detail: ${currentLoad.id}` : t('trip.title')}
+        back={!!selectedTripId}
+        onBack={selectedTripId ? () => setSelectedTripId(null) : undefined}
       />
       <div className="flex-1 app-scroll no-scrollbar pb-action">
         <div className="relative h-48">
@@ -434,9 +430,9 @@ export default function ActiveTrip() {
           {isComplete ? (
             <div className="rounded-2xl bg-success-soft ring-1 ring-success/20 p-6 text-center animate-scale-in">
               <PartyPopper size={36} className="mx-auto text-success" />
-              <p className="mt-3 text-lg font-extrabold text-ink">{role === 'owner' ? 'Trip Fully Delivered!' : t('trip.completed')}</p>
+              <p className="mt-3 text-lg font-extrabold text-ink">{selectedTripId ? 'Trip Fully Delivered!' : t('trip.completed')}</p>
               
-              {role === 'driver' && localStorage.getItem(`ht_first_trip_done_${driver.phone}`) !== '1' && driver.phone !== '+91 98765 43210' ? (
+              {!selectedTripId && localStorage.getItem(`ht_first_trip_done_${driver.phone}`) !== '1' && driver.phone !== '+91 98765 43210' ? (
                 <>
                   <p className="text-xs text-ink-muted mt-1">First Trip Settlement (Signup Bonus Adjusted):</p>
                   <div className="my-3 py-2.5 px-3.5 bg-surface-sunken rounded-xl text-left text-xs font-bold text-ink-muted space-y-1.5 border border-success/20 max-w-[260px] mx-auto">
@@ -460,7 +456,7 @@ export default function ActiveTrip() {
                 </>
               ) : (
                 <>
-                  <p className="text-sm text-ink-muted mt-1">{role === 'owner' ? 'Payment released to your wallet:' : t('trip.earned')}</p>
+                  <p className="text-sm text-ink-muted mt-1">{selectedTripId ? 'Payment released to your wallet:' : t('trip.earned')}</p>
                   <p className="text-3xl font-extrabold text-success mt-1 nums">{inr(currentLoad.price)}</p>
                 </>
               )}
@@ -509,11 +505,11 @@ export default function ActiveTrip() {
       <div className="absolute bottom-0 inset-x-0 p-5 bg-surface/90 border-t border-hairline backdrop-blur-xl safe-bottom z-10">
         {isComplete ? (
           <Button full variant="dark" onClick={finish}>
-            {role === 'owner' ? 'Back to Fleet List' : t('trip.backHome')}
+            {selectedTripId ? 'Back to Fleet List' : t('trip.backHome')}
           </Button>
         ) : (
           <Button full onClick={handleAdvance}>
-            {role === 'owner' ? `Advance Driver Stage (${steps[done] ?? steps[steps.length - 1]})` : t('trip.markNext', { step: steps[done] ?? steps[steps.length - 1] })}
+            {selectedTripId ? `Advance Driver Stage (${steps[done] ?? steps[steps.length - 1]})` : t('trip.markNext', { step: steps[done] ?? steps[steps.length - 1] })}
           </Button>
         )}
       </div>

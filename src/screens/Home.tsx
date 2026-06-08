@@ -20,11 +20,10 @@ const BFC_MEMBERS = [
 export default function Home() {
   const nav = useNavigate()
   const { t } = useTranslation()
-  const { isOnline, setOnline, driver, role, drivers } = useProfile()
+  const { isOnline, setOnline, driver, drivers } = useProfile()
   const { activeTrips, activeLoad } = useTrip()
   const nearby = MOCK_LOADS.slice(0, 2)
   const driverName = driver.name || t('common.driver', 'Driver')
-  const truckLabel = driver.truck.regNumber || t('profile.truckPending', 'Truck setup pending')
 
   return (
     <div className="h-full app-scroll no-scrollbar pb-tabs">
@@ -50,11 +49,11 @@ export default function Home() {
                     {driverName}
                   </p>
                   <span className="inline-flex items-center text-[9px] font-bold uppercase tracking-wider text-white bg-gradient-to-r from-yellow-500 to-accent px-1.5 py-0.5 rounded-md shrink-0">
-                    {role === 'owner' ? 'Fleet Owner' : 'BFC Elite'}
+                    Owner Operator
                   </span>
                 </div>
                 <p className="text-white/60 text-xs mt-0.5 font-bold tracking-wider truncate">
-                  {role === 'owner' ? `${driver.trucks.length} Trucks • ${drivers.length} Drivers` : truckLabel}
+                  {`${driver.trucks.length} Trucks • ${drivers.length} Drivers`}
                 </p>
               </div>
             </div>
@@ -67,10 +66,10 @@ export default function Home() {
           <div id="online-toggle" className="mt-5 flex items-center justify-between bg-surface text-ink boxed-border boxed-shadow boxed-rounded-lg p-4">
             <div className="flex-1 pr-3">
               <p className="font-black text-[14px] text-ink uppercase tracking-wider">
-                {role === 'owner' ? t('profile.fleetOnlineStatus') : (isOnline ? t('common.online') : t('common.offline'))}
+                {isOnline ? t('common.online') : t('common.offline')}
               </p>
               <p className="text-ink-muted text-xs mt-0.5 leading-snug font-semibold">
-                {role === 'owner' ? t('profile.fleetOnlineStatusDesc') : (isOnline ? t('home.statusOnline') : t('home.statusOffline'))}
+                {isOnline ? t('home.statusOnline') : t('home.statusOffline')}
               </p>
             </div>
             <Toggle on={isOnline} onChange={setOnline} />
@@ -83,25 +82,25 @@ export default function Home() {
         <div id="stats-card" className="bg-surface boxed-border boxed-shadow boxed-rounded-lg p-4 grid grid-cols-3 divide-x divide-hairline">
           <Stat
             icon={<TrendingUp size={16} className="text-accent" />}
-            label={role === 'owner' ? 'Fleet Earnings' : t('home.todayEarnings')}
-            value={role === 'owner' ? inr(85000 + activeTrips.reduce((acc, t) => acc + t.load.price, 0)) : inr(driver.earningsToday)}
+            label="Fleet Earnings"
+            value={inr(driver.earningsToday + activeTrips.reduce((acc, t) => acc + t.load.price, 0))}
           />
           <Stat
             icon={<Truck size={16} className="text-accent" />}
-            label={role === 'owner' ? 'Active Trips' : t('home.trips')}
-            value={role === 'owner' ? `${activeTrips.length}` : `${driver.tripsToday}`}
+            label="Active Trips"
+            value={`${activeTrips.length}`}
           />
           <Stat
             icon={<Star size={16} className="text-accent" />}
-            label={role === 'owner' ? 'Fleet Size' : t('home.rating')}
-            value={role === 'owner' ? `${driver.trucks.length}` : `${driver.rating}`}
+            label="Trucks"
+            value={`${driver.trucks.length}`}
           />
         </div>
       </div>
 
       {/* BFC Member Leaderboard - Premium Driver Cards */}
       {/* Active Fleet Trips stepper list */}
-      {role === 'owner' && (
+      {(
         <div className="px-5 mt-6">
           <div className="bg-surface boxed-border boxed-shadow boxed-rounded-lg p-4 text-left">
             <div className="flex items-center gap-2 mb-3.5 border-b border-hairline pb-2.5">
@@ -184,7 +183,7 @@ export default function Home() {
         </div>
       )}
 
-      {role === 'driver' && activeLoad && (
+      {activeLoad && (
         <div className="px-5 mt-6">
           <div className="bg-accent/10 border border-accent/20 rounded-2xl p-4 text-left shadow-lg shadow-accent/5 flex flex-col gap-3 relative overflow-hidden">
             <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-accent" />
