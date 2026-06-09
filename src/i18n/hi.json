@@ -100,7 +100,11 @@
     "markNext": "{{step}} के रूप में चिह्नित करें",
     "completed": "ट्रिप पूरी हुई",
     "earned": "आपने कमाए",
-    "backHome": "होम पर वापस जाएं"
+    "backHome": "होम पर वापस जाएं",
+    "startNavigation": "नेविगेशन शुरू करें",
+    "openingNavigation": "Google Maps खुल रहा है...",
+    "navigateToPickup": "पिकअप तक: ",
+    "navigateToDrop": "ड्रॉप तक: "
   },
   "earnings": {
     "title": "कमाई",

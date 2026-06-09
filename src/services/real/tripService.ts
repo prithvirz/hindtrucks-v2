@@ -10,6 +10,7 @@ import {
   orderBy,
   limit,
   serverTimestamp,
+  increment,
 } from 'firebase/firestore'
 import { auth, db } from '../../lib/firebase'
 import type {
@@ -22,6 +23,7 @@ import type {
 } from '../types'
 import type { TripStep } from '../../state/types'
 import type { Load } from '../../data/mockLoads'
+import { calculateTripSettlement } from '../../lib/settlement'
 
 function docToLoad(id: string, data: Record<string, unknown>): Load {
   return {
@@ -40,6 +42,58 @@ function docToLoad(id: string, data: Record<string, unknown>): Load {
     shipperVerified: (data.shipperVerified as boolean) ?? false,
     image: (data.image as string) ?? '',
   }
+}
+
+async function createTripPayout(uid: string, loadId: string): Promise<CompleteTripResponse> {
+  const existingPayout = await getDocs(
+    query(collection(db, 'payouts'), where('driverUid', '==', uid), where('loadId', '==', loadId), limit(1)),
+  )
+  if (!existingPayout.empty) {
+    const data = existingPayout.docs[0].data() as Record<string, unknown>
+    return {
+      success: true,
+      payoutAmount: (data.amount as number) ?? 0,
+      payoutId: existingPayout.docs[0].id,
+    }
+  }
+
+  const loadRef = doc(db, 'loads', loadId)
+  const loadSnap = await getDoc(loadRef)
+  if (!loadSnap.exists()) throw new Error('Load not found')
+  const loadData = loadSnap.data() as Record<string, unknown>
+  const grossAmount = (loadData?.price as number) ?? 0
+
+  const previousPayouts = await getDocs(
+    query(collection(db, 'payouts'), where('driverUid', '==', uid), limit(50)),
+  )
+  const hasPreviousTripPayout = previousPayouts.docs.some((payoutDoc) => {
+    const data = payoutDoc.data() as Record<string, unknown>
+    return typeof data.loadId === 'string' && data.loadId !== 'WITHDRAWAL'
+  })
+  const settlement = calculateTripSettlement(grossAmount, !hasPreviousTripPayout)
+  const payoutAmount = settlement.driverPayout
+  const payoutId = 'P' + Date.now()
+
+  await setDoc(doc(db, 'payouts', payoutId), {
+    type: 'trip',
+    driverUid: uid,
+    loadId,
+    route: `${loadData.fromCity} → ${loadData.toCity}`,
+    amount: payoutAmount,
+    grossAmount: settlement.grossAmount,
+    commissionRate: settlement.commissionRate,
+    commissionAmount: settlement.commissionAmount,
+    marketingSupport: settlement.marketingSupport,
+    platformCommission: settlement.platformCommission,
+    status: 'credited',
+    createdAt: serverTimestamp(),
+  })
+  await setDoc(doc(db, 'wallets', uid), {
+    balance: increment(payoutAmount),
+    updatedAt: serverTimestamp(),
+  }, { merge: true })
+
+  return { success: true, payoutAmount, payoutId }
 }
 
 export const tripService: ITripService = {
@@ -85,11 +139,16 @@ export const tripService: ITripService = {
     )
 
     if (!snap.empty) {
+      const tripData = snap.docs[0].data() as Record<string, unknown>
       await updateDoc(snap.docs[0].ref, {
         step: newStep,
         updatedAt: serverTimestamp(),
         ...(newStep === 4 ? { status: 'completed', completedAt: serverTimestamp() } : {}),
       })
+
+      if (newStep === 4 && typeof tripData.loadId === 'string') {
+        await createTripPayout(uid, tripData.loadId)
+      }
     }
 
     const messages: Record<number, string> = {
@@ -107,23 +166,7 @@ export const tripService: ITripService = {
     if (!uid) throw new Error('Not authenticated')
 
     const loadRef = doc(db, 'loads', loadId)
-    const loadSnap = await getDoc(loadRef)
-    if (!loadSnap.exists()) throw new Error('Load not found')
-    const loadData = loadSnap.data() as Record<string, unknown>
-    const payoutAmount = (loadData?.price as number) ?? 0
-
     await updateDoc(loadRef, { status: 'completed', completedAt: serverTimestamp() })
-
-    const payoutId = 'P' + Date.now()
-    await setDoc(doc(db, 'payouts', payoutId), {
-      driverUid: uid,
-      loadId,
-      route: `${loadData.fromCity} → ${loadData.toCity}`,
-      amount: payoutAmount,
-      status: 'credited',
-      createdAt: serverTimestamp(),
-    })
-
-    return { success: true, payoutAmount, payoutId }
+    return createTripPayout(uid, loadId)
   },
 }

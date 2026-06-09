@@ -14,9 +14,9 @@ describe('Login Screen', () => {
         expect(screen.getByPlaceholderText('98765 43210')).toBeInTheDocument()
     })
 
-    it('renders send OTP button', () => {
+    it('renders continue button', () => {
         renderWithProviders(<Login />)
-        expect(screen.getByRole('button', { name: 'login.sendOtp' })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'login.continue' })).toBeInTheDocument()
     })
 
     it('allows typing a phone number', async () => {
@@ -26,9 +26,12 @@ describe('Login Screen', () => {
         expect(input).toHaveValue('9876543210')
     })
 
-    it('disables send OTP button when phone is empty', () => {
+    it('disables continue button until phone is valid', async () => {
         renderWithProviders(<Login />)
-        const btn = screen.getByRole('button', { name: 'login.sendOtp' })
+        const btn = screen.getByRole('button', { name: 'login.continue' })
         expect(btn).toBeDisabled()
+
+        await userEvent.type(screen.getByPlaceholderText('98765 43210'), '9876543210')
+        expect(btn).not.toBeDisabled()
     })
 })

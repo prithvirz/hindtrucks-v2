@@ -347,6 +347,43 @@ describe('useProfile', () => {
         expect(result.current.profile.driver.phone).toBe('9988776655')
         expect(result.current.profile.driver.truck.regNumber).toBe('')
         expect(result.current.profile.driver.trucks).toHaveLength(0)
+        expect(result.current.profile.driver.phoneVerified).toBe(true)
+        expect(result.current.profile.driver.verificationMethod).toBe('phone_otp')
         expect(localStorage.getItem('ht_registered_9988776655')).toBe('1')
+    })
+
+    it('does not overwrite a stored profile with the startup placeholder', async () => {
+        localStorage.setItem('ht_auth', '1')
+        localStorage.setItem('ht_phone', '9123456701')
+        localStorage.setItem('ht_auth_token', 'mock_access_token')
+        localStorage.setItem('ht_registered_9123456701', '1')
+        localStorage.setItem('ht_driver_9123456701', JSON.stringify({
+            name: 'Reload Driver',
+            phone: '9123456701',
+            rating: 5,
+            tripsToday: 0,
+            earningsToday: 0,
+            walletBalance: 0,
+            truck: { regNumber: '', type: '', capacity: '' },
+            documents: {
+                license: { id: 'PENDING', validity: '' },
+                rc: { id: 'PENDING', validity: '' },
+                permit: { id: 'PENDING', validity: '' },
+            },
+            trucks: [],
+        }))
+
+        renderHook(() => useProfile(), {
+            wrapper: ({ children }) => (
+                <AuthProvider>
+                    <ProfileProvider>{children}</ProfileProvider>
+                </AuthProvider>
+            ),
+        })
+
+        await waitFor(() => {
+            expect(JSON.parse(localStorage.getItem('ht_driver_9123456701') || '{}').name)
+                .toBe('Reload Driver')
+        })
     })
 })

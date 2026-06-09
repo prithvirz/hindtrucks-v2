@@ -14,7 +14,7 @@ export default function Login() {
 
   const valid = phone.replace(/\D/g, '').length === 10
 
-  async function handleSendOtp() {
+  async function handleLogin() {
     const cleaned = phone.replace(/\D/g, '')
     try {
       await sendOtp(cleaned, 'login')
@@ -64,8 +64,8 @@ export default function Login() {
       </div>
 
       <div className="p-5 border-t border-hairline safe-bottom">
-        <Button full disabled={!valid || isLoading} onClick={handleSendOtp}>
-          {isLoading ? t('gps.requesting') : t('login.sendOtp')}
+        <Button full disabled={!valid || isLoading} onClick={handleLogin}>
+          {isLoading ? t('gps.requesting') : t('login.continue')}
         </Button>
       </div>
     </div>

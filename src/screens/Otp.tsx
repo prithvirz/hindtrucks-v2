@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import TopBar from '../components/TopBar'
@@ -14,7 +14,7 @@ export default function Otp() {
   const { state } = useLocation() as {
     state?: { phone?: string; intent?: 'login' | 'register'; name?: string }
   }
-  const rawPhone = state?.phone || '9876543210'
+  const rawPhone = state?.phone || ''
   const intent = state?.intent || 'login'
   const displayPhone = '+91 ' + rawPhone
 
@@ -22,7 +22,13 @@ export default function Otp() {
   const refs = useRef<(HTMLInputElement | null)[]>([])
 
   const code = digits.join('')
-  const complete = code.length === 6
+  const complete = rawPhone.length === 10 && code.length === 6
+
+  useEffect(() => {
+    if (!rawPhone) {
+      nav('/auth', { replace: true })
+    }
+  }, [nav, rawPhone])
 
   function setAt(i: number, v: string) {
     const d = v.replace(/\D/g, '').slice(-1)
@@ -50,12 +56,12 @@ export default function Otp() {
   async function verify() {
     try {
       const { registered } = await verifyOtp(rawPhone, code)
-      if (intent === 'register' && state?.name) {
-        await createDriverProfile({ name: state.name, phone: rawPhone })
+      if (registered) {
         nav('/home', { replace: true })
         return
       }
-      if (registered) {
+      if (intent === 'register' && state?.name) {
+        await createDriverProfile({ name: state.name, phone: rawPhone })
         nav('/home', { replace: true })
         return
       }

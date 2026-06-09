@@ -62,7 +62,7 @@ export const authService: IAuthService = {
       const unsub = onAuthStateChanged(auth, (user) => {
         unsub()
         if (user) {
-          const phone = user.phoneNumber?.replace('+91', '') || ''
+          const phone = user.phoneNumber?.replace('+91', '') || localStorage.getItem('ht_phone') || ''
           resolve({ valid: true, phone })
         } else {
           resolve({ valid: false })

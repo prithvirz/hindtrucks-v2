@@ -29,9 +29,10 @@
   },
   "login": {
     "title": "Enter your mobile number",
-    "subtitle": "We'll send you a one-time code (OTP)",
+    "subtitle": "We will send an OTP to verify your number",
     "phoneLabel": "Mobile number",
     "sendOtp": "Send OTP",
+    "continue": "Continue",
     "terms": "By continuing you agree to our Terms & Privacy Policy"
   },
   "auth": {
@@ -116,7 +117,11 @@
     "markNext": "Mark as {{step}}",
     "completed": "Trip completed",
     "earned": "You earned",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "startNavigation": "Start navigation",
+    "openingNavigation": "Opening Google Maps...",
+    "navigateToPickup": "To pickup: ",
+    "navigateToDrop": "To drop: "
   },
   "earnings": {
     "title": "Earnings",

@@ -53,6 +53,8 @@ export const profileService: IProfileService = {
       truckCapacity: '',
       trucks: [],
       drivers: [],
+      phoneVerified: true,
+      verificationMethod: 'phone_otp',
       documents: {
         license: { id: 'PENDING', validity: '' },
         rc: { id: 'PENDING', validity: '' },

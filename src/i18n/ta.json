@@ -99,7 +99,11 @@
     "markNext": "{{step}} எனக் குறிக்கவும்",
     "completed": "பயணம் முடிந்தது",
     "earned": "நீங்கள் சம்பாதித்தது",
-    "backHome": "முகப்புக்குத் திரும்பு"
+    "backHome": "முகப்புக்குத் திரும்பு",
+    "startNavigation": "வழிகாட்டலை தொடங்கு",
+    "openingNavigation": "Google Maps திறக்கிறது...",
+    "navigateToPickup": "எடுப்புக்கு: ",
+    "navigateToDrop": "இறக்கத்திற்கு: "
   },
   "earnings": {
     "title": "வருமானம்",

@@ -22,6 +22,8 @@ const DEFAULT_DRIVER = {
         permit: { id: 'PENDING', validity: '31-12-2030' },
     },
     trucks: [] as Array<{ id: string; regNumber: string; type: string; capacity: string; isActive: boolean }>,
+    phoneVerified: false,
+    verificationMethod: 'none',
 }
 
 const DEFAULT_DRIVERS: Driver[] = []
@@ -233,7 +235,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
 
     // Persist driver updates
     useEffect(() => {
-        if (isLoggedIn && phone) {
+        if (isLoggedIn && phone && normalizePhone(driver.phone) === normalizePhone(phone)) {
             localStorage.setItem(driverKey(phone), JSON.stringify(driver))
         }
     }, [driver, isLoggedIn, phone])
@@ -471,19 +473,6 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                     truckCapacity: params.truck.capacity,
                 }).catch(console.error)
             })
-        } else {
-            import('../services/mock/earningsService').then(({ setMockWalletBalance, clearMockPayouts, addMockPayout }) => {
-                setMockWalletBalance(1500)
-                clearMockPayouts()
-                addMockPayout({
-                    id: 'P9000',
-                    load: 'BONUS',
-                    route: 'Signup Bonus - Welcome to HindTrucks',
-                    amount: 1500,
-                    status: 'credited',
-                    date: new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }),
-                })
-            }).catch(console.error)
         }
     }
 
@@ -508,6 +497,8 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                         type: profile.truck.type,
                         capacity: profile.truck.capacity,
                     },
+                    phoneVerified: true,
+                    verificationMethod: 'phone_otp',
                 }
                 setDriver(newProfile)
                 setRoleState('owner')
@@ -521,6 +512,8 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
                     ...createDefaultDriver(params.phone),
                     name: params.name,
                     phone: params.phone,
+                    phoneVerified: true,
+                    verificationMethod: 'phone_otp',
                 }
                 setDriver(newProfile)
                 setRoleState('owner')

@@ -14,6 +14,7 @@ import { useTrip } from '../state/TripContext'
 import { useProfile } from '../state/ProfileContext'
 import { useEarnings } from '../state/EarningsContext'
 import { inr } from '../lib/format'
+import { calculateTripSettlement } from '../lib/settlement'
 import type { Coordinates, RouteWaypoint } from '../features/tracking/types'
 import { lookupCity } from '../features/tracking/services/geocoding'
 import { getRouteWithSteps } from '../features/tracking/services/routing'
@@ -280,6 +281,11 @@ export default function ActiveTrip() {
   const currentLoad = activeTrip.load
   const currentStep = activeTrip.step
   const isComplete = currentStep >= 4
+  const isFirstSelfTrip =
+    !selectedTripId &&
+    localStorage.getItem(`ht_first_trip_done_${driver.phone}`) !== '1' &&
+    driver.phone !== '+91 98765 43210'
+  const settlement = calculateTripSettlement(currentLoad.price, isFirstSelfTrip)
 
   const stepKeys = ['toPickup', 'loaded', 'transit', 'delivered'] as const
   const steps = stepKeys.map((k) => t(`trip.steps.${k}`))
@@ -432,27 +438,41 @@ export default function ActiveTrip() {
               <PartyPopper size={36} className="mx-auto text-success" />
               <p className="mt-3 text-lg font-extrabold text-ink">{selectedTripId ? 'Trip Fully Delivered!' : t('trip.completed')}</p>
               
-              {!selectedTripId && localStorage.getItem(`ht_first_trip_done_${driver.phone}`) !== '1' && driver.phone !== '+91 98765 43210' ? (
+              {!selectedTripId ? (
                 <>
-                  <p className="text-xs text-ink-muted mt-1">First Trip Settlement (Signup Bonus Adjusted):</p>
+                  <p className="text-xs text-ink-muted mt-1">
+                    {isFirstSelfTrip ? 'First Trip Settlement (Marketing Support Applied)' : 'Trip Settlement'}
+                  </p>
                   <div className="my-3 py-2.5 px-3.5 bg-surface-sunken rounded-xl text-left text-xs font-bold text-ink-muted space-y-1.5 border border-success/20 max-w-[260px] mx-auto">
                     <div className="flex justify-between">
-                      <span>Trip Payout:</span>
-                      <span className="nums text-ink">{inr(currentLoad.price)}</span>
+                      <span>Trip Amount:</span>
+                      <span className="nums text-ink">{inr(settlement.grossAmount)}</span>
                     </div>
                     <div className="flex justify-between text-red-500">
-                      <span>Signup Bonus Adjusted:</span>
-                      <span className="nums font-black">-{inr(1500)}</span>
+                      <span>HindTrucks Commission (10%):</span>
+                      <span className="nums font-black">-{inr(settlement.commissionAmount)}</span>
+                    </div>
+                    {settlement.marketingSupport > 0 && (
+                      <div className="flex justify-between text-success">
+                        <span>First Trip Marketing Support:</span>
+                        <span className="nums font-black">+{inr(settlement.marketingSupport)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span>Final Commission:</span>
+                      <span className="nums text-ink">-{inr(settlement.platformCommission)}</span>
                     </div>
                     <div className="border-t border-hairline my-1"></div>
                     <div className="flex justify-between text-success font-black text-sm">
                       <span>Net Added to Wallet:</span>
-                      <span className="nums">{inr(currentLoad.price - 1500)}</span>
+                      <span className="nums">{inr(settlement.driverPayout)}</span>
                     </div>
                   </div>
-                  <p className="text-[10px] text-ink-faint font-semibold max-w-[220px] mx-auto leading-normal">
-                    The ₹1,500 bonus already credited to your account upon signup has been settled against this first trip.
-                  </p>
+                  {settlement.marketingSupport > 0 && (
+                    <p className="text-[10px] text-ink-faint font-semibold max-w-[240px] mx-auto leading-normal">
+                      HindTrucks has reduced its commission by ₹500 on your first trip as marketing support.
+                    </p>
+                  )}
                 </>
               ) : (
                 <>
@@ -485,10 +505,10 @@ export default function ActiveTrip() {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-sm font-black">
-                      {openingNavigation ? 'Opening Google Maps...' : 'Start navigation'}
+                      {openingNavigation ? t('trip.openingNavigation') : t('trip.startNavigation')}
                     </span>
                     <span className="mt-0.5 block text-xs font-semibold text-white/65 truncate">
-                      {navigationTarget.stage === 'pickup' ? 'To pickup: ' : 'To drop: '}
+                      {navigationTarget.stage === 'pickup' ? t('trip.navigateToPickup') : t('trip.navigateToDrop')}
                       {navigationTarget.label}
                     </span>
                   </span>

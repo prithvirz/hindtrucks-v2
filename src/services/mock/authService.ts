@@ -56,6 +56,6 @@ export const mockAuthService: IAuthService = {
         if (!token) {
             return { valid: false }
         }
-        return { valid: true, phone: '+91 98765 43210' }
+        return { valid: true, phone: localStorage.getItem('ht_phone') || undefined }
     },
 }

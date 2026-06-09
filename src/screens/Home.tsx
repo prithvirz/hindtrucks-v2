@@ -11,7 +11,7 @@ import { inr } from '../lib/format'
 import { images } from '../lib/assets'
 
 const BFC_MEMBERS = [
-  { name: 'Rajbir Singh', isCurrent: true, rating: 4.8, truck: 'PB10 AB 4521' },
+  { name: 'Rajbir Singh', isCurrent: false, rating: 4.8, truck: 'PB10 AB 4521' },
   { name: 'Gurpreet Singh', isCurrent: false, rating: 4.9, truck: 'PB10 CD 6732' },
   { name: 'Satnam Singh', isCurrent: false, rating: 4.7, truck: 'PB02 XY 9811' },
   { name: 'Amit Kumar', isCurrent: false, rating: 4.8, truck: 'DL01 ZA 2045' },
@@ -24,6 +24,17 @@ export default function Home() {
   const { activeTrips, activeLoad } = useTrip()
   const nearby = MOCK_LOADS.slice(0, 2)
   const driverName = driver.name || t('common.driver', 'Driver')
+  const leaderboardMembers = driver.name
+    ? [
+      {
+        name: driverName,
+        isCurrent: true,
+        rating: driver.rating,
+        truck: driver.truck.regNumber || t('profile.truckPending', 'Truck setup pending'),
+      },
+      ...BFC_MEMBERS,
+    ]
+    : BFC_MEMBERS
 
   return (
     <div className="h-full app-scroll no-scrollbar pb-tabs">
@@ -217,7 +228,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            {BFC_MEMBERS.map((member, i) => (
+            {leaderboardMembers.map((member, i) => (
               <div
                 key={i}
                 className={`bfc-member flex items-center justify-between p-2.5 boxed-rounded border ${member.isCurrent ? 'bg-accent-soft/40 border-accent' : 'bg-surface-grey border-hairline/40'

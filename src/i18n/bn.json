@@ -105,7 +105,11 @@
     "markNext": "{{step}} হিসেবে চিহ্নিত করুন",
     "completed": "ট্রিপ সম্পন্ন হয়েছে",
     "earned": "আপনি উপার্জন করেছেন",
-    "backHome": "হোমে ফিরে যান"
+    "backHome": "হোমে ফিরে যান",
+    "startNavigation": "নেভিগেশন শুরু করুন",
+    "openingNavigation": "Google Maps খুলছে...",
+    "navigateToPickup": "পিকআপে: ",
+    "navigateToDrop": "ড্রপে: "
   },
   "earnings": {
     "title": "উপার্জন",

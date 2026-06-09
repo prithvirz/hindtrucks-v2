@@ -29,13 +29,7 @@ export default function Register() {
         return
       }
       await sendOtp(cleanedPhone, 'register')
-      nav('/otp', {
-        state: {
-          phone: cleanedPhone,
-          intent: 'register',
-          name: name.trim(),
-        },
-      })
+      nav('/otp', { state: { phone: cleanedPhone, intent: 'register', name: name.trim() } })
     } catch {
       // error displayed via auth context
     }

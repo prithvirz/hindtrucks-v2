@@ -107,11 +107,6 @@ export default function Earnings() {
               <Wallet size={16} /> {t('earnings.balance')}
             </div>
             <p className="text-4xl font-extrabold mt-1 nums tracking-tight">{inr(walletBalance)}</p>
-            {walletBalance === 1500 && payouts.some(p => p.load === 'BONUS') && (
-              <div className="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/10 rounded-lg text-[11px] font-extrabold text-yellow-300 border border-white/10">
-                <span>🎁 ₹1,500 Signup Bonus Active</span>
-              </div>
-            )}
             <Button
               className="mt-4"
               variant="white"

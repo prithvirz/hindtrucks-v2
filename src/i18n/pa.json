@@ -99,7 +99,11 @@
     "markNext": "{{step}} ਵਜੋਂ ਨਿਸ਼ਾਨ ਲਗਾਓ",
     "completed": "ਟ੍ਰਿੱਪ ਪੂਰੀ ਹੋਈ",
     "earned": "ਤੁਸੀਂ ਕਮਾਏ",
-    "backHome": "ਹੋਮ ਉੱਤੇ ਵਾਪਸ"
+    "backHome": "ਹੋਮ ਉੱਤੇ ਵਾਪਸ",
+    "startNavigation": "ਨੇਵੀਗੇਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ",
+    "openingNavigation": "Google Maps ਖੁੱਲ ਰਿਹਾ ਹੈ...",
+    "navigateToPickup": "ਪਿਕਅੱਪ ਤੱਕ: ",
+    "navigateToDrop": "ਡ੍ਰੌਪ ਤੱਕ: "
   },
   "earnings": {
     "title": "ਕਮਾਈ",

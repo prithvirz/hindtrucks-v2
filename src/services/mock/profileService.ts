@@ -65,6 +65,8 @@ export const mockProfileService: IProfileService = {
                 type: '',
                 capacity: '',
             },
+            phoneVerified: true,
+            verificationMethod: 'phone_otp',
         }
         mockProfiles.set(normalizedPhone, profile)
         return { profile }

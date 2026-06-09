@@ -99,7 +99,11 @@
     "markNext": "{{step}}గా గుర్తించు",
     "completed": "ట్రిప్ పూర్తయింది",
     "earned": "మీరు సంపాదించారు",
-    "backHome": "హోమ్‌కు తిరిగి"
+    "backHome": "హోమ్‌కు తిరిగి",
+    "startNavigation": "నావిగేషన్ ప్రారంభించు",
+    "openingNavigation": "Google Maps తెరుచుకుంటోంది...",
+    "navigateToPickup": "పికప్‌కు: ",
+    "navigateToDrop": "డ్రాప్‌కు: "
   },
   "earnings": {
     "title": "సంపాదన",
