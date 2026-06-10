@@ -53,7 +53,7 @@ export default function LanguagePicker() {
       </div>
 
       <div className="p-5 border-t border-hairline bg-surface safe-bottom">
-        <Button full onClick={onContinue}>
+        <Button full onClick={onContinue} data-testid="lang-continue">
           {t('common.continue')}
         </Button>
       </div>

@@ -33,6 +33,7 @@ test.describe('Splash Screen', () => {
         await page.goto('/');
         await page.evaluate(() => {
             localStorage.setItem('ht_auth', '1');
+            localStorage.setItem('ht_phone', '9876543210');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
         });

@@ -6,12 +6,14 @@ test.describe('Load Detail Screen', () => {
         await page.evaluate(() => {
             localStorage.clear();
             localStorage.setItem('ht_auth', '1');
+            localStorage.setItem('ht_phone', '9876543210');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         // Navigate to loads, then click first load card
         await page.goto('/loads');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
         await page.waitForTimeout(1500);
         const loadCards = page.locator('[class*="load-card"]');
         const count = await loadCards.count();
@@ -19,7 +21,7 @@ test.describe('Load Detail Screen', () => {
             await loadCards.first().click();
             await page.waitForURL(/\/loads\/[a-zA-Z0-9-]+/i, { timeout: 5000 });
         }
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
     });
 
     test('displays load route information', async ({ page }) => {
@@ -35,17 +37,17 @@ test.describe('Load Detail Screen', () => {
     });
 
     test('displays shipper information', async ({ page }) => {
-        const shipper = page.getByText(/shipper/i).first();
+        const shipper = page.locator('[data-testid="shipper-label"]');
         await expect(shipper).toBeVisible({ timeout: 5000 });
     });
 
     test('displays accept load button', async ({ page }) => {
-        const acceptBtn = page.getByRole('button', { name: /accept load/i });
+        const acceptBtn = page.locator('[data-testid="accept-load-button"]');
         await expect(acceptBtn).toBeVisible({ timeout: 5000 });
     });
 
     test('clicking accept opens confirmation sheet', async ({ page }) => {
-        const acceptBtn = page.getByRole('button', { name: /accept load/i });
+        const acceptBtn = page.locator('[data-testid="accept-load-button"]');
         await expect(acceptBtn).toBeVisible({ timeout: 5000 });
         await acceptBtn.click();
         // Should show confirmation bottom sheet

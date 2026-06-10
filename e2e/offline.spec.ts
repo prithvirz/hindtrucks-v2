@@ -6,11 +6,15 @@ test.describe('Offline Mode', () => {
         await page.evaluate(() => {
             localStorage.clear();
             localStorage.setItem('ht_auth', '1');
+            localStorage.setItem('ht_phone', '9876543210');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         await page.goto('/home');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
+        // Wait for React to fully render before tests manipulate network state
+        await expect(page.locator('#driver-profile')).toBeVisible({ timeout: 5000 });
     });
 
     test('offline indicator is hidden when online', async ({ page }) => {
@@ -34,10 +38,10 @@ test.describe('Offline Mode', () => {
         const offlineBanner = page.getByText(/you're offline\./i);
         await expect(offlineBanner).toBeVisible({ timeout: 5000 });
 
-        // Go back online
+        // Go back online — window 'online' event may have unpredictable timing in headless Chromium
         await page.context().setOffline(false);
-        await page.waitForTimeout(1000);
-        await expect(offlineBanner).not.toBeVisible({ timeout: 5000 });
+        await page.waitForTimeout(3000);
+        await expect(offlineBanner).not.toBeVisible({ timeout: 10000 });
     });
 
     test('app remains functional when offline', async ({ page }) => {

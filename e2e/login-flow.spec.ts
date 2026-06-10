@@ -18,6 +18,12 @@ test.describe('Login Flow', () => {
         const continueBtn = page.getByRole('button', { name: /continue/i });
         await expect(continueBtn).toBeVisible();
         await continueBtn.click();
+        await expect(page).toHaveURL(/\/auth/);
+
+        // 2.5. Auth choice → Login
+        const loginBtn = page.getByRole('button', { name: /login/i }).first();
+        await expect(loginBtn).toBeVisible({ timeout: 3000 });
+        await loginBtn.click();
         await expect(page).toHaveURL(/\/login/);
 
         // 3. Enter phone number — input has inputMode="numeric", no type attr, placeholder="98765 43210"
@@ -33,18 +39,19 @@ test.describe('Login Flow', () => {
 
         // 5. OTP screen
         await expect(page).toHaveURL(/\/otp/, { timeout: 5000 });
-        // OTP inputs: 4 <input inputMode="numeric"> elements
+        // OTP inputs: 6 <input inputMode="numeric"> elements — UI requires all 6 digits for verify button to enable
         const otpInputs = page.locator('input[inputmode="numeric"]');
         const otpCount = await otpInputs.count();
-        // Fill each OTP digit
-        if (otpCount >= 4) {
-            for (let i = 0; i < 4; i++) {
+        if (otpCount >= 6) {
+            for (let i = 0; i < 6; i++) {
                 await otpInputs.nth(i).fill('1');
             }
         } else {
-            // Type into the OTP area
-            await page.keyboard.type('1111');
+            await page.keyboard.type('111111');
         }
+
+        // 5.5. Mark phone as registered so mock getRegistrationStatus returns true → routes to /home
+        await page.evaluate(() => localStorage.setItem('ht_registered_9876543210', '1'));
 
         // 6. Click Verify & Continue — OTP does not auto-verify
         const verifyBtn = page.getByRole('button', { name: /verify/i });
@@ -62,6 +69,12 @@ test.describe('Login Flow', () => {
         const continueBtn = page.getByRole('button', { name: /continue/i });
         await expect(continueBtn).toBeVisible({ timeout: 3000 });
         await continueBtn.click();
+        await expect(page).toHaveURL(/\/auth/);
+
+        // Auth choice → Login
+        const loginBtn = page.getByRole('button', { name: /login/i }).first();
+        await expect(loginBtn).toBeVisible({ timeout: 3000 });
+        await loginBtn.click();
         await expect(page).toHaveURL(/\/login/);
 
         const phoneInput = page.locator('input[inputmode="numeric"]').first();
@@ -79,6 +92,12 @@ test.describe('Login Flow', () => {
         const continueBtn = page.getByRole('button', { name: /continue/i });
         await expect(continueBtn).toBeVisible({ timeout: 3000 });
         await continueBtn.click();
+        await expect(page).toHaveURL(/\/auth/);
+
+        // Auth choice → Login
+        const loginBtn = page.getByRole('button', { name: /login/i }).first();
+        await expect(loginBtn).toBeVisible({ timeout: 3000 });
+        await loginBtn.click();
         await expect(page).toHaveURL(/\/login/);
 
         const phoneInput = page.locator('input[inputmode="numeric"]').first();
@@ -96,6 +115,12 @@ test.describe('Login Flow', () => {
         const continueBtn = page.getByRole('button', { name: /continue/i });
         await expect(continueBtn).toBeVisible({ timeout: 3000 });
         await continueBtn.click();
+        await expect(page).toHaveURL(/\/auth/);
+
+        // Auth choice → Login
+        const loginBtn = page.getByRole('button', { name: /login/i }).first();
+        await expect(loginBtn).toBeVisible({ timeout: 3000 });
+        await loginBtn.click();
         await expect(page).toHaveURL(/\/login/);
 
         const phoneInput = page.locator('input[inputmode="numeric"]').first();
@@ -108,15 +133,15 @@ test.describe('Login Flow', () => {
 
         await expect(page).toHaveURL(/\/otp/, { timeout: 5000 });
 
-        // Fill OTP
+        // Fill OTP — UI requires all 6 digits for verify button to enable
         const otpInputs = page.locator('input[inputmode="numeric"]');
         const otpCount = await otpInputs.count();
-        if (otpCount >= 4) {
-            for (let i = 0; i < 4; i++) {
+        if (otpCount >= 6) {
+            for (let i = 0; i < 6; i++) {
                 await otpInputs.nth(i).fill('1');
             }
         } else {
-            await page.keyboard.type('1111');
+            await page.keyboard.type('111111');
         }
 
         // Click Verify & Continue — OTP does not auto-verify
@@ -126,7 +151,8 @@ test.describe('Login Flow', () => {
 
         // Should redirect to /register for new users
         await page.waitForURL(/\/register/, { timeout: 10000 });
-        await expect(page.getByRole('heading', { name: /complete verification/i })).toBeVisible({ timeout: 5000 });
+        // Register page heading — en.json register.welcomeTitle = "Welcome to HindTrucks!"
+        await expect(page.getByRole('heading', { name: /welcome to hindtrucks/i })).toBeVisible({ timeout: 5000 });
     });
 
     test('back button on login returns to language picker', async ({ page }) => {
@@ -135,6 +161,12 @@ test.describe('Login Flow', () => {
         const continueBtn = page.getByRole('button', { name: /continue/i });
         await expect(continueBtn).toBeVisible({ timeout: 3000 });
         await continueBtn.click();
+        await expect(page).toHaveURL(/\/auth/);
+
+        // Auth choice → Login
+        const loginBtn = page.getByRole('button', { name: /login/i }).first();
+        await expect(loginBtn).toBeVisible({ timeout: 3000 });
+        await loginBtn.click();
         await expect(page).toHaveURL(/\/login/);
 
         // Try clicking back navigation

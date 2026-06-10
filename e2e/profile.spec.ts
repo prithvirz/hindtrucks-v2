@@ -6,11 +6,13 @@ test.describe('Profile Screen', () => {
         await page.evaluate(() => {
             localStorage.clear();
             localStorage.setItem('ht_auth', '1');
+            localStorage.setItem('ht_phone', '9876543210');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         await page.goto('/profile');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
     });
 
     test('displays driver profile information', async ({ page }) => {

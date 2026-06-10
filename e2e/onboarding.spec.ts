@@ -8,9 +8,10 @@ test.describe('Onboarding Tour', () => {
             localStorage.setItem('ht_auth', '1');
             localStorage.setItem('ht_registered_9876543210', '1');
             // NOT setting ht_tour so tour triggers
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         await page.goto('/home');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
     });
 
     test('onboarding tour starts automatically on first login', async ({ page }) => {
@@ -98,7 +99,7 @@ test.describe('Onboarding Tour', () => {
 
         // Reload - tour should not appear
         await page.goto('/home');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
         await page.waitForTimeout(1000);
         const tourBadge = page.getByText(/tour 1/i);
         await expect(tourBadge).not.toBeVisible({ timeout: 3000 });

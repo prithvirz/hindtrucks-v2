@@ -8,9 +8,10 @@ test.describe('Bottom Tab Navigation', () => {
             localStorage.setItem('ht_auth', '1');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         await page.goto('/home');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
     });
 
     test('all 4 bottom tabs are visible', async ({ page }) => {

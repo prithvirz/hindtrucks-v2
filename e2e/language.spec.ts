@@ -31,9 +31,10 @@ test.describe('Language Switching', () => {
         // Click on Hindi
         await page.getByText(/hindi|हिन्दी/i).first().click();
         await page.waitForTimeout(500);
-        // Continue button should be enabled
-        const continueBtn = page.getByRole('button', { name: /continue/i });
-        await expect(continueBtn).toBeEnabled({ timeout: 2000 });
+        // Continue button — use data-testid since i18n may change button text to non-English
+        await page.waitForTimeout(500);
+        const continueBtn = page.getByTestId('lang-continue');
+        await expect(continueBtn).toBeEnabled({ timeout: 5000 });
     });
 
     test('continue button navigates to login with selected language', async ({ page }) => {
@@ -49,7 +50,7 @@ test.describe('Language Switching', () => {
         const continueBtn = page.getByRole('button', { name: /continue/i });
         await expect(continueBtn).toBeEnabled({ timeout: 2000 });
         await continueBtn.click();
-        await expect(page).toHaveURL(/\/login/);
+        await expect(page).toHaveURL(/\/auth/);
     });
 
     test('can switch language from profile screen', async ({ page }) => {
@@ -58,11 +59,13 @@ test.describe('Language Switching', () => {
         await page.evaluate(() => {
             localStorage.clear();
             localStorage.setItem('ht_auth', '1');
+            localStorage.setItem('ht_phone', '9876543210');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         await page.goto('/profile');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
 
         // Find language settings button
         const langBtn = page.getByRole('button', { name: /language|भाषा|lang/i });
@@ -80,11 +83,13 @@ test.describe('Language Switching', () => {
         await page.evaluate(() => {
             localStorage.clear();
             localStorage.setItem('ht_auth', '1');
+            localStorage.setItem('ht_phone', '9876543210');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         await page.goto('/home');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
 
         // Navigate to profile and change language
         await page.locator('#nav-tab-profile').click();

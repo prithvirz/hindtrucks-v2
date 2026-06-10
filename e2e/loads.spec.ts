@@ -6,11 +6,13 @@ test.describe('Loads Screen', () => {
         await page.evaluate(() => {
             localStorage.clear();
             localStorage.setItem('ht_auth', '1');
+            localStorage.setItem('ht_phone', '9876543210');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         await page.goto('/loads');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
     });
 
     test('displays truck filter pills', async ({ page }) => {
@@ -36,7 +38,7 @@ test.describe('Loads Screen', () => {
         // Navigate fresh to see loading state
         await page.goto('/loads');
         // May flash quickly, just verify page loads
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
     });
 
     test('displays load cards after loading', async ({ page }) => {

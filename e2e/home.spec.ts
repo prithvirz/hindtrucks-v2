@@ -6,11 +6,13 @@ test.describe('Home Screen', () => {
         await page.evaluate(() => {
             localStorage.clear();
             localStorage.setItem('ht_auth', '1');
+            localStorage.setItem('ht_phone', '9876543210');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         await page.goto('/home');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
     });
 
     test('displays driver profile card', async ({ page }) => {
@@ -42,12 +44,16 @@ test.describe('Home Screen', () => {
         await expect(leaderItems.first()).toBeVisible({ timeout: 3000 });
     });
 
-    test('displays refer card', async ({ page }) => {
+    test('displays refer card on profile', async ({ page }) => {
+        // #refer-card is on /profile, not /home
+        await page.locator('#nav-tab-profile').click();
+        await page.waitForURL(/\/profile/, { timeout: 5000 });
         await expect(page.locator('#refer-card')).toBeVisible({ timeout: 5000 });
     });
 
     test('displays nearby loads section', async ({ page }) => {
-        await expect(page.getByRole('heading', { name: /loads near you/i })).toBeVisible({ timeout: 5000 });
+        // en.json home.nearbyLoads = "Nearby loads"
+        await expect(page.getByRole('heading', { name: /nearby loads/i })).toBeVisible({ timeout: 5000 });
     });
 
     test('shows active trips section when trips exist', async ({ page }) => {

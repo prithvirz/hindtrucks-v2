@@ -6,11 +6,13 @@ test.describe('Error Boundary', () => {
         await page.evaluate(() => {
             localStorage.clear();
             localStorage.setItem('ht_auth', '1');
+            localStorage.setItem('ht_phone', '9876543210');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         await page.goto('/home');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
     });
 
     test('app renders without crashing', async ({ page }) => {
@@ -37,7 +39,7 @@ test.describe('Error Boundary', () => {
 
         for (const route of routes) {
             await page.goto(route);
-            await page.waitForLoadState('networkidle');
+            await page.waitForLoadState('domcontentloaded');
             await page.waitForTimeout(500);
 
             // Each route should render without error fallback
@@ -48,12 +50,12 @@ test.describe('Error Boundary', () => {
 
     test('app recovers after page reload', async ({ page }) => {
         await page.goto('/home');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
         await expect(page.locator('#driver-profile')).toBeVisible({ timeout: 5000 });
 
         // Reload the page
         await page.reload();
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
         await expect(page.locator('#driver-profile')).toBeVisible({ timeout: 5000 });
     });
 
@@ -78,7 +80,7 @@ test.describe('Error Boundary', () => {
 
     test('handles browser back/forward navigation', async ({ page }) => {
         await page.goto('/home');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
 
         // Navigate to loads
         await page.locator('#nav-tab-loads').click();
@@ -107,7 +109,7 @@ test.describe('Error Boundary', () => {
     test('multiple rapid page reloads do not crash', async ({ page }) => {
         for (let i = 0; i < 3; i++) {
             await page.goto('/home');
-            await page.waitForLoadState('networkidle');
+            await page.waitForLoadState('domcontentloaded');
             await page.waitForTimeout(300);
         }
 

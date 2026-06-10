@@ -6,11 +6,13 @@ test.describe('AI Chatbot', () => {
         await page.evaluate(() => {
             localStorage.clear();
             localStorage.setItem('ht_auth', '1');
+            localStorage.setItem('ht_phone', '9876543210');
             localStorage.setItem('ht_registered_9876543210', '1');
             localStorage.setItem('ht_tour', '1');
+            localStorage.setItem('ht_perms_onboarded', '1');
         });
         await page.goto('/home');
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
     });
 
     test('chatbot FAB button is visible on home screen', async ({ page }) => {
@@ -68,8 +70,9 @@ test.describe('AI Chatbot', () => {
         await page.locator('#chatbot-button').click();
         await page.waitForTimeout(800);
         await expect(page.getByRole('heading', { name: 'Raahgir (Driver Assistant)' })).toBeVisible({ timeout: 3000 });
-        // When drawer is open, FAB shows X icon — clicking it toggles chat closed
-        await page.locator('#chatbot-button').click();
+        // When drawer is open, #chatbot-button (FAB) is conditionally hidden.
+        // Close via the X button inside the drawer panel instead.
+        await page.locator('button[aria-label="Close chat"]').click();
         await page.waitForTimeout(500);
         // Chat drawer should be hidden
         await expect(page.getByRole('heading', { name: 'Raahgir (Driver Assistant)' })).not.toBeVisible({ timeout: 3000 });
