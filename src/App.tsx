@@ -2,6 +2,7 @@
 import { Suspense, lazy, useState, useCallback, useEffect, useRef } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useRegisterSW } from 'virtual:pwa-register/react'
+import { isServiceReal } from './services/index'
 import { AppProviders } from './state/AppProviders'
 import { useAuth } from './state/AuthContext'
 import { useShell } from './state/ShellContext'
@@ -58,7 +59,7 @@ function Shell() {
 
   useEffect(() => {
     if (seededRef.current || !isLoggedIn) return
-    if (import.meta.env.VITE_API_MODE === 'real') {
+    if (isServiceReal('loads')) {
       seededRef.current = true
       import('./lib/seedFirestore').then(({ seedLoadsIfEmpty }) => seedLoadsIfEmpty()).catch(console.error)
     }

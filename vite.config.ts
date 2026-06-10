@@ -35,6 +35,12 @@ export default defineConfig(({ mode }) => ({
   ],
   define: {
     'import.meta.env.VITE_API_MODE': JSON.stringify(process.env.VITE_API_MODE || 'mock'),
+    'import.meta.env.VITE_API_AUTH': JSON.stringify(process.env.VITE_API_AUTH || ''),
+    'import.meta.env.VITE_API_LOADS': JSON.stringify(process.env.VITE_API_LOADS || ''),
+    'import.meta.env.VITE_API_TRIP': JSON.stringify(process.env.VITE_API_TRIP || ''),
+    'import.meta.env.VITE_API_EARNINGS': JSON.stringify(process.env.VITE_API_EARNINGS || ''),
+    'import.meta.env.VITE_API_PROFILE': JSON.stringify(process.env.VITE_API_PROFILE || ''),
+    'import.meta.env.VITE_API_CHAT': JSON.stringify(process.env.VITE_API_CHAT || ''),
     'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL || '/api'),
     'import.meta.env.VITE_USE_EMULATOR': JSON.stringify(process.env.VITE_USE_EMULATOR || 'false'),
     'import.meta.env.VITE_ORS_API_KEY': JSON.stringify(process.env.VITE_ORS_API_KEY || ''),

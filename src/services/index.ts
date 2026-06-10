@@ -21,46 +21,63 @@ import { earningsService as realEarningsService } from './real/earningsService'
 import { profileService as realProfileService } from './real/profileService'
 import { chatService as realChatService } from './real/chatService'
 
-const MODE: 'mock' | 'real' =
-    (import.meta.env.VITE_API_MODE as 'mock' | 'real') || 'mock'
+// ── Service Mode Resolution ──
 
-let _auth: IAuthService
-let _loads: ILoadsService
-let _trip: ITripService
-let _earnings: IEarningsService
-let _profile: IProfileService
-let _chat: IChatService
+type ServiceMode = 'mock' | 'real'
+type ApiMode = 'mock' | 'real' | 'hybrid'
+
+const API_MODE: ApiMode =
+    (import.meta.env.VITE_API_MODE as ApiMode) || 'mock'
+
+/** Resolve a single service's mode. In hybrid mode, read per-service env var;
+ *  in mock/real mode, all services follow the global setting. */
+function resolveServiceMode(serviceKey: string): ServiceMode {
+    if (API_MODE === 'mock') return 'mock'
+    if (API_MODE === 'real') return 'real'
+    // hybrid: per-service env var, default mock
+    const perService = import.meta.env[`VITE_API_${serviceKey.toUpperCase()}`] as ServiceMode | undefined
+    return perService === 'real' ? 'real' : 'mock'
+}
+
+// ── Service Implementations Map ──
+
+const MOCK_SERVICES = {
+    auth: mockAuthService,
+    loads: mockLoadsService,
+    trip: mockTripService,
+    earnings: mockEarningsService,
+    profile: mockProfileService,
+    chat: mockChatService,
+}
+
+const REAL_SERVICES = {
+    auth: realAuthService,
+    loads: realLoadsService,
+    trip: realTripService,
+    earnings: realEarningsService,
+    profile: realProfileService,
+    chat: realChatService,
+}
+
+// ── Resolved Service Instances (computed once at module load) ──
+
+const SERVICES = {
+    auth: resolveServiceMode('auth') === 'real' ? REAL_SERVICES.auth : MOCK_SERVICES.auth,
+    loads: resolveServiceMode('loads') === 'real' ? REAL_SERVICES.loads : MOCK_SERVICES.loads,
+    trip: resolveServiceMode('trip') === 'real' ? REAL_SERVICES.trip : MOCK_SERVICES.trip,
+    earnings: resolveServiceMode('earnings') === 'real' ? REAL_SERVICES.earnings : MOCK_SERVICES.earnings,
+    profile: resolveServiceMode('profile') === 'real' ? REAL_SERVICES.profile : MOCK_SERVICES.profile,
+    chat: resolveServiceMode('chat') === 'real' ? REAL_SERVICES.chat : MOCK_SERVICES.chat,
+}
 
 function getServices() {
-    if (MODE === 'mock') {
-        return {
-            auth: mockAuthService,
-            loads: mockLoadsService,
-            trip: mockTripService,
-            earnings: mockEarningsService,
-            profile: mockProfileService,
-            chat: mockChatService,
-        }
-    }
+    return SERVICES
+}
 
-    // Real mode — singleton initialization
-    if (!_auth) {
-        _auth = realAuthService
-        _loads = realLoadsService
-        _trip = realTripService
-        _earnings = realEarningsService
-        _profile = realProfileService
-        _chat = realChatService
-    }
-
-    return {
-        auth: _auth,
-        loads: _loads,
-        trip: _trip,
-        earnings: _earnings,
-        profile: _profile,
-        chat: _chat,
-    }
+/** Whether a specific service is using its real implementation.
+ *  Use this instead of raw VITE_API_MODE checks in consumers. */
+export function isServiceReal(serviceKey: keyof typeof SERVICES): boolean {
+    return resolveServiceMode(serviceKey) === 'real'
 }
 
 // ── Exported Service Instances ──

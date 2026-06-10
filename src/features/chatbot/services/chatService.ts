@@ -1,6 +1,7 @@
 import type { ChatContext, ChatMessage, ChatStreamEvent } from '../types'
 import { FAQS_LIST } from '../../../data/staticFaqs'
 import type { TFunction } from 'i18next'
+import { isServiceReal } from '../../../services/index'
 
 // ─── Chat Service: SSE Client + Static FAQ Fallback ───
 
@@ -127,8 +128,7 @@ export function staticFaqMatch(
 }
 
 export function shouldUseStaticFallback(): boolean {
-    const mode = import.meta.env.VITE_API_MODE
-    return mode === 'mock' || !navigator.onLine
+    return !isServiceReal('chat') || !navigator.onLine
 }
 
 export async function getChatHistory(): Promise<ChatMessage[]> {

@@ -16,6 +16,12 @@ export default defineConfig({
         css: false,
         env: {
             VITE_API_MODE: 'mock',
+            VITE_API_AUTH: 'mock',
+            VITE_API_LOADS: 'mock',
+            VITE_API_TRIP: 'mock',
+            VITE_API_EARNINGS: 'mock',
+            VITE_API_PROFILE: 'mock',
+            VITE_API_CHAT: 'mock',
         },
         setupFiles: ['./src/__tests__/setup.ts'],
         include: ['src/**/*.test.{ts,tsx}'],

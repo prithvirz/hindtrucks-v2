@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { useAuth } from './AuthContext'
 import { ApiError } from '../services/errors'
+import { isServiceReal } from '../services/index'
 import { type UserRole, type Driver } from './types'
 
 const DEFAULT_DRIVER = {
@@ -198,7 +199,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         setError(null)
 
         if (
-            import.meta.env.VITE_API_MODE === 'real' &&
+            isServiceReal('profile') &&
             registrationStatus === 'registered'
         ) {
             setIsLoading(true)
@@ -283,7 +284,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     }
 
     const refreshProfile = async () => {
-        if (import.meta.env.VITE_API_MODE !== 'real') return
+        if (!isServiceReal('profile')) return
         setIsLoading(true)
         setError(null)
         try {
@@ -457,8 +458,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(ownerDriversKey(phone), JSON.stringify(nextDrivers))
         clearLegacyActiveProfile()
 
-        const apiMode = import.meta.env.VITE_API_MODE
-        if (apiMode === 'real') {
+        if (isServiceReal('profile')) {
             import('../lib/firebase').then(({ auth, saveDriverToFirestore }) => {
                 const uid = auth.currentUser?.uid
                 if (!uid) return
@@ -481,8 +481,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         setIsLoading(true)
         setError(null)
         try {
-            const apiMode = import.meta.env.VITE_API_MODE
-            if (apiMode === 'real') {
+            if (isServiceReal('profile')) {
                 const { profileService } = await import('../services/index')
                 const { profile } = await profileService.createDriverProfile(params)
                 const newProfile: DriverWithExtras = {
