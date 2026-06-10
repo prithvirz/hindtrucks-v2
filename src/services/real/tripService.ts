@@ -1,3 +1,4 @@
+import type { ReportLocationRequest, ReportLocationResponse } from '../types'
 import {
   collection,
   doc,
@@ -168,5 +169,18 @@ export const tripService: ITripService = {
     const loadRef = doc(db, 'loads', loadId)
     await updateDoc(loadRef, { status: 'completed', completedAt: serverTimestamp() })
     return createTripPayout(uid, loadId)
+  },
+
+  async reportLocation(request: ReportLocationRequest): Promise<ReportLocationResponse> {
+    await setDoc(doc(db, 'trips', request.loadId, 'locations', String(request.recordedAt)), {
+      loadId: request.loadId,
+      lat: request.lat,
+      lng: request.lng,
+      accuracy: request.accuracy,
+      heading: request.heading,
+      speed: request.speed,
+      recordedAt: request.recordedAt,
+    })
+    return { accepted: true }
   },
 }

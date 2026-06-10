@@ -24,8 +24,10 @@ export interface GeofenceStatus {
     nearestWaypoint: RouteWaypoint | null;
     distanceToNext: number | null; // meters
     isWithinGeofence: boolean;
+    isApproaching: boolean;       // within 2× radius but not 1× radius
     justEntered: boolean;
     justExited: boolean;
+    justApproaching: boolean;     // just crossed 2× radius threshold
 }
 
 export interface TrackingState {
@@ -37,6 +39,8 @@ export interface TrackingState {
     geofenceStatus: GeofenceStatus;
     batteryOptimized: boolean;
     error: string | null;
+    progressPct: number;
+    odometerMeters: number;
 }
 
 export interface TrackingConfig {
@@ -45,12 +49,30 @@ export interface TrackingConfig {
     batteryOptimized: boolean;
     onWaypointEnter?: (waypoint: RouteWaypoint) => void;
     onWaypointExit?: (waypoint: RouteWaypoint) => void;
+    stalenessThresholdMs?: number;
+    minAccuracyMeters?: number;
+    accuracyMode?: 'high' | 'balanced' | 'low';
 }
 
 export const DEFAULT_TRACKING_CONFIG: TrackingConfig = {
     highAccuracy: true,
     intervalMs: 10000, // 10 seconds default
     batteryOptimized: true,
+    stalenessThresholdMs: 60_000,
+    minAccuracyMeters: 100,
+    accuracyMode: 'high',
 };
+
+export interface GeofenceLogEntry {
+    id: string;
+    waypointId: string;
+    waypointLabel: string;
+    waypointType: RouteWaypoint['type'];
+    event: 'entered' | 'exited';
+    timestamp: number;
+    coordinates: Coordinates;
+    tripId: string;
+    synced: boolean;
+}
 
 export const BATTERY_SAVING_INTERVAL = 30000; // 30 seconds

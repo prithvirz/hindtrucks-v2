@@ -2,10 +2,12 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import { type Load } from '../data/mockLoads'
 import { type TripStep, type ActiveTrip } from './types'
 import { useAuth } from './AuthContext'
+import { useShell } from './ShellContext'
 import { ApiError } from '../services/errors'
 import type { Coordinates, RouteWaypoint, TrackingState } from '../features/tracking/types'
 import { useRouteTracking } from '../features/tracking/hooks/useRouteTracking'
 import { addOfflineAction } from '../features/offline/services/offlineStorage'
+import { tripService } from '../services/index'
 
 interface TripState {
     activeLoad: Load | null
@@ -29,6 +31,7 @@ const TripCtx = createContext<TripState | null>(null)
 
 export function TripProvider({ children }: { children: ReactNode }) {
     const { isLoggedIn } = useAuth()
+    const { isOnline } = useShell()
     const [activeLoad, setActiveLoad] = useState<Load | null>(null)
     const [tripStep, setTripStep] = useState<TripStep>(0)
     const [isLoading, setIsLoading] = useState(false)
@@ -65,36 +68,59 @@ export function TripProvider({ children }: { children: ReactNode }) {
         }
     }, [isLoggedIn, stopTracking])
 
-    // Buffer each new GPS fix into the offline queue while a trip is active.
+    // Online-first location reporting: try tripService.reportLocation() directly
+    // when online; fall back to offline queue when offline.
     // The watcher keeps producing fixes in the background (foreground service),
-    // and the offline queue flushes them to the backend when online.
+    // and the offline queue flushes them to the backend when connectivity returns.
     useEffect(() => {
         const pos = trackingState.driverPosition
         if (!pos || !trackingState.isTracking || !activeLoad) return
         if (lastReportedTsRef.current === pos.timestamp) return
         lastReportedTsRef.current = pos.timestamp
 
-        addOfflineAction({
-            id: `loc-${pos.timestamp}-${Math.random().toString(36).slice(2, 8)}`,
-            type: 'report_location',
-            endpoint: `/driver/trips/${activeLoad.id}/location`,
-            method: 'POST',
-            payload: {
-                loadId: activeLoad.id,
-                lat: pos.lat,
-                lng: pos.lng,
-                accuracy: pos.accuracy ?? null,
-                heading: pos.heading ?? null,
-                speed: pos.speed ?? null,
-                recordedAt: pos.timestamp,
-            },
-            createdAt: Date.now(),
-            attempts: 0,
-            maxAttempts: 5,
-            lastAttemptAt: null,
-            status: 'pending',
-        }).catch(() => undefined)
-    }, [trackingState.driverPosition, trackingState.isTracking, activeLoad])
+        const reportPayload = {
+            loadId: activeLoad.id,
+            lat: pos.lat,
+            lng: pos.lng,
+            accuracy: pos.accuracy ?? null,
+            heading: pos.heading ?? null,
+            speed: pos.speed ?? null,
+            recordedAt: pos.timestamp,
+        }
+
+        if (isOnline) {
+            // Online: report directly via tripService
+            tripService.reportLocation(reportPayload).catch(() => {
+                // Network failed mid-request — queue for later sync
+                addOfflineAction({
+                    id: `loc-${pos.timestamp}-${Math.random().toString(36).slice(2, 8)}`,
+                    type: 'report_location',
+                    endpoint: `/driver/trips/${activeLoad.id}/location`,
+                    method: 'POST',
+                    payload: reportPayload,
+                    createdAt: Date.now(),
+                    attempts: 0,
+                    maxAttempts: 5,
+                    lastAttemptAt: null,
+                    status: 'pending',
+                }).catch(() => undefined)
+            })
+        } else {
+            // Offline: queue for sync when connectivity returns
+            addOfflineAction({
+                id: `loc-${pos.timestamp}-${Math.random().toString(36).slice(2, 8)}`,
+                type: 'report_location',
+                endpoint: `/driver/trips/${activeLoad.id}/location`,
+                method: 'POST',
+                payload: reportPayload,
+                createdAt: Date.now(),
+                attempts: 0,
+                maxAttempts: 5,
+                lastAttemptAt: null,
+                status: 'pending',
+            }).catch(() => undefined)
+        }
+    }, [trackingState.driverPosition, trackingState.isTracking, activeLoad, isOnline])
 
     const acceptLoad = async (load: Load) => {
         setError(null)

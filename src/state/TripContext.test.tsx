@@ -1,5 +1,6 @@
 import { renderHook, act } from '@testing-library/react'
 import { AuthProvider } from './AuthContext'
+import { ShellProvider } from './ShellContext'
 import { TripProvider, useTrip } from './TripContext'
 import type { Load } from '../data/mockLoads'
 
@@ -24,7 +25,7 @@ describe('useTrip', () => {
     it('returns initial idle state', () => {
         const { result } = renderHook(() => useTrip(), {
             wrapper: ({ children }) => (
-                <AuthProvider><TripProvider>{children}</TripProvider></AuthProvider>
+                <AuthProvider><ShellProvider><TripProvider>{children}</TripProvider></ShellProvider></AuthProvider>
             ),
         })
         expect(result.current.tripStep).toBe(0)
@@ -34,7 +35,7 @@ describe('useTrip', () => {
     it('provides acceptLoad function', () => {
         const { result } = renderHook(() => useTrip(), {
             wrapper: ({ children }) => (
-                <AuthProvider><TripProvider>{children}</TripProvider></AuthProvider>
+                <AuthProvider><ShellProvider><TripProvider>{children}</TripProvider></ShellProvider></AuthProvider>
             ),
         })
         expect(typeof result.current.acceptLoad).toBe('function')
@@ -43,7 +44,7 @@ describe('useTrip', () => {
     it('provides advanceTrip function', () => {
         const { result } = renderHook(() => useTrip(), {
             wrapper: ({ children }) => (
-                <AuthProvider><TripProvider>{children}</TripProvider></AuthProvider>
+                <AuthProvider><ShellProvider><TripProvider>{children}</TripProvider></ShellProvider></AuthProvider>
             ),
         })
         expect(typeof result.current.advanceTrip).toBe('function')
@@ -52,7 +53,7 @@ describe('useTrip', () => {
     it('provides resetTrip function', () => {
         const { result } = renderHook(() => useTrip(), {
             wrapper: ({ children }) => (
-                <AuthProvider><TripProvider>{children}</TripProvider></AuthProvider>
+                <AuthProvider><ShellProvider><TripProvider>{children}</TripProvider></ShellProvider></AuthProvider>
             ),
         })
         expect(typeof result.current.resetTrip).toBe('function')
@@ -61,7 +62,7 @@ describe('useTrip', () => {
     it('acceptLoad sets activeLoad and advances from 0', async () => {
         const { result } = renderHook(() => useTrip(), {
             wrapper: ({ children }) => (
-                <AuthProvider><TripProvider>{children}</TripProvider></AuthProvider>
+                <AuthProvider><ShellProvider><TripProvider>{children}</TripProvider></ShellProvider></AuthProvider>
             ),
         })
 
@@ -76,7 +77,7 @@ describe('useTrip', () => {
     it('resetTrip returns to idle state', async () => {
         const { result } = renderHook(() => useTrip(), {
             wrapper: ({ children }) => (
-                <AuthProvider><TripProvider>{children}</TripProvider></AuthProvider>
+                <AuthProvider><ShellProvider><TripProvider>{children}</TripProvider></ShellProvider></AuthProvider>
             ),
         })
 

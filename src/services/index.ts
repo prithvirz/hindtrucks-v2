@@ -99,6 +99,7 @@ export const tripService: ITripService = {
     getActiveTrip: (...args) => getServices().trip.getActiveTrip(...args),
     advanceStep: (...args) => getServices().trip.advanceStep(...args),
     completeTrip: (...args) => getServices().trip.completeTrip(...args),
+    reportLocation: (...args) => getServices().trip.reportLocation(...args),
 }
 
 export const earningsService: IEarningsService = {

@@ -10,6 +10,7 @@ import { LiveMap } from '../features/tracking/components/LiveMap'
 import { NavHUD } from '../features/tracking/components/NavHUD'
 import { LocationPermission } from '../features/tracking/components/LocationPermission'
 import { GeofenceAlert } from '../features/tracking/components/GeofenceAlert'
+import { MapErrorBoundary } from '../features/tracking/components/MapErrorBoundary'
 import { useTrip } from '../state/TripContext'
 import { useProfile } from '../state/ProfileContext'
 import { useEarnings } from '../state/EarningsContext'
@@ -37,8 +38,8 @@ function haversine(a: Coordinates, b: Coordinates): number {
   const R = 6371000;
   const φ1 = (a.lat * Math.PI) / 180, φ2 = (b.lat * Math.PI) / 180;
   const Δφ = ((b.lat - a.lat) * Math.PI) / 180, Δλ = ((b.lng - a.lng) * Math.PI) / 180;
-  const x = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(Δλ/2)**2;
-  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
+  const x = Math.sin(Δφ / 2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
 }
 
 // Closest distance (m) from a point to any vertex of a route path.
@@ -60,6 +61,7 @@ function RoutedLiveMap({
   pois,
   onToggleFullscreen,
   isFullscreen,
+  progressPct,
 }: {
   pickup: Coordinates
   drop: Coordinates
@@ -69,6 +71,7 @@ function RoutedLiveMap({
   pois: RoutePoI[]
   onToggleFullscreen?: () => void
   isFullscreen?: boolean
+  progressPct?: number
 }) {
   const [routeData, setRouteData] = useState<RouteWithSteps | null>(null)
   const routeRef = useRef<{ path: Coordinates[]; dropKey: string } | null>(null)
@@ -133,6 +136,7 @@ function RoutedLiveMap({
         className="flex-1"
         onToggleFullscreen={onToggleFullscreen}
         isFullscreen={isFullscreen}
+        progressPct={progressPct ?? 0}
       />
       {navMode && (
         <NavHUD
@@ -178,7 +182,7 @@ export default function ActiveTrip() {
     if (!load) return
     const pickup = lookupCity(load.fromCity) ?? { lat: 28.6139, lng: 77.209, timestamp: Date.now() }
     const drop = lookupCity(load.toCity) ?? { lat: 26.9124, lng: 75.7873, timestamp: Date.now() }
-    fetchPoisAlongRoute([pickup, drop]).then(setPois).catch(() => {})
+    fetchPoisAlongRoute([pickup, drop]).then(setPois).catch(() => { })
   }, [selectedTripId, activeLoad, activeTrips])
 
   if (!selectedTripId && activeTrips.length > 0) {
@@ -209,7 +213,7 @@ export default function ActiveTrip() {
                     className="p-4 bg-surface rounded-[24px] border border-hairline shadow-card active:scale-[0.99] transition-all cursor-pointer text-left flex flex-col gap-3 relative overflow-hidden"
                   >
                     <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-accent" />
-                    
+
                     <div className="flex justify-between items-start pl-1.5">
                       <div>
                         <span className="text-[10px] font-black uppercase text-accent bg-accent-soft px-1.5 py-0.5 rounded border border-accent">
@@ -238,12 +242,10 @@ export default function ActiveTrip() {
                         const isCurrent = trip.step === stepNum
                         return (
                           <div key={st} className="flex-1 flex flex-col items-center">
-                            <div className={`h-2.5 w-full rounded-full transition-colors ${
-                              isCurrent ? 'bg-accent animate-pulse' : isDone ? 'bg-success' : 'bg-ink/10'
-                            }`} />
-                            <span className={`text-[9px] font-black mt-1 leading-none ${
-                              isCurrent ? 'text-accent' : isDone ? 'text-success' : 'text-ink-faint'
-                            }`}>
+                            <div className={`h-2.5 w-full rounded-full transition-colors ${isCurrent ? 'bg-accent animate-pulse' : isDone ? 'bg-success' : 'bg-ink/10'
+                              }`} />
+                            <span className={`text-[9px] font-black mt-1 leading-none ${isCurrent ? 'text-accent' : isDone ? 'text-success' : 'text-ink-faint'
+                              }`}>
                               {st}
                             </span>
                           </div>
@@ -359,16 +361,19 @@ export default function ActiveTrip() {
   if (navMode) {
     return (
       <div className="h-full flex flex-col relative">
-        <RoutedLiveMap
-          pickup={pickupCoord}
-          drop={dropCoord}
-          driverPosition={trackingState.driverPosition}
-          waypoints={waypoints}
-          navMode={true}
-          pois={pois}
-          onToggleFullscreen={() => setNavMode(false)}
-          isFullscreen={true}
-        />
+        <MapErrorBoundary fallbackHeight="100%">
+          <RoutedLiveMap
+            pickup={pickupCoord}
+            drop={dropCoord}
+            driverPosition={trackingState.driverPosition}
+            waypoints={waypoints}
+            navMode={true}
+            pois={pois}
+            onToggleFullscreen={() => setNavMode(false)}
+            isFullscreen={true}
+            progressPct={trackingState.progressPct}
+          />
+        </MapErrorBoundary>
         {/* Exit nav mode button */}
         <button
           onClick={() => setNavMode(false)}
@@ -399,16 +404,19 @@ export default function ActiveTrip() {
             }}
           >
             {trackingState.isTracking && trackingState.driverPosition ? (
-              <RoutedLiveMap
-                pickup={pickupCoord}
-                drop={dropCoord}
-                driverPosition={trackingState.driverPosition}
-                waypoints={waypoints}
-                navMode={false}
-                pois={pois}
-                onToggleFullscreen={() => setNavMode(true)}
-                isFullscreen={false}
-              />
+              <MapErrorBoundary>
+                <RoutedLiveMap
+                  pickup={pickupCoord}
+                  drop={dropCoord}
+                  driverPosition={trackingState.driverPosition}
+                  waypoints={waypoints}
+                  navMode={false}
+                  pois={pois}
+                  onToggleFullscreen={() => setNavMode(true)}
+                  isFullscreen={false}
+                  progressPct={trackingState.progressPct}
+                />
+              </MapErrorBoundary>
             ) : (
               <RouteMap progress={currentStep / 4} />
             )}
@@ -423,21 +431,42 @@ export default function ActiveTrip() {
             </div>
           </LocationPermission>
 
-          {geofenceStatus.justEntered && geofenceStatus.nearestWaypoint && geofenceStatus.distanceToNext !== null && (
+          {(geofenceStatus.justApproaching || geofenceStatus.justEntered) && geofenceStatus.nearestWaypoint && geofenceStatus.distanceToNext !== null && (
             <GeofenceAlert
               waypoint={geofenceStatus.nearestWaypoint}
               distance={geofenceStatus.distanceToNext}
+              status={geofenceStatus.justEntered ? 'entered' : 'approaching'}
               onDismiss={() => { }}
             />
           )}
         </div>
+
+        {/* Phase 5.7: Route progress bar */}
+        {trackingState.isTracking && trackingState.progressPct > 0 && (
+          <div className="px-5 pt-3">
+            <div className="h-1.5 rounded-full bg-ink/10 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-success transition-all duration-500 ease-out"
+                style={{ width: `${Math.min(trackingState.progressPct, 100)}%` }}
+              />
+            </div>
+            <div className="flex justify-between mt-1">
+              <p className="text-[10px] font-bold text-ink-muted nums">
+                {trackingState.progressPct.toFixed(0)}% complete
+              </p>
+              <p className="text-[10px] font-bold text-ink-muted nums">
+                {(trackingState.odometerMeters / 1000).toFixed(1)} km driven
+              </p>
+            </div>
+          </div>
+        )}
 
         <div className="px-5 pt-5">
           {isComplete ? (
             <div className="rounded-2xl bg-success-soft ring-1 ring-success/20 p-6 text-center animate-scale-in">
               <PartyPopper size={36} className="mx-auto text-success" />
               <p className="mt-3 text-lg font-extrabold text-ink">{selectedTripId ? 'Trip Fully Delivered!' : t('trip.completed')}</p>
-              
+
               {!selectedTripId ? (
                 <>
                   <p className="text-xs text-ink-muted mt-1">

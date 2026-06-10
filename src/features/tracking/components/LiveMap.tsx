@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from 'react-leaflet';
-import { LocateFixed, Maximize2, Minimize2, Route as RouteIcon } from 'lucide-react';
+import { LocateFixed, Maximize2, Minimize2, Route as RouteIcon, Loader2, AlertTriangle } from 'lucide-react';
 import L from 'leaflet';
 import type { Coordinates, RouteWaypoint } from '../types';
 import type { RoutePoI } from '../services/overpass';
@@ -58,6 +58,156 @@ function makePOIIcon(category: RoutePoI['category']) {
     });
 }
 
+// ─── Phase 5.2: Smoothed Marker ─────────────────────────────────
+// Interpolates truck position between GPS updates using rAF for
+// fluid movement instead of jumpy position snaps.
+
+function SmoothedMarker({
+    position,
+    icon,
+}: {
+    position: Coordinates;
+    icon: L.DivIcon;
+}) {
+    const map = useMap();
+    const markerRef = useRef<L.Marker | null>(null);
+    const prevLatRef = useRef(position.lat);
+    const prevLngRef = useRef(position.lng);
+    const animRef = useRef(0);
+
+    // Create marker on mount; animate position on subsequent updates
+    useEffect(() => {
+        const target: L.LatLngExpression = [position.lat, position.lng];
+        const startLat = prevLatRef.current;
+        const startLng = prevLngRef.current;
+
+        if (!markerRef.current) {
+            markerRef.current = L.marker(target, { icon, zIndexOffset: 1000 }).addTo(map);
+            prevLatRef.current = position.lat;
+            prevLngRef.current = position.lng;
+            return;
+        }
+
+        // Skip animation for micro-jumps (<~5 m)
+        const dLat = Math.abs(position.lat - startLat);
+        const dLng = Math.abs(position.lng - startLng);
+        if (dLat < 0.00005 && dLng < 0.00005) {
+            markerRef.current.setLatLng(target);
+            prevLatRef.current = position.lat;
+            prevLngRef.current = position.lng;
+            return;
+        }
+
+        cancelAnimationFrame(animRef.current);
+        const duration = 400; // ms
+        const t0 = performance.now();
+
+        const tick = (now: number) => {
+            const p = Math.min((now - t0) / duration, 1);
+            const ease = 1 - Math.pow(1 - p, 3); // ease-out cubic
+            markerRef.current?.setLatLng([
+                startLat + (position.lat - startLat) * ease,
+                startLng + (position.lng - startLng) * ease,
+            ]);
+            if (p < 1) {
+                animRef.current = requestAnimationFrame(tick);
+            } else {
+                prevLatRef.current = position.lat;
+                prevLngRef.current = position.lng;
+            }
+        };
+
+        animRef.current = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(animRef.current);
+    }, [position.lat, position.lng]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Update icon when bearing changes
+    useEffect(() => {
+        markerRef.current?.setIcon(icon);
+    }, [icon]);
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            cancelAnimationFrame(animRef.current);
+            markerRef.current?.remove();
+            markerRef.current = null;
+        };
+    }, [map]);
+
+    return null;
+}
+
+// ─── Phase 5.4: Tile Load Tracker ───────────────────────────────
+// Monitors Leaflet tile events and reports loading/error state
+// back to the parent LiveMap component for UI overlay display.
+
+function TileLoadTracker({
+    onLoadingChange,
+}: {
+    onLoadingChange: (loading: boolean, error: boolean) => void;
+}) {
+    const map = useMap();
+    const pendingRef = useRef(0);
+    const errorRef = useRef(false);
+
+    useEffect(() => {
+        const onStart = () => {
+            pendingRef.current++;
+            errorRef.current = false;
+            onLoadingChange(true, false);
+        };
+        const onLoad = () => {
+            pendingRef.current--;
+            if (pendingRef.current <= 0) {
+                pendingRef.current = 0;
+                onLoadingChange(false, errorRef.current);
+            }
+        };
+        const onError = () => {
+            errorRef.current = true;
+            pendingRef.current--;
+            if (pendingRef.current <= 0) {
+                pendingRef.current = 0;
+                onLoadingChange(false, true);
+            }
+        };
+
+        map.on('tileloadstart', onStart);
+        map.on('tileload', onLoad);
+        map.on('tileerror', onError);
+
+        return () => {
+            map.off('tileloadstart', onStart);
+            map.off('tileload', onLoad);
+            map.off('tileerror', onError);
+        };
+    }, [map, onLoadingChange]);
+
+    return null;
+}
+
+// ─── Phase 5.1: Theme-aware Tile Layer ──────────────────────────
+// Switches between OSM light tiles and CartoDB dark_all tiles
+// based on the `dark` CSS class on <html>.
+
+function ThemeTileLayer({ isDark }: { isDark: boolean }) {
+    if (isDark) {
+        return (
+            <TileLayer
+                attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            />
+        );
+    }
+    return (
+        <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+    );
+}
+
 function MapAutoCenter({ position, navMode }: { position: Coordinates | null; navMode: boolean }) {
     const map = useMap();
     useEffect(() => {
@@ -111,6 +261,7 @@ interface LiveMapProps {
     className?: string;
     onToggleFullscreen?: () => void;
     isFullscreen?: boolean;
+    progressPct?: number;
 }
 
 export function LiveMap({
@@ -124,15 +275,33 @@ export function LiveMap({
     className = '',
     onToggleFullscreen,
     isFullscreen = false,
+    progressPct = 0,
 }: LiveMapProps) {
     const [leafletReady, setLeafletReady] = useState(false);
     const [poiFilter, setPoiFilter] = useState<Set<RoutePoI['category']>>(new Set(['fuel', 'dhaba', 'toll']));
+    const [isDark, setIsDark] = useState(false);
+    const [tilesLoading, setTilesLoading] = useState(false);
+    const [tilesError, setTilesError] = useState(false);
     const _mapRef = useRef<L.Map | null>(null);
 
     useEffect(() => {
         import('leaflet/dist/leaflet.css')
             .then(() => setLeafletReady(true))
             .catch(() => setLeafletReady(true));
+    }, []);
+
+    // Detect dark mode from DOM <html> class
+    useEffect(() => {
+        const check = () => setIsDark(document.documentElement.classList.contains('dark'));
+        check();
+        const mo = new MutationObserver(check);
+        mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        return () => mo.disconnect();
+    }, []);
+
+    const onTileLoadingChange = useCallback((loading: boolean, error: boolean) => {
+        setTilesLoading(loading);
+        setTilesError(error);
     }, []);
 
     if (!leafletReady) {
@@ -146,11 +315,21 @@ export function LiveMap({
     const defaultCenter: [number, number] = driverPosition
         ? [driverPosition.lat, driverPosition.lng]
         : route.length > 0 ? [route[0].lat, route[0].lng]
-        : [28.6139, 77.209];
+            : [28.6139, 77.209];
 
     const routePositions: [number, number][] = route.map((c) => [c.lat, c.lng]);
     const bearing = driverPosition?.heading ?? 0;
     const visiblePois = pois.filter((p) => poiFilter.has(p.category));
+
+    // Memoize truck icon to avoid recreating on every render
+    const truckIcon = useMemo(() => makeTruckIcon(bearing), [bearing]);
+
+    // Phase 5.3: Split route into traversed (green) and upcoming (accent)
+    const splitIdx = progressPct > 0 && routePositions.length > 1
+        ? Math.max(0, Math.min(routePositions.length - 1, Math.floor(routePositions.length * progressPct)))
+        : 0;
+    const traversed = routePositions.slice(0, splitIdx + 1);
+    const upcoming = routePositions.slice(splitIdx);
 
     function toggleFilter(cat: RoutePoI['category']) {
         setPoiFilter((prev) => {
@@ -176,6 +355,20 @@ export function LiveMap({
 
     return (
         <div style={{ height }} className={`relative rounded-lg overflow-hidden ${className}`}>
+            {/* Phase 5.4: Tile loading / error indicators */}
+            {tilesLoading && !tilesError && (
+                <div className="absolute top-2 left-2 z-[1000] bg-surface-base/80 backdrop-blur rounded-lg px-2 py-1 shadow-pop flex items-center gap-1.5">
+                    <Loader2 size={12} className="animate-spin text-accent" />
+                    <span className="text-[10px] font-bold text-ink-muted">Loading map…</span>
+                </div>
+            )}
+            {tilesError && (
+                <div className="absolute top-2 left-2 z-[1000] bg-red-50/90 backdrop-blur rounded-lg px-2 py-1 shadow-pop flex items-center gap-1.5 border border-red-200">
+                    <AlertTriangle size={12} className="text-red-500" />
+                    <span className="text-[10px] font-bold text-red-600">Map tiles unavailable</span>
+                </div>
+            )}
+
             {!navMode && (
                 <div className="absolute top-2 right-2 z-[1000] bg-surface-base/90 backdrop-blur border border-hairline rounded-xl px-2 py-1.5 shadow-pop flex flex-col gap-1">
                     {(['fuel', 'dhaba', 'toll'] as RoutePoI['category'][]).map((cat) => (
@@ -234,17 +427,26 @@ export function LiveMap({
                 doubleClickZoom={interactive}
                 touchZoom={interactive}
             >
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
+                {/* Phase 5.1: Theme-aware tile layer */}
+                <ThemeTileLayer isDark={isDark} />
+
+                {/* Phase 5.4: Tile load tracking */}
+                <TileLoadTracker onLoadingChange={onTileLoadingChange} />
 
                 <MapAutoCenter position={driverPosition ?? null} navMode={navMode} />
                 <FitRouteBounds route={route} waypoints={waypoints} navMode={navMode} />
 
-                {routePositions.length > 1 && (
+                {/* Phase 5.3: Traversed segment (green) */}
+                {traversed.length > 1 && (
                     <Polyline
-                        positions={routePositions}
+                        positions={traversed}
+                        pathOptions={{ color: '#10B981', weight: 5, opacity: 0.9 }}
+                    />
+                )}
+                {/* Phase 5.3: Upcoming segment (accent orange) */}
+                {upcoming.length > 1 && (
+                    <Polyline
+                        positions={upcoming}
                         pathOptions={{ color: '#F26A1B', weight: 5, opacity: 0.85 }}
                     />
                 )}
@@ -267,15 +469,12 @@ export function LiveMap({
                     </Marker>
                 ))}
 
+                {/* Phase 5.2: Smoothed truck marker */}
                 {driverPosition && (
-                    <Marker position={[driverPosition.lat, driverPosition.lng]} icon={makeTruckIcon(bearing)}>
-                        <Popup>
-                            <div className="text-sm font-semibold">You</div>
-                            {driverPosition.speed != null && (
-                                <div className="text-xs text-gray-500">{Math.round(driverPosition.speed * 3.6)} km/h</div>
-                            )}
-                        </Popup>
-                    </Marker>
+                    <SmoothedMarker
+                        position={driverPosition}
+                        icon={truckIcon}
+                    />
                 )}
             </MapContainer>
         </div>

@@ -5,6 +5,8 @@ import type {
     CompleteTripRequest,
     CompleteTripResponse,
     GetActiveTripResponse,
+    ReportLocationRequest,
+    ReportLocationResponse,
 } from '../types'
 import type { TripStep } from '../../state/types'
 import type { Load } from '../../data/mockLoads'
@@ -64,6 +66,11 @@ export const mockTripService: ITripService = {
             payoutAmount: 18500,
             payoutId: `P${Math.floor(9000 + Math.random() * 1000)}`,
         }
+    },
+
+    async reportLocation(_request: ReportLocationRequest): Promise<ReportLocationResponse> {
+        await delay()
+        return { accepted: true }
     },
 }
 

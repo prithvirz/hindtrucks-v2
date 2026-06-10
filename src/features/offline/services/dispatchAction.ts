@@ -91,9 +91,23 @@ export async function dispatchAction(action: OfflineAction): Promise<DispatchRes
                 });
         }
 
+        case 'report_location': {
+            if (!isServiceReal('trip')) return { success: true };
+            const { reportLocation } = tripService;
+            return reportLocation(action.payload as {
+                loadId: string; lat: number; lng: number;
+                accuracy: number | null; heading: number | null;
+                speed: number | null; recordedAt: number;
+            })
+                .then((r) => ({ success: true, data: r }))
+                .catch((err) => {
+                    if (err?.status === 409) return { success: false, status: 409, data: err.data };
+                    throw err;
+                });
+        }
+
         case 'update_profile':
         case 'update_truck':
-        case 'report_location':
         case 'send_message':
             // These types don't have direct service methods yet.
             // For now they pass through as success — the actual replay

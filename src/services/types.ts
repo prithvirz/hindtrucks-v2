@@ -112,10 +112,25 @@ export interface GetActiveTripResponse {
     tripStep: TripStep
 }
 
+export interface ReportLocationRequest {
+    loadId: string;
+    lat: number;
+    lng: number;
+    accuracy: number | null;
+    heading: number | null;
+    speed: number | null;
+    recordedAt: number;
+}
+
+export interface ReportLocationResponse {
+    accepted: boolean;
+}
+
 export interface ITripService {
     getActiveTrip(): Promise<GetActiveTripResponse>
     advanceStep(request: AdvanceStepRequest): Promise<AdvanceStepResponse>
     completeTrip(request: CompleteTripRequest): Promise<CompleteTripResponse>
+    reportLocation(request: ReportLocationRequest): Promise<ReportLocationResponse>
 }
 
 // ── Earnings Types ──

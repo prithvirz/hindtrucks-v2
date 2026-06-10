@@ -8,6 +8,8 @@ interface GeolocationOptions {
     enableHighAccuracy?: boolean;
     maximumAge?: number;
     timeout?: number;
+    stalenessThresholdMs?: number;
+    accuracyMode?: 'high' | 'balanced' | 'low';
 }
 
 interface UseGeolocationReturn {
@@ -15,6 +17,8 @@ interface UseGeolocationReturn {
     error: string | null;
     permissionState: PermissionState | 'unsupported';
     isWatching: boolean;
+    isStale: boolean;
+    lastFixTimestamp: number | null;
     startWatching: () => void;
     stopWatching: () => void;
     requestPermission: () => Promise<PermissionState>;
@@ -24,6 +28,8 @@ const DEFAULT_OPTIONS: GeolocationOptions = {
     enableHighAccuracy: true,
     maximumAge: 10000,
     timeout: 15000,
+    stalenessThresholdMs: 60_000,
+    accuracyMode: 'high',
 };
 
 const isNative = Capacitor.isNativePlatform();
@@ -35,6 +41,8 @@ export function useGeolocation(options: GeolocationOptions = DEFAULT_OPTIONS): U
     const [isWatching, setIsWatching] = useState(false);
     const watchIdRef = useRef<number | null>(null);
     const nativeWatchIdRef = useRef<string | null>(null);
+    const [lastFixTimestamp, setLastFixTimestamp] = useState<number | null>(null);
+    const [isStale, setIsStale] = useState(false);
 
     const checkPermission = useCallback(async () => {
         if (isNative) {
@@ -128,11 +136,14 @@ export function useGeolocation(options: GeolocationOptions = DEFAULT_OPTIONS): U
             });
             setError(null);
             setPermissionState('granted');
+            setLastFixTimestamp(Date.now());
+            setIsStale(false);
         };
 
+        const accuracyMode = options.accuracyMode ?? 'high';
         const geoOptions = {
-            enableHighAccuracy: options.enableHighAccuracy ?? true,
-            maximumAge: options.maximumAge ?? 10000,
+            enableHighAccuracy: accuracyMode === 'high',
+            maximumAge: options.maximumAge ?? (accuracyMode === 'low' ? 30000 : 10000),
             timeout: options.timeout ?? 15000,
         };
 
@@ -140,8 +151,9 @@ export function useGeolocation(options: GeolocationOptions = DEFAULT_OPTIONS): U
             setIsWatching(true);
             // Background-capable native watcher (foreground service on Android):
             // keeps delivering fixes while app is backgrounded, screen off, or killed.
+            const nativeDistanceFilter = accuracyMode === 'high' ? 20 : accuracyMode === 'balanced' ? 50 : 100;
             startBackgroundWatch(
-                { distanceFilter: 20, requestPermissions: true },
+                { distanceFilter: nativeDistanceFilter, requestPermissions: true },
                 (coords) => {
                     onCoords(
                         coords.lat,
@@ -240,11 +252,31 @@ export function useGeolocation(options: GeolocationOptions = DEFAULT_OPTIONS): U
         };
     }, []);
 
+    // Staleness detection: check if position fix is older than threshold
+    useEffect(() => {
+        if (!isWatching || lastFixTimestamp === null) return;
+
+        const threshold = options.stalenessThresholdMs ?? 60_000;
+        const interval = Math.min(threshold / 2, 30_000);
+
+        const checkStaleness = () => {
+            if (Date.now() - lastFixTimestamp > threshold) {
+                setIsStale(true);
+            }
+        };
+
+        checkStaleness();
+        const timer = setInterval(checkStaleness, interval);
+        return () => clearInterval(timer);
+    }, [isWatching, lastFixTimestamp, options.stalenessThresholdMs]);
+
     return {
         position,
         error,
         permissionState,
         isWatching,
+        isStale,
+        lastFixTimestamp,
         startWatching,
         stopWatching,
         requestPermission,
