@@ -2,55 +2,86 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
-  lint-typecheck:
+  lint-and-typecheck:
     name: Lint & Typecheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.node-version'
           cache: 'npm'
       - run: npm ci
-      - run: npm run lint
       - run: npm run typecheck
 
-  test:
-    name: Test
+  unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
-    needs: lint-typecheck
+    needs: lint-and-typecheck
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.node-version'
           cache: 'npm'
       - run: npm ci
-      - run: npm run test:run -- --coverage
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: coverage-report
-          path: coverage/
+      - run: npm run test:run
 
-  build:
-    name: Build
+  e2e-tests:
+    name: E2E Tests
     runs-on: ubuntu-latest
-    needs: test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.node-version'
           cache: 'npm'
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/upload-artifact@v4
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
         with:
-          name: dist
-          path: dist/
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
+      - run: npm ci
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Start dev server
+        run: |
+          npm run dev -- --mode http --port 5174 &
+          echo "DEV_PID=$!" >> "$GITHUB_ENV"
+
+      - name: Wait for dev server
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:5174 > /dev/null && echo "Server ready" && exit 0
+            sleep 2
+          done
+          echo "Server did not start within 60s" && exit 1
+
+      - name: Run Playwright tests
+        run: npx playwright test
+
+      - name: Upload E2E artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-artifacts
+          path: |
+            test-results/
+            playwright-report/
+            e2e-results.json

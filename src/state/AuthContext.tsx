@@ -30,7 +30,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [phone, setPhone] = useState<string>(
         () => localStorage.getItem('ht_phone') || '',
     )
-    const [registrationStatus, setRegistrationStatus] = useState<'unknown' | 'registered' | 'unregistered'>('unknown')
+    const [registrationStatus, setRegistrationStatus] = useState<'unknown' | 'registered' | 'unregistered'>(
+        () => {
+            const storedPhone = localStorage.getItem('ht_phone') || ''
+            if (storedPhone && localStorage.getItem('ht_registered_' + storedPhone) === '1') return 'registered'
+            if (storedPhone) return 'unregistered'
+            return 'unknown'
+        },
+    )
     const [authIntent, setAuthIntent] = useState<'login' | 'register' | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<ApiError | null>(null)

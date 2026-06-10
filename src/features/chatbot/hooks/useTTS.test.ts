@@ -9,31 +9,22 @@ import {
 } from './useTTS'
 import { speakNativeTts, stopNativeTts } from '../services/hindTrucksTts'
 
-vi.mock('@capacitor/core', async () => {
-    const actual = await vi.importActual<typeof import('@capacitor/core')>('@capacitor/core')
-    return {
-        ...actual,
-        Capacitor: {
-            ...actual.Capacitor,
-            isNativePlatform: vi.fn(() => false),
-        },
-        registerPlugin: vi.fn(() => ({
-            speak: vi.fn(),
-            stop: vi.fn(),
-            isLanguageAvailable: vi.fn(),
-            getAvailableLanguages: vi.fn(),
-        })),
-    }
-})
-
-vi.mock('../services/hindTrucksTts', async () => {
-    const actual = await vi.importActual<typeof import('../services/hindTrucksTts')>('../services/hindTrucksTts')
-    return {
-        ...actual,
-        speakNativeTts: vi.fn(),
-        stopNativeTts: vi.fn(),
-    }
-})
+vi.mock('@capacitor/core', () => ({
+    Capacitor: {
+        isNativePlatform: vi.fn(() => false),
+        getPlatform: vi.fn(() => 'web'),
+        isPluginAvailable: vi.fn(() => false),
+        addListener: vi.fn(() => ({ remove: vi.fn() })),
+    },
+    registerPlugin: vi.fn(() => ({})),
+    WebPlugin: class { },
+    CapacitorException: class extends Error { },
+    ExceptionCode: {},
+    CapacitorCookies: class { },
+    CapacitorHttp: class { },
+    WebView: class { },
+    buildRequestInit: vi.fn(() => ({})),
+}))
 
 class MockSpeechSynthesisUtterance {
     text: string

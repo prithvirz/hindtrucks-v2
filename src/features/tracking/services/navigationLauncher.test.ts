@@ -1,4 +1,3 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { Capacitor } from '@capacitor/core'
 import { AppLauncher } from '@capacitor/app-launcher'
 import {
@@ -9,17 +8,10 @@ import {
 } from './navigationLauncher'
 import type { Coordinates } from '../types'
 
-vi.mock('@capacitor/core', () => ({
-  Capacitor: {
-    isNativePlatform: vi.fn(),
-  },
-}))
-
-vi.mock('@capacitor/app-launcher', () => ({
-  AppLauncher: {
-    openUrl: vi.fn(),
-  },
-}))
+// Replace stub functions with vi.fn() spies
+Capacitor.isNativePlatform = vi.fn(() => false)
+AppLauncher.openUrl = vi.fn(async () => ({ completed: true }))
+AppLauncher.canOpenUrl = vi.fn(async () => ({ value: true }))
 
 const pickup: Coordinates = { lat: 30.901, lng: 75.8573, timestamp: 1 }
 const drop: Coordinates = { lat: 28.6139, lng: 77.209, timestamp: 1 }
@@ -27,6 +19,8 @@ const drop: Coordinates = { lat: 28.6139, lng: 77.209, timestamp: 1 }
 describe('navigationLauncher', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.mocked(Capacitor.isNativePlatform).mockReturnValue(false)
+    vi.mocked(AppLauncher.openUrl).mockResolvedValue({ completed: true })
   })
 
   it('selects pickup for the first trip step', () => {
@@ -72,7 +66,6 @@ describe('navigationLauncher', () => {
 
   it('attempts native Google Maps first', async () => {
     vi.mocked(Capacitor.isNativePlatform).mockReturnValue(true)
-    vi.mocked(AppLauncher.openUrl).mockResolvedValue({ completed: true })
 
     await openTurnByTurnNavigation(pickup)
 

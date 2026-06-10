@@ -88,6 +88,19 @@ export function FirstRunPermissions() {
     let cancelled = false
 
     async function decidePromptVisibility() {
+      // Short-circuit: if the flag is already set (from a previous run,
+      // a native permissions grant, or E2E test setup), skip the async
+      // permission probe and hide the overlay immediately.
+      try {
+        if (localStorage.getItem(FLAG) === '1') {
+          setShow(false)
+          setChecked(true)
+          return
+        }
+      } catch {
+        // localStorage unavailable — fall through to permission check
+      }
+
       const locationState = await checkLocationPermission()
       if (cancelled) return
 

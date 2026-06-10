@@ -205,7 +205,8 @@ export function ChatDrawer() {
     return (
         <div className="chatbot-container">
             {/* Custom Animation Styles */}
-            <style dangerouslySetInnerHTML={{ __html: `
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 @keyframes paghriFloat {
                     0% { transform: translateY(0px) rotate(0deg); }
                     50% { transform: translateY(-3px) rotate(1.5deg); }
@@ -238,9 +239,8 @@ export function ChatDrawer() {
                 <div
                     id="chatbot-button"
                     onClick={toggleChat}
-                    className={`absolute left-1/2 -translate-x-1/2 z-40 transition-all duration-500 cursor-pointer select-none bottom-[calc(var(--app-bottom-nav-height)+var(--safe-bottom))] ${
-                        isTourActive || hideClosedFab ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'
-                    }`}
+                    className={`absolute left-1/2 -translate-x-1/2 z-40 transition-all duration-500 cursor-pointer select-none bottom-[calc(var(--app-bottom-nav-height)+var(--safe-bottom))] ${isTourActive || hideClosedFab ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100 translate-y-0'
+                        }`}
                 >
                     <div className="flex flex-col items-center relative">
                         {/* Animated "Need help?" Pill */}
@@ -270,7 +270,7 @@ export function ChatDrawer() {
                     {/* Drawer Panel */}
                     <div className="relative bg-surface border-t border-hairline h-[510px] flex flex-col animate-fade-up max-w-app w-full mx-auto shadow-pop boxed-rounded-lg overflow-hidden">
                         {/* Header */}
-                        <div className="bg-surface-sunken text-ink px-4 py-3.5 flex items-center justify-between border-b border-hairline shrink-0 relative z-10">
+                        <div className="bg-surface-sunken text-ink px-4 py-3.5 flex items-center justify-between border-b border-hairline shrink-0 relative z-20">
                             <div className="flex items-center gap-2.5">
                                 <div className="h-9 w-9 rounded-full overflow-hidden shrink-0 border-2 border-hairline">
                                     <PaghriPersonIcon className="w-full h-full" />

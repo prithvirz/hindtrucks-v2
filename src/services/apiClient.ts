@@ -56,6 +56,75 @@ function getConfig(): ApiClientConfig {
     return _config
 }
 
+// ── Retry Config ──
+
+const RETRY_MAX = 3
+const RETRY_BASE_MS = 800
+const RETRYABLE_STATUSES = new Set([408, 429, 500, 502, 503, 504])
+
+function isRetryable(err: unknown): boolean {
+    if (err instanceof ServerError) return true
+    if (err instanceof NetworkError) {
+        // Don't retry timeout (AbortError) — that's a client-side issue
+        const msg = err.message.toLowerCase()
+        return !msg.includes('timed out') && !msg.includes('abort')
+    }
+    // 408/429 are also retryable
+    if (err instanceof ApiError && !(err instanceof AuthError) && !(err instanceof ValidationError)) {
+        return RETRYABLE_STATUSES.has(err.status)
+    }
+    return false
+}
+
+// ── Token Refresh Singleton ──
+
+let refreshPromise: Promise<string | null> | null = null
+const REFRESH_PATH = '/auth/refresh'
+
+async function tryRefreshToken(): Promise<string | null> {
+    const config = getConfig()
+    const stored = localStorage.getItem('ht_refresh_token')
+    if (!stored) return null
+
+    try {
+        const response = await fetch(`${config.baseUrl}${REFRESH_PATH}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refreshToken: stored }),
+            signal: AbortSignal.timeout(8000),
+        })
+
+        if (!response.ok) return null
+
+        const body = await response.json() as {
+            access?: { token: string; expiresAt: number }
+            refresh?: { token: string; expiresAt: number }
+        }
+
+        if (body.access) {
+            localStorage.setItem('ht_auth_token', body.access.token)
+        }
+        if (body.refresh) {
+            localStorage.setItem('ht_refresh_token', body.refresh.token)
+        }
+
+        return body.access?.token ?? null
+    } catch {
+        return null
+    }
+}
+
+async function refreshAccessToken(): Promise<string | null> {
+    // Deduplicate concurrent refresh calls
+    if (refreshPromise) return refreshPromise
+
+    refreshPromise = tryRefreshToken().finally(() => {
+        refreshPromise = null
+    })
+
+    return refreshPromise
+}
+
 // ── Helpers ──
 
 function buildUrl(baseUrl: string, path: string, query?: Record<string, string | number | boolean | undefined>): string {
@@ -105,68 +174,90 @@ async function throwForStatus(response: Response): Promise<void> {
 export async function request<T>(options: RequestOptions): Promise<ApiResponse<T>> {
     const config = getConfig()
     const timeout = options.timeoutMs ?? config.timeoutMs
-
-    // Build URL
     const url = buildUrl(config.baseUrl, options.path, options.query)
 
-    // Build headers
-    const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-        ...options.headers,
-    }
+    let lastError: unknown
+    let refreshed = false
 
-    // Auth header
-    if (!options.skipAuth) {
-        const token = config.getAccessToken()
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`
-        }
-    }
-
-    // AbortController with timeout
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), timeout)
-
-    try {
-        const init: RequestInit = {
-            method: options.method,
-            headers,
-            signal: controller.signal,
+    for (let attempt = 0; attempt <= RETRY_MAX; attempt++) {
+        if (attempt > 0) {
+            const delay = RETRY_BASE_MS * Math.pow(2, attempt - 1)
+            await new Promise(r => setTimeout(r, delay))
         }
 
-        if (options.body !== undefined && options.method !== 'GET') {
-            init.body = JSON.stringify(options.body)
+        // Build headers per-attempt (picks up refreshed token)
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+            ...options.headers,
         }
 
-        const response = await fetch(url, init)
-        clearTimeout(timeoutId)
-
-        await throwForStatus(response)
-
-        const data = response.status === 204 ? (null as T) : await response.json() as T
-
-        return { data, status: response.status, headers: response.headers }
-    } catch (error: unknown) {
-        clearTimeout(timeoutId)
-
-        if (error instanceof ApiError) {
-            // Trigger auth failure callback for 401 if not skipAuth
-            if (error instanceof AuthError && !options.skipAuth) {
-                config.onAuthFailure()
+        if (!options.skipAuth) {
+            const token = config.getAccessToken()
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`
             }
-            throw error
         }
 
-        if (error instanceof DOMException && error.name === 'AbortError') {
-            throw new NetworkError(`Request timed out after ${timeout}ms`, error)
-        }
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), timeout)
 
-        if (error instanceof TypeError && error.message.includes('fetch')) {
-            throw new NetworkError('Network request failed — check your connection', error)
-        }
+        try {
+            const init: RequestInit = {
+                method: options.method,
+                headers,
+                signal: controller.signal,
+            }
 
-        throw new NetworkError('Unexpected network error', error)
+            if (options.body !== undefined && options.method !== 'GET') {
+                init.body = JSON.stringify(options.body)
+            }
+
+            const response = await fetch(url, init)
+            clearTimeout(timeoutId)
+
+            await throwForStatus(response)
+
+            const data = response.status === 204 ? (null as T) : await response.json() as T
+            return { data, status: response.status, headers: response.headers }
+        } catch (error: unknown) {
+            clearTimeout(timeoutId)
+            lastError = error
+
+            // 401 → try token refresh once, then retry
+            if (error instanceof AuthError && !options.skipAuth && !refreshed) {
+                const newToken = await refreshAccessToken()
+                if (newToken) {
+                    refreshed = true
+                    continue
+                }
+            }
+
+            // Non-retryable or out of attempts
+            if (!isRetryable(error) || attempt === RETRY_MAX) {
+                break
+            }
+        }
     }
+
+    // Final throw — unwrap last error
+    const error = lastError
+
+    if (error instanceof ApiError) {
+        if (error instanceof AuthError && !options.skipAuth) {
+            config.onAuthFailure()
+        }
+        throw error
+    }
+
+    if (error instanceof DOMException && (error as DOMException).name === 'AbortError') {
+        throw new NetworkError(`Request timed out after ${timeout}ms`, error)
+    }
+
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new NetworkError('Network request failed — check your connection', error)
+    }
+
+    throw new NetworkError('Unexpected network error', error)
 }
 
 // ── Convenience Methods ──

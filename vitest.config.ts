@@ -1,8 +1,15 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
+import path from 'node:path'
 
 export default defineConfig({
     plugins: [react()],
+    resolve: {
+        alias: {
+            '@capacitor/core': path.resolve(__dirname, 'src/__tests__/stubs/capacitor-core.ts'),
+            '@capacitor/app-launcher': path.resolve(__dirname, 'src/__tests__/stubs/capacitor-app-launcher.ts'),
+        },
+    },
     test: {
         globals: true,
         environment: 'jsdom',

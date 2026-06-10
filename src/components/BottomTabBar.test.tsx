@@ -1,24 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-// Mock ChatContext hooks as we are testing the component, not the context logic
-vi.mock('../state/ChatContext', () => ({
-    useChatContext: () => ({
-        isOpen: false,
-        toggleChat: vi.fn(),
-    }),
-}))
-
 import { ShellCtx } from '../state/ShellContext'
 import BottomTabBar from './BottomTabBar'
-
-// Mock i18n
-vi.mock('react-i18next', () => ({
-    useTranslation: () => ({
-        t: (key: string) => key,
-        i18n: { language: 'en', changeLanguage: vi.fn() },
-    }),
-}))
 
 const mockShellValue = {
     hasSeenTour: false,
