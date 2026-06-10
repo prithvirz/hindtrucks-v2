@@ -69,4 +69,31 @@ describe('useShell', () => {
     it('throws when used outside provider', () => {
         expect(() => renderHook(() => useShell())).toThrow()
     })
+
+    it('has syncStatus idle initially', () => {
+        const { result } = renderHook(() => useShell(), {
+            wrapper: ({ children }) => (
+                <AuthProvider><ShellProvider>{children}</ShellProvider></AuthProvider>
+            ),
+        })
+        expect(result.current.syncStatus).toBe('idle')
+    })
+
+    it('provides syncQueue function', () => {
+        const { result } = renderHook(() => useShell(), {
+            wrapper: ({ children }) => (
+                <AuthProvider><ShellProvider>{children}</ShellProvider></AuthProvider>
+            ),
+        })
+        expect(typeof result.current.syncQueue).toBe('function')
+    })
+
+    it('has offlineQueueSize as a number', () => {
+        const { result } = renderHook(() => useShell(), {
+            wrapper: ({ children }) => (
+                <AuthProvider><ShellProvider>{children}</ShellProvider></AuthProvider>
+            ),
+        })
+        expect(typeof result.current.offlineQueueSize).toBe('number')
+    })
 })
