@@ -306,6 +306,10 @@ export function LiveMap({
         setTilesError(error);
     }, []);
 
+    const bearing = driverPosition?.heading ?? 0;
+    // Memoize truck icon to avoid recreating on every render
+    const truckIcon = useMemo(() => makeTruckIcon(bearing), [bearing]);
+
     if (!leafletReady) {
         return (
             <div style={{ height }} className={`bg-gray-100 rounded-lg flex items-center justify-center ${className}`}>
@@ -320,11 +324,7 @@ export function LiveMap({
             : [28.6139, 77.209];
 
     const routePositions: [number, number][] = route.map((c) => [c.lat, c.lng]);
-    const bearing = driverPosition?.heading ?? 0;
     const visiblePois = pois.filter((p) => poiFilter.has(p.category));
-
-    // Memoize truck icon to avoid recreating on every render
-    const truckIcon = useMemo(() => makeTruckIcon(bearing), [bearing]);
 
     // Phase 5.3: Split route into traversed (green) and upcoming (accent)
     const splitIdx = progressPct > 0 && routePositions.length > 1
