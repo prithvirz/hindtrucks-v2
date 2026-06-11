@@ -13,21 +13,14 @@ import { getStorage } from 'firebase/storage'
 import { getMessaging } from 'firebase/messaging'
 import type { UserRole } from '../state/types'
 
-function resolveEnv(key: string, fallback: string): string {
-  if (typeof import.meta !== 'undefined' && import.meta.env) {
-    const val = (import.meta.env as Record<string, string>)[key]
-    if (val) return val
-  }
-  return fallback
-}
-
 const firebaseConfig = {
-  apiKey: resolveEnv('VITE_FIREBASE_API_KEY', 'AIzaSyAain5de57rlYHN2bb5BXt6x1Qpfaxoeo0'),
-  authDomain: resolveEnv('VITE_FIREBASE_AUTH_DOMAIN', 'hindtruck.firebaseapp.com'),
-  projectId: resolveEnv('VITE_FIREBASE_PROJECT_ID', 'hindtruck'),
-  storageBucket: resolveEnv('VITE_FIREBASE_STORAGE_BUCKET', 'hindtruck.firebasestorage.app'),
-  messagingSenderId: resolveEnv('VITE_FIREBASE_MESSAGING_SENDER_ID', '151359237650'),
-  appId: resolveEnv('VITE_FIREBASE_APP_ID', '1:151359237650:web:10d570589c0a85626d72cb'),
+  apiKey: __VITE_FIREBASE_API_KEY__,
+  authDomain: __VITE_FIREBASE_AUTH_DOMAIN__,
+  projectId: __VITE_FIREBASE_PROJECT_ID__,
+  storageBucket: __VITE_FIREBASE_STORAGE_BUCKET__,
+  messagingSenderId: __VITE_FIREBASE_MESSAGING_SENDER_ID__,
+  appId: __VITE_FIREBASE_APP_ID__,
+  measurementId: __VITE_FIREBASE_MEASUREMENT_ID__,
 }
 
 export const app = initializeApp(firebaseConfig)

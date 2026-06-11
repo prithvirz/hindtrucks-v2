@@ -5,13 +5,17 @@
 importScripts('https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.14.0/firebase-messaging-compat.js');
 
+// NOTE: Replace these placeholder values with your actual Firebase project config
+// before deploying to production. This service worker is in public/ and not
+// processed by Vite's define block, so env var substitution is not available here.
+// For CI/CD, use a build-step replacement script (e.g., sed, replace-in-file).
 firebase.initializeApp({
-    apiKey: 'AIzaSyAain5de57rlYHN2bb5BXt6x1Qpfaxoeo0',
-    authDomain: 'hindtruck.firebaseapp.com',
-    projectId: 'hindtruck',
-    storageBucket: 'hindtruck.firebasestorage.app',
-    messagingSenderId: '151359237650',
-    appId: '1:151359237650:web:10d570589c0a85626d72cb',
+    apiKey: 'YOUR_FIREBASE_API_KEY',
+    authDomain: 'your-project.firebaseapp.com',
+    projectId: 'your-project-id',
+    storageBucket: 'your-project.appspot.com',
+    messagingSenderId: 'your-sender-id',
+    appId: 'your-firebase-app-id',
 });
 
 const messaging = firebase.messaging();
