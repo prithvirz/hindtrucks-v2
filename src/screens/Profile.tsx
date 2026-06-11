@@ -17,6 +17,8 @@ import {
   Bell,
   Users,
   MessageCircle,
+  Shield,
+  ScrollText,
 } from 'lucide-react'
 import TopBar from '../components/TopBar'
 import Button from '../components/Button'
@@ -410,6 +412,31 @@ export default function Profile() {
             <LifeBuoy size={18} className="text-ink-muted group-hover:text-accent transition-colors" />
             <span className="flex-1 text-left font-extrabold text-ink text-[15px]">
               {t('profile.support')}
+            </span>
+            <ChevronRight size={18} className="text-ink-faint group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+
+        {/* Legal Section */}
+        <div className="bg-surface boxed-rounded-lg boxed-border boxed-shadow overflow-hidden">
+          <button
+            onClick={() => nav('/privacy-policy')}
+            className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-surface-grey active:bg-surface-grey transition border-b border-hairline"
+          >
+            <Shield size={18} className="text-ink-muted" />
+            <span className="flex-1 text-left font-extrabold text-ink text-[15px]">
+              {t('legal.privacy_policy', 'Privacy Policy')}
+            </span>
+            <ChevronRight size={18} className="text-ink-faint" />
+          </button>
+
+          <button
+            onClick={() => nav('/terms-of-service')}
+            className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-surface-grey transition group"
+          >
+            <ScrollText size={18} className="text-ink-muted group-hover:text-accent transition-colors" />
+            <span className="flex-1 text-left font-extrabold text-ink text-[15px]">
+              {t('legal.terms_of_service', 'Terms of Service')}
             </span>
             <ChevronRight size={18} className="text-ink-faint group-hover:translate-x-0.5 transition-transform" />
           </button>

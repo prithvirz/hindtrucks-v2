@@ -262,5 +262,28 @@
     "go_now": "अभी जाएं",
     "placeholder": "लिखें या माइक दबाएं...",
     "listening": "सुन रहा हूँ... बोलिए"
+  },
+  "legal": {
+    "privacy_policy": "गोपनीयता नीति",
+    "terms_of_service": "सेवा की शर्तें",
+    "introduction": "परिचय",
+    "data_collection": "हमारे द्वारा एकत्रित जानकारी",
+    "data_usage": "आपकी जानकारी का उपयोग",
+    "data_sharing": "तृतीय-पक्ष साझाकरण",
+    "data_retention": "डेटा प्रतिधारण",
+    "data_security": "डेटा सुरक्षा",
+    "your_rights": "आपके अधिकार",
+    "children_privacy": "बच्चों की गोपनीयता",
+    "contact_info": "संपर्क करें",
+    "service_description": "सेवा विवरण",
+    "eligibility": "पात्रता",
+    "user_responsibilities": "उपयोगकर्ता की जिम्मेदारियां",
+    "account_termination": "खाता समाप्ति",
+    "payments": "भुगतान और कमाई",
+    "liability_limitations": "दायित्व सीमाएं",
+    "indemnification": "क्षतिपूर्ति",
+    "modifications": "शर्तों में संशोधन",
+    "dispute_resolution": "विवाद समाधान",
+    "legal_section_title": "कानूनी"
   }
 }

@@ -30,6 +30,8 @@ const ActiveTrip = lazy(() => import('./screens/ActiveTrip'))
 const Earnings = lazy(() => import('./screens/Earnings'))
 const Profile = lazy(() => import('./screens/Profile'))
 const Register = lazy(() => import('./screens/Register'))
+const PrivacyPolicy = lazy(() => import('./screens/PrivacyPolicy'))
+const TermsOfService = lazy(() => import('./screens/TermsOfService'))
 
 // Tabs that should show the bottom navigation bar.
 const TAB_ROUTES = ['/home', '/loads', '/earnings', '/profile']
@@ -185,6 +187,9 @@ function Shell() {
               <Route path="/trip" element={<RequireAuth><ActiveTrip /></RequireAuth>} />
               <Route path="/earnings" element={<RequireAuth><Earnings /></RequireAuth>} />
               <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

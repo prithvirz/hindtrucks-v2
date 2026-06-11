@@ -285,5 +285,28 @@
     "listening": "Listening... Speak now",
     "ttsLanguageMissing": "Voice is temporarily unavailable for this language.",
     "ttsUnavailable": "Voice playback is not available on this device."
+  },
+  "legal": {
+    "privacy_policy": "Privacy Policy",
+    "terms_of_service": "Terms of Service",
+    "introduction": "Introduction",
+    "data_collection": "Information We Collect",
+    "data_usage": "How We Use Your Information",
+    "data_sharing": "Third-Party Sharing",
+    "data_retention": "Data Retention",
+    "data_security": "Data Security",
+    "your_rights": "Your Rights",
+    "children_privacy": "Children's Privacy",
+    "contact_info": "Contact Us",
+    "service_description": "Service Description",
+    "eligibility": "Eligibility",
+    "user_responsibilities": "User Responsibilities",
+    "account_termination": "Account Termination",
+    "payments": "Payments & Earnings",
+    "liability_limitations": "Limitation of Liability",
+    "indemnification": "Indemnification",
+    "modifications": "Modifications to Terms",
+    "dispute_resolution": "Dispute Resolution",
+    "legal_section_title": "Legal"
   }
 }
