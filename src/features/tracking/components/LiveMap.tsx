@@ -187,28 +187,14 @@ function TileLoadTracker({
     return null;
 }
 
-// ─── Phase 5.1: Theme-aware Tile Layer ──────────────────────────
-// Switches between OSM light tiles and CartoDB dark_all tiles
-// based on the `dark` CSS class on <html>.
 
-function ThemeTileLayer({ isDark }: { isDark: boolean }) {
-    if (isDark) {
-        return (
-            <TileLayer
-                attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
-                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            />
-        );
-    }
-    return (
-        <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-    );
-}
-
-function MapAutoCenter({ position, navMode }: { position: Coordinates | null; navMode: boolean }) {
+function MapAutoCenter({
+    position,
+    navMode,
+}: {
+    position: Coordinates | null;
+    navMode: boolean;
+}) {
     const map = useMap();
     useEffect(() => {
         // Only follow the driver in fullscreen nav mode. In preview mode the
@@ -248,6 +234,23 @@ function FitRouteBounds({
         }
     }, [map, route, waypoints, navMode]);
     return null;
+}
+
+function ThemeTileLayer({ isDark }: { isDark: boolean }) {
+    if (isDark) {
+        return (
+            <TileLayer
+                attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            />
+        );
+    }
+    return (
+        <TileLayer
+            attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        />
+    );
 }
 
 interface LiveMapProps {
