@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import { Capacitor, SystemBars, SystemBarsStyle } from '@capacitor/core'
 import { initSentry } from './lib/sentry'
 import App from './App'
@@ -26,10 +26,10 @@ if (Capacitor.getPlatform() === 'android') {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <ErrorBoundary>
         <App />
       </ErrorBoundary>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
 )

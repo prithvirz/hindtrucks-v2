@@ -4,6 +4,9 @@ const config: CapacitorConfig = {
   appId: 'com.hindtrucks.app',
   appName: 'HindTrucks',
   webDir: 'dist',
+  server: {
+    androidScheme: 'https',
+  },
   plugins: {
     SystemBars: {
       insetsHandling: 'css',

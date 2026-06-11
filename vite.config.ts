@@ -7,6 +7,7 @@ import { visualizer } from 'rollup-plugin-visualizer'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
+    base: './',
     plugins: [
       // Dev-only HTTPS so phones on the LAN can use geolocation (browsers block
       // it on plain http). Skipped in 'http' mode for local tooling that can't handle self-signed certs.
