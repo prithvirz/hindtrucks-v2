@@ -12,7 +12,8 @@ export default defineConfig({
         ['json', { outputFile: 'e2e-results.json' }],
     ],
     use: {
-        baseURL: 'http://localhost:5174',
+        baseURL: 'https://localhost:5174',
+        ignoreHTTPSErrors: true,
         viewport: { width: 390, height: 844 },
         actionTimeout: 10_000,
         navigationTimeout: 15_000,
