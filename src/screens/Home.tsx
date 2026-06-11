@@ -42,7 +42,7 @@ export default function Home() {
       <div className="sticky top-0 z-20 h-[var(--safe-top)] bg-night-900 w-full shrink-0" />
 
       {/* Header with Tour ID - Premium Deep Gradient */}
-      <div id="driver-profile" className="relative px-5 pt-6 pb-7 bg-gradient-to-br from-night-900 via-night-800 to-night-700 text-white overflow-hidden">
+      <div id="driver-profile" className="relative px-5 home-safe-top pb-7 bg-gradient-to-br from-night-900 via-night-800 to-night-700 text-white overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-accent/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-success/15 rounded-full blur-2xl pointer-events-none" />
 

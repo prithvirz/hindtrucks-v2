@@ -109,7 +109,7 @@ export default function OnboardingTour() {
     window.addEventListener('resize', updateCoords)
 
     // Listen to scroll events on the nearest scroll container to dynamically track positioning
-    const scrollParent = targetEl?.closest('.overflow-y-auto') || document.querySelector('.overflow-y-auto')
+    const scrollParent = targetEl?.closest('.app-scroll') || document.querySelector('.app-scroll')
     if (scrollParent) {
       scrollParent.addEventListener('scroll', updateCoords, { passive: true })
     }
