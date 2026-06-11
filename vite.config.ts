@@ -10,21 +10,62 @@ export default defineConfig(({ mode }) => ({
     ...(mode === 'development' || mode === 'https' ? [basicSsl()] : []),
     react(),
     VitePWA({
-      registerType: 'prompt',
-      injectRegister: null,
-      includeAssets: ['favicon.svg'],
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.svg', 'pwa-192.png', 'pwa-512.png'],
       workbox: {
-        importScripts: [],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,json}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-static-cache',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: /\/api\//i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              networkTimeoutSeconds: 10,
+              expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'image-cache',
+              expiration: { maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/\/api\//, /\/__\/.*/],
       },
       manifest: {
-        name: 'HindTrucks Driver',
+        name: 'HindTrucks',
         short_name: 'HindTrucks',
-        description: 'Find loads, drive, earn — the driver app for HindTrucks.',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
+        description: 'Truck driver logistics companion',
+        theme_color: '#F26A1B',
+        background_color: '#EAECF0',
         display: 'standalone',
         orientation: 'portrait',
         start_url: '/',
+        lang: 'en',
         icons: [
           { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },
