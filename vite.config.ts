@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import basicSsl from '@vitejs/plugin-basic-ssl'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig(({ mode }) => ({
   plugins: [
@@ -73,6 +74,10 @@ export default defineConfig(({ mode }) => ({
         ],
       },
     }),
+    // Generate bundle size report on build (output: dist/stats.html)
+    ...(mode === 'production' || mode === 'https'
+      ? [visualizer({ open: false, gzipSize: true, brotliSize: true, filename: 'dist/stats.html' })]
+      : []),
   ],
   define: {
     'import.meta.env.VITE_API_MODE': JSON.stringify(process.env.VITE_API_MODE || 'mock'),
@@ -103,23 +108,12 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('/firebase/') || id.includes('/@firebase/')) {
-              return 'firebase'
-            }
-            if (id.includes('leaflet')) {
-              return 'leaflet'
-            }
-          }
-          if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
-            return 'react'
-          }
-          if (id.includes('i18next') || id.includes('react-i18next') || id.includes('i18next-browser-languagedetector')) {
-            return 'i18n'
-          }
-          if (id.includes('lucide-react')) {
-            return 'icons'
-          }
+          if (!id.includes('node_modules')) return
+          if (id.includes('/firebase/') || id.includes('/@firebase/')) return 'firebase'
+          if (id.includes('leaflet')) return 'leaflet'
+          if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) return 'vendor'
+          if (id.includes('i18next') || id.includes('react-i18next') || id.includes('i18next-browser-languagedetector')) return 'i18n'
+          if (id.includes('lucide-react')) return 'icons'
         },
       },
     },
