@@ -73,11 +73,12 @@ export function useGeolocation(options: GeolocationOptions = DEFAULT_OPTIONS): U
         checkPermission();
     }, [checkPermission]);
 
+
     const requestPermission = useCallback(async (): Promise<PermissionState> => {
         // Native: trigger the Android/iOS runtime permission dialog.
         if (isNative) {
             try {
-                const { location } = await Geolocation.requestPermissions();
+                const { location } = await Geolocation.requestPermissions({ permissions: ['location'] });
                 const state: PermissionState = location === 'granted' ? 'granted' : 'denied';
                 setPermissionState(state);
                 if (state === 'denied') setError('Location permission denied');

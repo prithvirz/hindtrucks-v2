@@ -115,21 +115,30 @@ export function LocationPermission({ onGranted, onDenied, children }: LocationPe
                 <p className="text-xs text-ink-muted mb-4 max-w-xs">
                     {t('gps.deniedMessage', 'Please enable location access in your device settings to use GPS tracking.')}
                 </p>
-                <div className="flex gap-3">
-                    {isNative && (
-                        <button
-                            onClick={() => openLocationSettings().catch(() => undefined)}
-                            className="px-4 py-2 text-xs font-semibold text-white bg-accent rounded-lg hover:bg-accent/90 transition-colors"
-                        >
-                            {t('gps.openSettings', 'Open Settings')}
-                        </button>
-                    )}
+                <div className="flex flex-col gap-2 w-full max-w-xs items-center">
                     <button
-                        onClick={onDenied}
-                        className="px-4 py-2 text-xs font-semibold text-ink-muted bg-surface border border-hairline rounded-lg hover:bg-surface-grey transition-colors"
+                        onClick={handleRequest}
+                        disabled={isRequesting}
+                        className="px-5 py-2.5 text-xs font-bold text-white bg-accent rounded-xl hover:bg-accent/90 transition-colors disabled:opacity-50 w-full"
                     >
-                        {t('gps.continueWithoutGps', 'Continue Without GPS')}
+                        {isRequesting ? t('gps.requesting', 'Requesting...') : t('gps.allow', 'Allow Location')}
                     </button>
+                    <div className="flex gap-2 justify-center w-full">
+                        {isNative && (
+                            <button
+                                onClick={() => openLocationSettings().catch(() => undefined)}
+                                className="px-3 py-2 text-xs font-semibold text-ink bg-surface border border-hairline rounded-xl hover:bg-surface-grey transition-colors flex-1"
+                            >
+                                {t('gps.openSettings', 'Open Settings')}
+                            </button>
+                        )}
+                        <button
+                            onClick={onDenied}
+                            className="px-3 py-2 text-xs font-semibold text-ink-muted bg-surface border border-hairline rounded-xl hover:bg-surface-grey transition-colors flex-1"
+                        >
+                            {t('gps.continueWithoutGps', 'Continue Without GPS')}
+                        </button>
+                    </div>
                 </div>
             </div>
         );
