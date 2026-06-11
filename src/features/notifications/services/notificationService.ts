@@ -107,6 +107,37 @@ export async function fetchNotificationHistory(
     }
 }
 
+export function storeNotification(notification: PushNotification): Promise<void> {
+    return new Promise((resolve) => {
+        const DB_NAME = 'hindtrucks_notifications'
+        const STORE_NAME = 'notifications'
+
+        const request = indexedDB.open(DB_NAME, 1)
+
+        request.onupgradeneeded = () => {
+            const db = request.result
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+                db.createObjectStore(STORE_NAME, { keyPath: 'id' })
+            }
+        }
+
+        request.onsuccess = () => {
+            const db = request.result
+            try {
+                const tx = db.transaction(STORE_NAME, 'readwrite')
+                const store = tx.objectStore(STORE_NAME)
+                store.put(notification)
+                tx.oncomplete = () => resolve()
+                tx.onerror = () => resolve()
+            } catch {
+                resolve()
+            }
+        }
+
+        request.onerror = () => resolve()
+    })
+}
+
 export function getStoredNotifications(): Promise<PushNotification[]> {
     return new Promise((resolve) => {
         const DB_NAME = 'hindtrucks_notifications';

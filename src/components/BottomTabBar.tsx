@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Home, Boxes, Wallet, User } from 'lucide-react'
-import { useShell } from '../state/ShellContext'
+import { useNotifications } from '../hooks/useNotifications'
 import { useChatContext } from '../state/ChatContext'
 import { PaghriPersonIcon } from '../features/chatbot/components/ChatDrawer'
 
 export default function BottomTabBar() {
   const { t } = useTranslation()
-  const { unreadPushCount } = useShell()
+  const { unreadCount } = useNotifications()
   const { toggleChat, isOpen: isChatOpen } = useChatContext()
 
   return (
@@ -26,8 +26,7 @@ export default function BottomTabBar() {
             id="nav-tab-home"
             to="/home"
             className={({ isActive }) =>
-              `min-h-14 flex flex-col items-center justify-center gap-1 py-2 rounded-[18px] transition-all ${
-                isActive && !isChatOpen ? 'text-accent bg-accent/10' : 'text-ink-muted hover:text-ink'
+              `min-h-14 flex flex-col items-center justify-center gap-1 py-2 rounded-[18px] transition-all ${isActive && !isChatOpen ? 'text-accent bg-accent/10' : 'text-ink-muted hover:text-ink'
               }`
             }
           >
@@ -48,8 +47,7 @@ export default function BottomTabBar() {
             id="nav-tab-loads"
             to="/loads"
             className={({ isActive }) =>
-              `min-h-14 flex flex-col items-center justify-center gap-1 py-2 rounded-[18px] transition-all ${
-                isActive && !isChatOpen ? 'text-accent bg-accent/10' : 'text-ink-muted hover:text-ink'
+              `min-h-14 flex flex-col items-center justify-center gap-1 py-2 rounded-[18px] transition-all ${isActive && !isChatOpen ? 'text-accent bg-accent/10' : 'text-ink-muted hover:text-ink'
               }`
             }
           >
@@ -69,9 +67,8 @@ export default function BottomTabBar() {
           <button
             id="nav-tab-raahgir"
             onClick={toggleChat}
-            className={`w-full min-h-14 flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-[18px] transition-all select-none outline-none ${
-              isChatOpen ? 'text-accent bg-accent/10' : 'text-ink-muted hover:text-ink'
-            }`}
+            className={`w-full min-h-14 flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-[18px] transition-all select-none outline-none ${isChatOpen ? 'text-accent bg-accent/10' : 'text-ink-muted hover:text-ink'
+              }`}
             aria-label="Raahgir Driver Assistant"
           >
             <PaghriPersonIcon className={`w-7 h-7 transition-transform duration-200 ${isChatOpen ? 'scale-105' : 'hover:scale-105'}`} />
@@ -87,8 +84,7 @@ export default function BottomTabBar() {
             id="nav-tab-earnings"
             to="/earnings"
             className={({ isActive }) =>
-              `min-h-14 flex flex-col items-center justify-center gap-1 py-2 rounded-[18px] transition-all ${
-                isActive && !isChatOpen ? 'text-accent bg-accent/10' : 'text-ink-muted hover:text-ink'
+              `min-h-14 flex flex-col items-center justify-center gap-1 py-2 rounded-[18px] transition-all ${isActive && !isChatOpen ? 'text-accent bg-accent/10' : 'text-ink-muted hover:text-ink'
               }`
             }
           >
@@ -109,8 +105,7 @@ export default function BottomTabBar() {
             id="nav-tab-profile"
             to="/profile"
             className={({ isActive }) =>
-              `min-h-14 flex flex-col items-center justify-center gap-1 py-2 rounded-[18px] transition-all ${
-                isActive && !isChatOpen ? 'text-accent bg-accent/10' : 'text-ink-muted hover:text-ink'
+              `min-h-14 flex flex-col items-center justify-center gap-1 py-2 rounded-[18px] transition-all ${isActive && !isChatOpen ? 'text-accent bg-accent/10' : 'text-ink-muted hover:text-ink'
               }`
             }
           >
@@ -124,9 +119,9 @@ export default function BottomTabBar() {
             )}
           </NavLink>
           {/* Notification badge on profile tab */}
-          {unreadPushCount > 0 && (
+          {unreadCount > 0 && (
             <span className="absolute top-1.5 right-3 min-w-[16px] h-[16px] rounded-full bg-red-500 text-white text-[9px] font-black flex items-center justify-center px-1 shadow-sm pointer-events-none">
-              {unreadPushCount > 99 ? '99+' : unreadPushCount}
+              {unreadCount > 99 ? '99+' : unreadCount}
             </span>
           )}
         </li>

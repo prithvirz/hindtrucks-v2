@@ -5,7 +5,11 @@ export type NotificationType =
     | 'accepted'
     | 'status_update'
     | 'earnings'
-    | 'announcement';
+    | 'announcement'
+    | 'trip_reminder'
+    | 'geofence_alert'
+    | 'chat_message'
+    | 'system_announcement';
 
 export interface PushPayload {
     id: string;
@@ -13,6 +17,11 @@ export interface PushPayload {
     title: string;
     body: string;
     deepLink?: string;
+    entityId?: string;
+    imageUrl?: string;
+    requireInteraction?: boolean;
+    scheduledAt?: string;
+    ttlSeconds?: number;
     actions?: NotificationAction[];
     expiresAt?: number;
 }
@@ -57,6 +66,10 @@ export const NOTIFICATION_TYPE_LABELS: Record<NotificationType, string> = {
     status_update: 'Status Update',
     earnings: 'Earnings',
     announcement: 'Announcement',
+    trip_reminder: 'Trip Reminder',
+    geofence_alert: 'Geofence Alert',
+    chat_message: 'Chat Message',
+    system_announcement: 'System',
 };
 
 export const NOTIFICATION_PERMISSION_KEY = 'ht_push_permission_prompted';

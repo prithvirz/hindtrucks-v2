@@ -31,16 +31,6 @@ function renderTour(options: RenderTourOptions = {}) {
         offlineQueueSize: 0,
         syncStatus: 'idle' as const,
         syncQueue: vi.fn(),
-        pushPermissionState: { push: 'prompt' as PermissionState, needsPrompt: false, promptedBefore: false },
-        subscribeToPush: vi.fn(),
-        unsubscribeFromPush: vi.fn(),
-        pushNotifications: [],
-        unreadPushCount: 0,
-        markPushRead: vi.fn(),
-        markAllPushRead: vi.fn(),
-        deletePushNotification: vi.fn(),
-        activePushBanner: null,
-        dismissPushBanner: vi.fn(),
     }
 
     const result = render(

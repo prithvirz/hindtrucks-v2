@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => ({
       injectRegister: null,
       includeAssets: ['favicon.svg'],
       workbox: {
-        importScripts: ['/sw-push-handler.js'],
+        importScripts: [],
       },
       manifest: {
         name: 'HindTrucks Driver',
@@ -44,6 +44,8 @@ export default defineConfig(({ mode }) => ({
     'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL || '/api'),
     'import.meta.env.VITE_USE_EMULATOR': JSON.stringify(process.env.VITE_USE_EMULATOR || 'false'),
     'import.meta.env.VITE_ORS_API_KEY': JSON.stringify(process.env.VITE_ORS_API_KEY || ''),
+    'import.meta.env.VITE_FCM_VAPID_KEY': JSON.stringify(process.env.VITE_FCM_VAPID_KEY || ''),
+    'import.meta.env.VITE_API_NOTIFICATIONS': JSON.stringify(process.env.VITE_API_NOTIFICATIONS || ''),
     __BUNDLED_DEV__: 'false',
     __SERVER_FORWARD_CONSOLE__: 'false',
   },

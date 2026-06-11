@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { ApiError } from '../services/errors'
 import {
-    unsubscribeFromPush,
     deleteStoredNotification,
     getStoredNotifications,
 } from '../features/notifications/services/notificationService'
 import { clearChatHistory } from '../features/chatbot/services/chatService'
+import { messaging } from '../lib/firebase'
 
 interface AuthState {
     isLoggedIn: boolean
@@ -148,8 +148,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         import('../services/index').then(({ authService }) => {
             authService.logout().catch(() => { /* silent */ })
         })
-        // Unsubscribe push notifications on logout
-        unsubscribeFromPush().catch(() => { /* silent */ })
+        // Delete FCM token on logout
+        import('firebase/messaging').then(({ deleteToken }) => {
+            deleteToken(messaging).catch(() => { /* silent */ })
+        }).catch(() => { /* silent */ })
         // Clear stored notifications from IndexedDB
         const clearStoredNotifications = async () => {
             const stored = await getStoredNotifications()

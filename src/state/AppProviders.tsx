@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react'
 import { AuthProvider } from './AuthContext'
 import { ShellProvider } from './ShellContext'
+import { NotificationProvider } from './NotificationContext'
 import { ProfileProvider } from './ProfileContext'
 import { TripProvider } from './TripContext'
 import { EarningsProvider } from './EarningsContext'
@@ -12,15 +13,17 @@ export function AppProviders({ children }: { children: ReactNode }) {
         <ThemeProvider>
             <AuthProvider>
                 <ShellProvider>
-                    <ProfileProvider>
-                        <TripProvider>
-                            <EarningsProvider>
-                                <ChatProvider>
-                                    {children}
-                                </ChatProvider>
-                            </EarningsProvider>
-                        </TripProvider>
-                    </ProfileProvider>
+                    <NotificationProvider>
+                        <ProfileProvider>
+                            <TripProvider>
+                                <EarningsProvider>
+                                    <ChatProvider>
+                                        {children}
+                                    </ChatProvider>
+                                </EarningsProvider>
+                            </TripProvider>
+                        </ProfileProvider>
+                    </NotificationProvider>
                 </ShellProvider>
             </AuthProvider>
         </ThemeProvider>

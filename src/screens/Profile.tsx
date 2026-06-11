@@ -24,6 +24,7 @@ import { useAuth } from '../state/AuthContext'
 import { useProfile } from '../state/ProfileContext'
 import { useShell } from '../state/ShellContext'
 import { useChatContext } from '../state/ChatContext'
+import { useNotifications } from '../hooks/useNotifications'
 import { LANGUAGES, type LangCode } from '../i18n/languages'
 import { NotificationCenter } from '../features/notifications/components/NotificationCenter'
 import Toggle from '../components/Toggle'
@@ -50,14 +51,14 @@ export default function Profile() {
     assignDriverToTruck,
     toggleTruckActive,
   } = useProfile()
+  const { startTour } = useShell()
   const {
-    startTour,
-    pushNotifications,
-    unreadPushCount,
-    markPushRead,
-    markAllPushRead,
-    deletePushNotification,
-  } = useShell()
+    notifications: pushNotifications,
+    unreadCount: unreadPushCount,
+    markRead: markPushRead,
+    markAllRead: markAllPushRead,
+    deleteNotification: deletePushNotification,
+  } = useNotifications()
   const [langOpen, setLangOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
   const [addTruckOpen, setAddTruckOpen] = useState(false)

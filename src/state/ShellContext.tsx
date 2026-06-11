@@ -3,8 +3,6 @@ import { type NotificationPayload } from './types'
 import { useAuth } from './AuthContext'
 import { ApiError } from '../services/errors'
 import { useOnlineStatus } from '../features/offline/hooks/useOnlineStatus'
-import { usePushNotifications } from '../features/notifications/hooks/usePushNotifications'
-import type { PushNotification, NotificationPermissionState } from '../features/notifications/types'
 import type { SyncStatus } from '../features/offline/types'
 import { createSyncController, getPendingCount } from '../features/offline/services/syncQueue'
 import { dispatchAction } from '../features/offline/services/dispatchAction'
@@ -27,17 +25,6 @@ interface ShellState {
     offlineQueueSize: number
     syncStatus: SyncStatus
     syncQueue: () => Promise<void>
-    // Push notification state
-    pushPermissionState: NotificationPermissionState
-    subscribeToPush: () => Promise<boolean>
-    unsubscribeFromPush: () => Promise<void>
-    pushNotifications: PushNotification[]
-    unreadPushCount: number
-    markPushRead: (id: string) => Promise<void>
-    markAllPushRead: () => Promise<void>
-    deletePushNotification: (id: string) => Promise<void>
-    activePushBanner: PushNotification | null
-    dismissPushBanner: () => void
 }
 
 export const ShellCtx = createContext<ShellState | null>(null)
@@ -125,20 +112,6 @@ export function ShellProvider({ children }: { children: ReactNode }) {
         }
     }, [wasOffline, isOnline, syncQueue]);
 
-    // Push notification state
-    const {
-        permissionState: pushPermissionState,
-        subscribe: subscribeToPush,
-        unsubscribe: unsubscribeFromPush,
-        notifications: pushNotifications,
-        unreadCount: unreadPushCount,
-        markRead: markPushRead,
-        markAllRead: markAllPushRead,
-        deleteNotification: deletePushNotification,
-        activeBanner: activePushBanner,
-        dismissBanner: dismissPushBanner,
-    } = usePushNotifications()
-
     // Auto-dismiss notification after 6 seconds
     useEffect(() => {
         if (notification) {
@@ -200,16 +173,6 @@ export function ShellProvider({ children }: { children: ReactNode }) {
                 offlineQueueSize,
                 syncStatus,
                 syncQueue,
-                pushPermissionState,
-                subscribeToPush,
-                unsubscribeFromPush,
-                pushNotifications,
-                unreadPushCount,
-                markPushRead,
-                markAllPushRead,
-                deletePushNotification,
-                activePushBanner,
-                dismissPushBanner,
             }}
         >
             {children}

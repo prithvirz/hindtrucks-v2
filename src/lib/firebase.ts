@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app'
 import { getAuth, connectAuthEmulator } from 'firebase/auth'
 import { getFirestore, doc, setDoc, serverTimestamp, connectFirestoreEmulator } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
+import { getMessaging } from 'firebase/messaging'
 import type { UserRole } from '../state/types'
 
 const firebaseConfig = {
@@ -17,6 +18,7 @@ export const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
 export const db = getFirestore(app)
 export const storage = getStorage(app)
+export const messaging = getMessaging(app)
 
 // Connect to local emulators when VITE_USE_EMULATOR=true
 if (import.meta.env.VITE_USE_EMULATOR === 'true') {

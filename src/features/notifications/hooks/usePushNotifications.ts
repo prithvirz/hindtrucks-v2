@@ -1,3 +1,4 @@
+/** @deprecated Replaced by NotificationProvider + useFcmToken + useForegroundMessages (Phase 5) */
 // ─── Push Notifications Hook: Full Subscription Lifecycle ───
 
 import { useState, useCallback, useEffect } from 'react';

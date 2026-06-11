@@ -13,7 +13,8 @@ interface ImportMetaEnv {
     readonly VITE_API_BASE_URL: string
     readonly VITE_USE_EMULATOR: string
     readonly VITE_ORS_API_KEY: string
-    readonly VITE_VAPID_PUBLIC_KEY: string
+    readonly VITE_FCM_VAPID_KEY: string
+    readonly VITE_API_NOTIFICATIONS: 'mock' | 'real' | ''
 }
 
 interface ImportMeta {

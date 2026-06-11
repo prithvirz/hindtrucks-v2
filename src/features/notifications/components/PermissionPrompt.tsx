@@ -21,6 +21,9 @@ export function PermissionPrompt({ onEnable, onDismiss, visible }: PermissionPro
         setLoading(true);
         try {
             await onEnable();
+        } catch {
+            // onEnable handles its own error reporting;
+            // just reset loading state (done in finally)
         } finally {
             setLoading(false);
         }

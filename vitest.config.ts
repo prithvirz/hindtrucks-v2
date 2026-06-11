@@ -22,6 +22,8 @@ export default defineConfig({
             VITE_API_EARNINGS: 'mock',
             VITE_API_PROFILE: 'mock',
             VITE_API_CHAT: 'mock',
+            VITE_API_NOTIFICATIONS: 'mock',
+            VITE_FCM_VAPID_KEY: 'test-vapid-key',
         },
         setupFiles: ['./src/__tests__/setup.ts'],
         include: ['src/**/*.test.{ts,tsx}'],

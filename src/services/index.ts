@@ -5,6 +5,7 @@ import type {
     IEarningsService,
     IProfileService,
     IChatService,
+    INotificationsService,
 } from './types'
 
 import { mockAuthService } from './mock/authService'
@@ -13,6 +14,7 @@ import { mockTripService } from './mock/tripService'
 import { mockEarningsService } from './mock/earningsService'
 import { mockProfileService } from './mock/profileService'
 import { mockChatService } from './mock/chatService'
+import { createMockNotificationsService } from './mock/notificationsService'
 
 import { authService as realAuthService } from './real/authService'
 import { loadsService as realLoadsService } from './real/loadsService'
@@ -20,6 +22,7 @@ import { tripService as realTripService } from './real/tripService'
 import { earningsService as realEarningsService } from './real/earningsService'
 import { profileService as realProfileService } from './real/profileService'
 import { chatService as realChatService } from './real/chatService'
+import { createRealNotificationsService } from './real/notificationsService'
 
 // ── Service Mode Resolution ──
 
@@ -48,6 +51,7 @@ const MOCK_SERVICES = {
     earnings: mockEarningsService,
     profile: mockProfileService,
     chat: mockChatService,
+    notifications: createMockNotificationsService(),
 }
 
 const REAL_SERVICES = {
@@ -57,6 +61,7 @@ const REAL_SERVICES = {
     earnings: realEarningsService,
     profile: realProfileService,
     chat: realChatService,
+    notifications: createRealNotificationsService(),
 }
 
 // ── Resolved Service Instances (computed once at module load) ──
@@ -68,6 +73,10 @@ const SERVICES = {
     earnings: resolveServiceMode('earnings') === 'real' ? REAL_SERVICES.earnings : MOCK_SERVICES.earnings,
     profile: resolveServiceMode('profile') === 'real' ? REAL_SERVICES.profile : MOCK_SERVICES.profile,
     chat: resolveServiceMode('chat') === 'real' ? REAL_SERVICES.chat : MOCK_SERVICES.chat,
+    notifications:
+        resolveServiceMode('notifications') === 'real'
+            ? REAL_SERVICES.notifications
+            : MOCK_SERVICES.notifications,
 }
 
 function getServices() {
@@ -118,6 +127,16 @@ export const profileService: IProfileService = {
 
 export const chatService: IChatService = {
     sendMessage: (...args) => getServices().chat.sendMessage(...args),
+}
+
+export const notificationsService: INotificationsService = {
+    registerToken: (...args) => getServices().notifications.registerToken(...args),
+    unregisterToken: (...args) => getServices().notifications.unregisterToken(...args),
+    subscribeToTopic: (...args) => getServices().notifications.subscribeToTopic(...args),
+    unsubscribeFromTopic: (...args) => getServices().notifications.unsubscribeFromTopic(...args),
+    getHistory: (...args) => getServices().notifications.getHistory(...args),
+    markRead: (...args) => getServices().notifications.markRead(...args),
+    markAllRead: (...args) => getServices().notifications.markAllRead(...args),
 }
 
 // Re-export types

@@ -1,45 +1,33 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { ShellCtx } from '../state/ShellContext'
+import { NotificationContext, type NotificationContextValue } from '../state/NotificationContext'
 import BottomTabBar from './BottomTabBar'
 
-const mockShellValue = {
-    hasSeenTour: false,
-    isTourActive: false,
-    tourStep: 0,
-    isLoading: false,
-    error: null,
-    startTour: vi.fn(),
-    endTour: vi.fn(),
-    setTourStep: vi.fn(),
-    notification: null,
-    showNotification: vi.fn(),
-    dismissNotification: vi.fn(),
-    isOnline: true,
-    wasOffline: false,
-    offlineQueueSize: 0,
-    syncStatus: 'idle' as const,
-    syncQueue: vi.fn(),
-    pushPermissionState: { push: 'prompt' as PermissionState, needsPrompt: false, promptedBefore: false },
-    subscribeToPush: vi.fn(),
-    unsubscribeFromPush: vi.fn(),
-    pushNotifications: [],
-    unreadPushCount: 0,
-    markPushRead: vi.fn(),
-    markAllPushRead: vi.fn(),
-    deletePushNotification: vi.fn(),
-    activePushBanner: null,
-    dismissPushBanner: vi.fn(),
+const mockNotificationValue: NotificationContextValue = {
+    permissionState: { push: 'granted' as PermissionState, needsPrompt: false, promptedBefore: true },
+    isPermissionGranted: true,
+    isPermissionDenied: false,
+    requestPermission: vi.fn(),
+    fcmToken: null,
+    isTokenLoading: false,
+    notifications: [],
+    unreadCount: 0,
+    activeBanner: null,
+    markRead: vi.fn(),
+    markAllRead: vi.fn(),
+    deleteNotification: vi.fn(),
+    dismissBanner: vi.fn(),
+    refreshHistory: vi.fn(),
 }
 
 describe('BottomTabBar', () => {
     function renderWithRouter(route = '/home') {
         return render(
             <MemoryRouter initialEntries={[route]}>
-                <ShellCtx.Provider value={mockShellValue}>
+                <NotificationContext.Provider value={mockNotificationValue}>
                     <BottomTabBar />
-                </ShellCtx.Provider>
+                </NotificationContext.Provider>
             </MemoryRouter>,
         )
     }

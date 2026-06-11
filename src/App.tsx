@@ -6,6 +6,7 @@ import { isServiceReal } from './services/index'
 import { AppProviders } from './state/AppProviders'
 import { useAuth } from './state/AuthContext'
 import { useShell } from './state/ShellContext'
+import { useNotifications } from './hooks/useNotifications'
 import PhoneFrame from './components/PhoneFrame'
 import BottomTabBar from './components/BottomTabBar'
 import OnboardingTour from './components/OnboardingTour'
@@ -83,11 +84,13 @@ function Shell() {
   const {
     notification,
     dismissNotification,
-    pushPermissionState,
-    subscribeToPush,
-    activePushBanner,
-    dismissPushBanner,
   } = useShell()
+  const {
+    permissionState,
+    requestPermission,
+    activeBanner,
+    dismissBanner,
+  } = useNotifications()
   const showTabs = TAB_ROUTES.includes(pathname)
 
   const [showPermissionPrompt, setShowPermissionPrompt] = useState(false)
@@ -98,17 +101,17 @@ function Shell() {
   }, [])
 
   const handlePermissionPromptEnable = useCallback(async (): Promise<boolean> => {
-    const result = await subscribeToPush()
+    const result = await requestPermission()
     setShowPermissionPrompt(false)
     return result
-  }, [subscribeToPush])
+  }, [requestPermission])
 
   // Show push permission prompt when needsPrompt is true after login
   useEffect(() => {
-    if (isLoggedIn && pushPermissionState.needsPrompt) {
+    if (isLoggedIn && permissionState.needsPrompt) {
       setShowPermissionPrompt(true)
     }
-  }, [isLoggedIn, pushPermissionState.needsPrompt])
+  }, [isLoggedIn, permissionState.needsPrompt])
 
   // Only render the chatbot and tour on actual app dashboard screens, not setup/login flows
   const isAppScreen = !['/', '/language', '/auth', '/login', '/otp', '/register'].includes(pathname)
@@ -120,10 +123,10 @@ function Shell() {
         <OfflineIndicator />
 
         {/* Push Notification Banner */}
-        {activePushBanner && (
+        {activeBanner && (
           <NotificationBanner
-            notification={activePushBanner}
-            onDismiss={dismissPushBanner}
+            notification={activeBanner}
+            onDismiss={dismissBanner}
             onTap={() => { }}
           />
         )}

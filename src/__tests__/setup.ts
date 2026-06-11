@@ -90,6 +90,7 @@ vi.mock('../lib/firebase', () => ({
     auth: { settings: {}, currentUser: null },
     db: {},
     storage: {},
+    messaging: {},
     saveDriverToFirestore: vi.fn(() => Promise.resolve()),
 }))
 

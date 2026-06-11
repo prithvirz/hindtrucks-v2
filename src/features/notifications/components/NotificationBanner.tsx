@@ -1,7 +1,7 @@
 // ─── NotificationBanner: In-App Toast ───
 
 import { useEffect } from 'react';
-import { X, Bell, Package, CheckCircle, RefreshCw, CreditCard, Megaphone } from 'lucide-react';
+import { X, Bell, Package, CheckCircle, RefreshCw, CreditCard, Megaphone, Clock, MapPin, MessageCircle, AlertTriangle } from 'lucide-react';
 import type { PushNotification, NotificationType } from '../types';
 
 interface NotificationBannerProps {
@@ -16,6 +16,10 @@ const ICON_MAP: Record<NotificationType, typeof Bell> = {
     status_update: RefreshCw,
     earnings: CreditCard,
     announcement: Megaphone,
+    trip_reminder: Clock,
+    geofence_alert: MapPin,
+    chat_message: MessageCircle,
+    system_announcement: AlertTriangle,
 };
 
 const COLOR_MAP: Record<NotificationType, string> = {
@@ -24,6 +28,10 @@ const COLOR_MAP: Record<NotificationType, string> = {
     status_update: 'bg-amber-50 border-amber-200 text-amber-700',
     earnings: 'bg-emerald-50 border-emerald-200 text-emerald-700',
     announcement: 'bg-slate-50 border-slate-200 text-slate-700',
+    trip_reminder: 'bg-indigo-50 border-indigo-200 text-indigo-700',
+    geofence_alert: 'bg-orange-50 border-orange-200 text-orange-700',
+    chat_message: 'bg-violet-50 border-violet-200 text-violet-700',
+    system_announcement: 'bg-red-50 border-red-200 text-red-700',
 };
 
 const ICON_BG_MAP: Record<NotificationType, string> = {
@@ -32,6 +40,10 @@ const ICON_BG_MAP: Record<NotificationType, string> = {
     status_update: 'bg-amber-100 text-amber-600',
     earnings: 'bg-emerald-100 text-emerald-600',
     announcement: 'bg-slate-100 text-slate-600',
+    trip_reminder: 'bg-indigo-100 text-indigo-600',
+    geofence_alert: 'bg-orange-100 text-orange-600',
+    chat_message: 'bg-violet-100 text-violet-600',
+    system_announcement: 'bg-red-100 text-red-600',
 };
 
 export function NotificationBanner({ notification, onDismiss, onTap }: NotificationBannerProps) {

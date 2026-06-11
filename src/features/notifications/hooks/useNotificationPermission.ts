@@ -6,7 +6,10 @@ import type { NotificationPermissionState } from '../types';
 
 interface UseNotificationPermissionReturn {
     permissionState: NotificationPermissionState;
+    isGranted: boolean;
+    isDenied: boolean;
     checkPermission: () => void;
+    requestPermission: () => Promise<boolean>;
     markPrompted: () => void;
     resetPromptCooldown: () => void;
 }
@@ -66,6 +69,24 @@ export function useNotificationPermission(): UseNotificationPermissionReturn {
         }));
     }, []);
 
+    const isGranted = permissionState.push === 'granted';
+    const isDenied = permissionState.push === 'denied';
+
+    const requestPermission = useCallback(async (): Promise<boolean> => {
+        if (!('Notification' in window)) {
+            return false;
+        }
+
+        try {
+            const result = await Notification.requestPermission();
+            markPrompted();
+            checkPermission();
+            return result === 'granted';
+        } catch {
+            return false;
+        }
+    }, [markPrompted, checkPermission]);
+
     const resetPromptCooldown = useCallback(() => {
         localStorage.removeItem(NOTIFICATION_PERMISSION_KEY);
         checkPermission();
@@ -77,7 +98,10 @@ export function useNotificationPermission(): UseNotificationPermissionReturn {
 
     return {
         permissionState,
+        isGranted,
+        isDenied,
         checkPermission,
+        requestPermission,
         markPrompted,
         resetPromptCooldown,
     };

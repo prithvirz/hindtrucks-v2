@@ -1,7 +1,7 @@
 // ─── NotificationCenter: History Screen ───
 
-import { useState } from 'react';
-import { ArrowLeft, BellOff, CheckCheck, Trash2 } from 'lucide-react';
+import { useState, useCallback, useRef, useEffect, type TouchEvent } from 'react';
+import { ArrowLeft, BellOff, CheckCheck, Trash2, RefreshCw, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { PushNotification, NotificationType } from '../types';
 import { NOTIFICATION_TYPE_LABELS } from '../types';
@@ -13,7 +13,31 @@ interface NotificationCenterProps {
     onMarkAllRead: () => Promise<void>;
     onDelete: (id: string) => Promise<void>;
     onClose: () => void;
+    // NEW: Phase 6 enhancements
+    onRefresh?: () => Promise<void>;
+    onLoadMore?: () => Promise<void>;
+    hasMore?: boolean;
 }
+
+type FilterValue = NotificationType | 'all';
+
+interface FilterOption {
+    key: FilterValue;
+    label: string;
+    color: string;
+}
+
+const FILTERS: FilterOption[] = [
+    { key: 'all', label: 'All', color: 'bg-ink' },
+    { key: 'new_load', label: 'Loads', color: 'bg-blue-500' },
+    { key: 'accepted', label: 'Accepted', color: 'bg-green-500' },
+    { key: 'status_update', label: 'Status', color: 'bg-amber-500' },
+    { key: 'earnings', label: 'Earnings', color: 'bg-emerald-500' },
+    { key: 'trip_reminder', label: 'Reminders', color: 'bg-indigo-500' },
+    { key: 'chat_message', label: 'Messages', color: 'bg-violet-500' },
+    { key: 'announcement', label: 'Announcements', color: 'bg-slate-400' },
+    { key: 'system_announcement', label: 'System', color: 'bg-red-500' },
+];
 
 function formatTime(timestamp: number): string {
     const date = new Date(timestamp);
@@ -65,6 +89,22 @@ const TYPE_DOT_COLORS: Record<NotificationType, string> = {
     status_update: 'bg-amber-500',
     earnings: 'bg-emerald-500',
     announcement: 'bg-slate-400',
+    trip_reminder: 'bg-indigo-500',
+    geofence_alert: 'bg-orange-500',
+    chat_message: 'bg-violet-500',
+    system_announcement: 'bg-red-500',
+};
+
+// ─── Per-filter empty state copy ───
+const EMPTY_FILTER_MESSAGES: Partial<Record<FilterValue, { title: string; subtitle: string }>> = {
+    new_load: { title: 'No load notifications', subtitle: 'New load alerts will appear here.' },
+    accepted: { title: 'No accepted notifications', subtitle: 'Accepted bid confirmations will appear here.' },
+    status_update: { title: 'No status updates', subtitle: 'Trip progress updates will appear here.' },
+    earnings: { title: 'No earnings notifications', subtitle: 'Payment and withdrawal updates will appear here.' },
+    trip_reminder: { title: 'No trip reminders', subtitle: 'Upcoming trip reminders will appear here.' },
+    chat_message: { title: 'No messages', subtitle: 'Chat notifications from shippers will appear here.' },
+    announcement: { title: 'No announcements', subtitle: 'General announcements will appear here.' },
+    system_announcement: { title: 'No system notifications', subtitle: 'Important system updates will appear here.' },
 };
 
 export function NotificationCenter({
@@ -74,14 +114,79 @@ export function NotificationCenter({
     onMarkAllRead,
     onDelete,
     onClose,
+    onRefresh,
+    onLoadMore,
+    hasMore,
 }: NotificationCenterProps) {
     const { t } = useTranslation();
     const [swiping, setSwiping] = useState<string | null>(null);
     const [touchStartX, setTouchStartX] = useState(0);
+    const [activeFilter, setActiveFilter] = useState<FilterValue>('all');
+    const [refreshing, setRefreshing] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [pullDistance, setPullDistance] = useState(0);
+    const scrollEl = useRef<HTMLDivElement>(null);
+    const pullStartY = useRef(0);
+    const isPulling = useRef(false);
 
-    const grouped = groupByDate(notifications);
+    // ─── Filtered + grouped ───
+    const filtered = activeFilter === 'all'
+        ? notifications
+        : notifications.filter((n) => n.type === activeFilter);
+
+    const grouped = groupByDate(filtered);
     const groupOrder = ['Today', 'Yesterday', 'This Week', 'Older'].filter((g) => grouped.has(g));
 
+    // ─── Pull-to-refresh ───
+    const handlePullStart = useCallback((e: TouchEvent<HTMLDivElement>) => {
+        if (!onRefresh || !scrollEl.current) return;
+        if (scrollEl.current.scrollTop > 0) return;
+        pullStartY.current = e.touches[0].clientY;
+        isPulling.current = true;
+    }, [onRefresh]);
+
+    const handlePullMove = useCallback((e: TouchEvent<HTMLDivElement>) => {
+        if (!isPulling.current || !onRefresh) return;
+        const dist = e.touches[0].clientY - pullStartY.current;
+        if (dist > 0) {
+            setPullDistance(Math.min(dist * 0.4, 64));
+        }
+    }, [onRefresh]);
+
+    const handlePullEnd = useCallback(async () => {
+        if (!isPulling.current) return;
+        isPulling.current = false;
+        if (pullDistance >= 48 && onRefresh) {
+            setRefreshing(true);
+            try {
+                await onRefresh();
+            } finally {
+                setRefreshing(false);
+            }
+        }
+        setPullDistance(0);
+    }, [pullDistance, onRefresh]);
+
+    // ─── Infinite scroll ───
+    useEffect(() => {
+        if (!onLoadMore || !hasMore) return;
+        const el = scrollEl.current;
+        if (!el) return;
+
+        const handleScroll = () => {
+            if (loadingMore) return;
+            const { scrollTop, scrollHeight, clientHeight } = el;
+            if (scrollHeight - scrollTop - clientHeight < 200) {
+                setLoadingMore(true);
+                onLoadMore().finally(() => setLoadingMore(false));
+            }
+        };
+
+        el.addEventListener('scroll', handleScroll, { passive: true });
+        return () => el.removeEventListener('scroll', handleScroll);
+    }, [onLoadMore, hasMore, loadingMore]);
+
+    // ─── Swipe handlers ───
     const handleTouchStart = (id: string, e: React.TouchEvent) => {
         setTouchStartX(e.touches[0].clientX);
         setSwiping(id);
@@ -99,6 +204,12 @@ export function NotificationCenter({
     const handleTouchEnd = () => {
         setSwiping(null);
     };
+
+    // ─── Filter counts ───
+    const filterCounts: Record<FilterValue, number> = { all: notifications.length } as Record<FilterValue, number>;
+    for (const n of notifications) {
+        filterCounts[n.type] = (filterCounts[n.type] || 0) + 1;
+    }
 
     return (
         <div className="fixed inset-0 z-50 bg-surface-base flex flex-col animate-slide-up">
@@ -122,21 +233,76 @@ export function NotificationCenter({
                 </button>
             </div>
 
+            {/* Filter tabs */}
+            <div className="border-b border-hairline">
+                <div className="flex gap-1 px-3 py-2.5 overflow-x-auto no-scrollbar">
+                    {FILTERS.map((f) => {
+                        const isActive = activeFilter === f.key;
+                        const count = filterCounts[f.key];
+                        const showCount = f.key === 'all' || (count && count > 0);
+                        return (
+                            <button
+                                key={f.key}
+                                onClick={() => setActiveFilter(f.key)}
+                                className={`shrink-0 h-8 px-3 rounded-full text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap ${isActive
+                                        ? 'bg-ink text-white'
+                                        : 'bg-surface-grey text-ink-muted hover:bg-surface-grey/80'
+                                    }`}
+                            >
+                                {f.key !== 'all' && (
+                                    <span className={`inline-block h-1.5 w-1.5 rounded-full ${f.color} ${isActive ? 'ring-1 ring-white/40' : ''}`} />
+                                )}
+                                {f.label}
+                                {showCount && (
+                                    <span className={`text-[10px] font-black ${isActive ? 'text-white/70' : 'text-ink-faint'}`}>
+                                        {count}
+                                    </span>
+                                )}
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* Pull-to-refresh indicator */}
+            {pullDistance > 0 && (
+                <div
+                    className="flex items-center justify-center transition-all"
+                    style={{ height: pullDistance, opacity: pullDistance / 48 }}
+                >
+                    <RefreshCw className={`w-5 h-5 text-ink-faint ${refreshing ? 'animate-spin' : ''}`} />
+                </div>
+            )}
+            {refreshing && pullDistance === 0 && (
+                <div className="flex items-center justify-center h-10">
+                    <RefreshCw className="w-5 h-5 text-ink-faint animate-spin" />
+                </div>
+            )}
+
             {/* List */}
-            <div className="flex-1 overflow-y-auto">
-                {notifications.length === 0 ? (
+            <div
+                ref={scrollEl}
+                className="flex-1 overflow-y-auto"
+                onTouchStart={handlePullStart}
+                onTouchMove={handlePullMove}
+                onTouchEnd={handlePullEnd}
+            >
+                {filtered.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full px-6 text-center">
                         <div className="h-16 w-16 rounded-3xl bg-surface-grey flex items-center justify-center mb-4">
                             <BellOff className="w-8 h-8 text-ink-faint" />
                         </div>
                         <p className="text-base font-black text-ink-muted">
-                            {t('notifications.center.empty', 'No notifications yet')}
+                            {activeFilter === 'all'
+                                ? t('notifications.center.empty', 'No notifications yet')
+                                : (EMPTY_FILTER_MESSAGES[activeFilter]?.title || 'No notifications')
+                            }
                         </p>
                         <p className="text-sm font-medium text-ink-faint mt-1">
-                            {t(
-                                'notifications.center.empty_subtitle',
-                                'You\'ll see trip updates, new loads, and earnings here.',
-                            )}
+                            {activeFilter === 'all'
+                                ? t('notifications.center.empty_subtitle', 'You\'ll see trip updates, new loads, and earnings here.')
+                                : (EMPTY_FILTER_MESSAGES[activeFilter]?.subtitle || '')
+                            }
                         </p>
                     </div>
                 ) : (
@@ -206,6 +372,21 @@ export function NotificationCenter({
                             ))}
                         </div>
                     ))
+                )}
+
+                {/* Infinite scroll loading footer */}
+                {loadingMore && (
+                    <div className="flex items-center justify-center py-4 gap-2">
+                        <Loader2 className="w-4 h-4 text-ink-faint animate-spin" />
+                        <span className="text-xs font-bold text-ink-faint">Loading more...</span>
+                    </div>
+                )}
+                {hasMore === false && filtered.length > 0 && (
+                    <div className="py-6 text-center">
+                        <span className="text-[10px] font-black text-ink-faint uppercase tracking-wider">
+                            All caught up
+                        </span>
+                    </div>
                 )}
             </div>
         </div>

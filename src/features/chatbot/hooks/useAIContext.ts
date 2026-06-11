@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useProfile } from '../../../state/ProfileContext'
 import { useTrip } from '../../../state/TripContext'
 import { useEarnings } from '../../../state/EarningsContext'
+import { useNotifications } from '../../../hooks/useNotifications'
 import { useShell } from '../../../state/ShellContext'
 import type { ChatContext } from '../types'
 
@@ -14,7 +15,8 @@ export function useAIContext(): ChatContext {
     const { driver } = useProfile()
     const { activeLoad, tripStep } = useTrip()
     const { walletBalance, payouts } = useEarnings()
-    const { unreadPushCount, isOnline } = useShell()
+    const { unreadCount } = useNotifications()
+    const { isOnline } = useShell()
     const { i18n } = useTranslation()
 
     const recentEarnings = useMemo(() => {
@@ -32,9 +34,9 @@ export function useAIContext(): ChatContext {
             tripStep: tripStep ?? 0,
             walletBalance: walletBalance ?? 0,
             recentEarnings,
-            unreadNotifications: unreadPushCount ?? 0,
+            unreadNotifications: unreadCount ?? 0,
             isOnline: isOnline ?? true,
         }),
-        [driver?.name, i18n.language, activeLoad?.id, tripStep, walletBalance, recentEarnings, unreadPushCount, isOnline]
+        [driver?.name, i18n.language, activeLoad?.id, tripStep, walletBalance, recentEarnings, unreadCount, isOnline]
     )
 }

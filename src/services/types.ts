@@ -225,3 +225,32 @@ export interface SendMessageResponse {
 export interface IChatService {
     sendMessage(request: SendMessageRequest): Promise<SendMessageResponse>
 }
+
+// ── Notifications Types ──
+
+export interface NotificationPage {
+    items: Array<{
+        id: string
+        type: string
+        title: string
+        body: string
+        deepLink?: string
+        read: boolean
+        receivedAt: number
+        expiresAt?: number
+    }>
+    total: number
+    page: number
+    limit: number
+    hasMore: boolean
+}
+
+export interface INotificationsService {
+    registerToken(token: string): Promise<void>
+    unregisterToken(token: string): Promise<void>
+    subscribeToTopic(topic: string): Promise<void>
+    unsubscribeFromTopic(topic: string): Promise<void>
+    getHistory(page?: number, limit?: number): Promise<NotificationPage>
+    markRead(notificationId: string): Promise<void>
+    markAllRead(): Promise<void>
+}
