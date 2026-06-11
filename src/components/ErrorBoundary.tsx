@@ -1,5 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { ApiError, AuthError, NetworkError, ValidationError } from '../services/errors'
+import { captureException } from '../lib/sentry'
 
 interface ErrorBoundaryProps {
     children: ReactNode
@@ -22,6 +23,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+        captureException(error, { componentStack: errorInfo.componentStack })
         console.error('[ErrorBoundary] Caught error:', error.message)
         console.error('[ErrorBoundary] Component stack:', errorInfo.componentStack)
     }

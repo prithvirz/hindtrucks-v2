@@ -148,6 +148,16 @@ vi.mock('../features/chatbot/hooks/useChat', () => ({
     }),
 }))
 
+// ── Sentry mock ───────────────────────────────────────────────
+vi.mock('@sentry/react', () => ({
+    init: vi.fn(),
+    captureException: vi.fn(),
+    captureMessage: vi.fn(),
+    browserTracingIntegration: vi.fn(() => ({})),
+    replayIntegration: vi.fn(() => ({})),
+    ErrorBoundary: ({ children }: { children: React.ReactNode }) => children,
+}))
+
 vi.mock('../state/ChatContext', () => ({
     ChatProvider: ({ children }: { children: React.ReactNode }) => children,
     useChatContext: vi.fn(() => ({

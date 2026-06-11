@@ -38,3 +38,6 @@ declare const __VITE_FIREBASE_MESSAGING_SENDER_ID__: string;
 declare const __VITE_FIREBASE_APP_ID__: string;
 declare const __VITE_FIREBASE_MEASUREMENT_ID__: string;
 declare const __VITE_FCM_VAPID_KEY__: string;
+declare const __VITE_SENTRY_DSN__: string;
+declare const __VITE_APP_VERSION__: string;
+declare const __VITE_API_MODE__: string;

@@ -2,10 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Capacitor, SystemBars, SystemBarsStyle } from '@capacitor/core'
+import { initSentry } from './lib/sentry'
 import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
 import './index.css'
 import './i18n'
+
+initSentry()
 
 // A failed lazy-chunk import (stale service worker after a deploy, flaky
 // network) would otherwise white-screen the app — reload to fetch fresh chunks.

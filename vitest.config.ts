@@ -11,6 +11,9 @@ export default defineConfig({
         },
     },
     define: {
+        __VITE_SENTRY_DSN__: JSON.stringify(''),
+        __VITE_APP_VERSION__: JSON.stringify('0.0.0'),
+        __VITE_API_MODE__: JSON.stringify('mock'),
         __VITE_FIREBASE_API_KEY__: JSON.stringify(''),
         __VITE_FIREBASE_AUTH_DOMAIN__: JSON.stringify(''),
         __VITE_FIREBASE_PROJECT_ID__: JSON.stringify(''),
