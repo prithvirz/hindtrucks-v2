@@ -5,8 +5,7 @@ import L from 'leaflet';
 import type { Coordinates, RouteWaypoint } from '../types';
 import type { RoutePoI } from '../services/overpass';
 
-// @ts-expect-error - leaflet icon shadow workaround
-delete L.Icon.Default.prototype._getIconUrl;
+(L.Icon.Default as any).imagePath = 'https://unpkg.com/leaflet@1.9.4/dist/images/';
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
     iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',

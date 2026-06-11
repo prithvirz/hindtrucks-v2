@@ -41,6 +41,16 @@ export class MapErrorBoundary extends Component<Props, State> {
                     <p className="text-xs text-gray-500 max-w-[240px] text-center">
                         The map tiles could not be loaded. This may be due to a network issue.
                     </p>
+                    {this.state.error && (
+                        <div className="w-full mt-2 text-left">
+                            <p className="text-[11px] font-bold text-red-700">Error details:</p>
+                            <pre className="text-[9px] text-red-600 bg-red-50 p-2 rounded border border-red-200 overflow-auto max-h-32 font-mono whitespace-pre-wrap break-all">
+                                {this.state.error.message}
+                                {"\n\n"}
+                                {this.state.error.stack}
+                            </pre>
+                        </div>
+                    )}
                     <button
                         onClick={this.handleRetry}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent text-white text-xs font-bold active:scale-95 transition-transform"
