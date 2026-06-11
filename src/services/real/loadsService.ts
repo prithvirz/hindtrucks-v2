@@ -10,8 +10,10 @@ import {
   updateDoc,
   serverTimestamp,
   type QueryConstraint,
+  type DocumentData,
 } from 'firebase/firestore'
 import { auth, db } from '../../lib/firebase'
+import { mapFirebaseError } from '../firebaseErrors'
 import type {
   ILoadsService,
   GetLoadsRequest,
@@ -23,7 +25,7 @@ import type {
 } from '../types'
 import type { Load } from '../../data/mockLoads'
 
-function docToLoad(id: string, data: Record<string, unknown>): Load {
+function docToLoad(id: string, data: DocumentData): Load {
   return {
     id,
     fromCity: data.fromCity as string,
@@ -44,51 +46,63 @@ function docToLoad(id: string, data: Record<string, unknown>): Load {
 
 export const loadsService: ILoadsService = {
   async getLoads(request?: GetLoadsRequest): Promise<GetLoadsResponse> {
-    const constraints: QueryConstraint[] = [
-      where('status', '==', 'available'),
-      orderBy('createdAt', 'desc'),
-      limit(request?.pageSize ?? 20),
-    ]
-    if (request?.goods) constraints.push(where('goods', '==', request.goods))
-    if (request?.fromCity) constraints.push(where('fromCity', '==', request.fromCity))
-    if (request?.toCity) constraints.push(where('toCity', '==', request.toCity))
+    try {
+      const constraints: QueryConstraint[] = [
+        where('status', '==', 'available'),
+        orderBy('createdAt', 'desc'),
+        limit(request?.pageSize ?? 20),
+      ]
+      if (request?.goods) constraints.push(where('goods', '==', request.goods))
+      if (request?.fromCity) constraints.push(where('fromCity', '==', request.fromCity))
+      if (request?.toCity) constraints.push(where('toCity', '==', request.toCity))
 
-    const snap = await getDocs(query(collection(db, 'loads'), ...constraints))
-    const loads = snap.docs.map((d) => docToLoad(d.id, d.data() as Record<string, unknown>))
+      const snap = await getDocs(query(collection(db, 'loads'), ...constraints))
+      const loads = snap.docs.map((d) => docToLoad(d.id, d.data()))
 
-    const filtered = loads
-      .filter((l) => request?.minPrice === undefined || l.price >= request.minPrice)
-      .filter((l) => request?.maxPrice === undefined || l.price <= request.maxPrice)
+      const filtered = loads
+        .filter((l) => request?.minPrice === undefined || l.price >= request.minPrice)
+        .filter((l) => request?.maxPrice === undefined || l.price <= request.maxPrice)
 
-    return {
-      data: filtered,
-      total: filtered.length,
-      page: request?.page ?? 1,
-      pageSize: request?.pageSize ?? 20,
-      hasMore: snap.docs.length === (request?.pageSize ?? 20),
+      return {
+        data: filtered,
+        total: filtered.length,
+        page: request?.page ?? 1,
+        pageSize: request?.pageSize ?? 20,
+        hasMore: snap.docs.length === (request?.pageSize ?? 20),
+      }
+    } catch (err: unknown) {
+      throw mapFirebaseError(err)
     }
   },
 
   async getLoadDetail({ loadId }: GetLoadDetailRequest): Promise<GetLoadDetailResponse> {
-    const snap = await getDoc(doc(db, 'loads', loadId))
-    if (!snap.exists()) throw new Error('Load not found')
-    return { load: docToLoad(snap.id, snap.data() as Record<string, unknown>) }
+    try {
+      const snap = await getDoc(doc(db, 'loads', loadId))
+      if (!snap.exists()) throw new Error('Load not found')
+      return { load: docToLoad(snap.id, snap.data()!) }
+    } catch (err: unknown) {
+      throw mapFirebaseError(err)
+    }
   },
 
   async acceptLoad({ loadId }: AcceptLoadRequest): Promise<AcceptLoadResponse> {
-    const uid = auth.currentUser?.uid
-    if (!uid) throw new Error('Not authenticated')
-    const loadRef = doc(db, 'loads', loadId)
-    const snap = await getDoc(loadRef)
-    if (!snap.exists()) throw new Error('Load not found')
-    const data = snap.data() as Record<string, unknown>
-    if (data.status !== 'available') throw new Error('Load already taken')
+    try {
+      const uid = auth.currentUser?.uid
+      if (!uid) throw new Error('Not authenticated')
+      const loadRef = doc(db, 'loads', loadId)
+      const snap = await getDoc(loadRef)
+      if (!snap.exists()) throw new Error('Load not found')
+      const data = snap.data()!
+      if (data.status !== 'available') throw new Error('Load already taken')
 
-    await updateDoc(loadRef, {
-      status: 'accepted',
-      driverUid: uid,
-      acceptedAt: serverTimestamp(),
-    })
-    return { success: true, activeLoad: docToLoad(snap.id, data), tripStep: 1 }
+      await updateDoc(loadRef, {
+        status: 'accepted',
+        driverUid: uid,
+        acceptedAt: serverTimestamp(),
+      })
+      return { success: true, activeLoad: docToLoad(snap.id, data), tripStep: 1 }
+    } catch (err: unknown) {
+      throw mapFirebaseError(err)
+    }
   },
 }

@@ -12,8 +12,10 @@ import {
   limit,
   serverTimestamp,
   increment,
+  type DocumentData,
 } from 'firebase/firestore'
 import { auth, db } from '../../lib/firebase'
+import { mapFirebaseError } from '../firebaseErrors'
 import type {
   ITripService,
   AdvanceStepRequest,
@@ -26,7 +28,7 @@ import type { TripStep } from '../../state/types'
 import type { Load } from '../../data/mockLoads'
 import { calculateTripSettlement } from '../../lib/settlement'
 
-function docToLoad(id: string, data: Record<string, unknown>): Load {
+function docToLoad(id: string, data: DocumentData): Load {
   return {
     id,
     fromCity: data.fromCity as string,
@@ -50,7 +52,7 @@ async function createTripPayout(uid: string, loadId: string): Promise<CompleteTr
     query(collection(db, 'payouts'), where('driverUid', '==', uid), where('loadId', '==', loadId), limit(1)),
   )
   if (!existingPayout.empty) {
-    const data = existingPayout.docs[0].data() as Record<string, unknown>
+    const data = existingPayout.docs[0].data()
     return {
       success: true,
       payoutAmount: (data.amount as number) ?? 0,
@@ -61,14 +63,14 @@ async function createTripPayout(uid: string, loadId: string): Promise<CompleteTr
   const loadRef = doc(db, 'loads', loadId)
   const loadSnap = await getDoc(loadRef)
   if (!loadSnap.exists()) throw new Error('Load not found')
-  const loadData = loadSnap.data() as Record<string, unknown>
+  const loadData = loadSnap.data()!
   const grossAmount = (loadData?.price as number) ?? 0
 
   const previousPayouts = await getDocs(
     query(collection(db, 'payouts'), where('driverUid', '==', uid), limit(50)),
   )
   const hasPreviousTripPayout = previousPayouts.docs.some((payoutDoc) => {
-    const data = payoutDoc.data() as Record<string, unknown>
+    const data = payoutDoc.data()
     return typeof data.loadId === 'string' && data.loadId !== 'WITHDRAWAL'
   })
   const settlement = calculateTripSettlement(grossAmount, !hasPreviousTripPayout)
@@ -99,88 +101,104 @@ async function createTripPayout(uid: string, loadId: string): Promise<CompleteTr
 
 export const tripService: ITripService = {
   async getActiveTrip(): Promise<GetActiveTripResponse> {
-    const uid = auth.currentUser?.uid
-    if (!uid) return { activeLoad: null, tripStep: 0 }
+    try {
+      const uid = auth.currentUser?.uid
+      if (!uid) return { activeLoad: null, tripStep: 0 }
 
-    const snap = await getDocs(
-      query(
-        collection(db, 'trips'),
-        where('driverUid', '==', uid),
-        where('status', 'in', ['active', 'in_progress']),
-        orderBy('startedAt', 'desc'),
-        limit(1),
-      ),
-    )
+      const snap = await getDocs(
+        query(
+          collection(db, 'trips'),
+          where('driverUid', '==', uid),
+          where('status', 'in', ['active', 'in_progress']),
+          orderBy('startedAt', 'desc'),
+          limit(1),
+        ),
+      )
 
-    if (snap.empty) return { activeLoad: null, tripStep: 0 }
-    const tripData = snap.docs[0].data() as Record<string, unknown>
-    const loadSnap = await getDoc(doc(db, 'loads', tripData.loadId as string))
-    if (!loadSnap.exists()) return { activeLoad: null, tripStep: 0 }
+      if (snap.empty) return { activeLoad: null, tripStep: 0 }
+      const tripData = snap.docs[0].data()
+      const loadSnap = await getDoc(doc(db, 'loads', tripData.loadId as string))
+      if (!loadSnap.exists()) return { activeLoad: null, tripStep: 0 }
 
-    return {
-      activeLoad: docToLoad(loadSnap.id, loadSnap.data() as Record<string, unknown>),
-      tripStep: (tripData.step as TripStep) ?? 1,
+      return {
+        activeLoad: docToLoad(loadSnap.id, loadSnap.data()!),
+        tripStep: (tripData.step as TripStep) ?? 1,
+      }
+    } catch (err: unknown) {
+      throw mapFirebaseError(err)
     }
   },
 
   async advanceStep({ currentStep }: AdvanceStepRequest): Promise<AdvanceStepResponse> {
-    const uid = auth.currentUser?.uid
-    if (!uid) throw new Error('Not authenticated')
+    try {
+      const uid = auth.currentUser?.uid
+      if (!uid) throw new Error('Not authenticated')
 
-    const newStep = currentStep < 4 ? ((currentStep + 1) as TripStep) : currentStep
+      const newStep = currentStep < 4 ? ((currentStep + 1) as TripStep) : currentStep
 
-    const snap = await getDocs(
-      query(
-        collection(db, 'trips'),
-        where('driverUid', '==', uid),
-        where('status', 'in', ['active', 'in_progress']),
-        orderBy('startedAt', 'desc'),
-        limit(1),
-      ),
-    )
+      const snap = await getDocs(
+        query(
+          collection(db, 'trips'),
+          where('driverUid', '==', uid),
+          where('status', 'in', ['active', 'in_progress']),
+          orderBy('startedAt', 'desc'),
+          limit(1),
+        ),
+      )
 
-    if (!snap.empty) {
-      const tripData = snap.docs[0].data() as Record<string, unknown>
-      await updateDoc(snap.docs[0].ref, {
-        step: newStep,
-        updatedAt: serverTimestamp(),
-        ...(newStep === 4 ? { status: 'completed', completedAt: serverTimestamp() } : {}),
-      })
+      if (!snap.empty) {
+        const tripData = snap.docs[0].data()
+        await updateDoc(snap.docs[0].ref, {
+          step: newStep,
+          updatedAt: serverTimestamp(),
+          ...(newStep === 4 ? { status: 'completed', completedAt: serverTimestamp() } : {}),
+        })
 
-      if (newStep === 4 && typeof tripData.loadId === 'string') {
-        await createTripPayout(uid, tripData.loadId)
+        if (newStep === 4 && typeof tripData.loadId === 'string') {
+          await createTripPayout(uid, tripData.loadId)
+        }
       }
-    }
 
-    const messages: Record<number, string> = {
-      1: 'Heading to pickup',
-      2: 'Goods loaded — en route',
-      3: 'Arrived at drop-off',
-      4: 'Trip completed',
-    }
+      const messages: Record<number, string> = {
+        1: 'Heading to pickup',
+        2: 'Goods loaded — en route',
+        3: 'Arrived at drop-off',
+        4: 'Trip completed',
+      }
 
-    return { newStep, message: messages[newStep] }
+      return { newStep, message: messages[newStep] }
+    } catch (err: unknown) {
+      throw mapFirebaseError(err)
+    }
   },
 
   async completeTrip({ loadId }: CompleteTripRequest): Promise<CompleteTripResponse> {
-    const uid = auth.currentUser?.uid
-    if (!uid) throw new Error('Not authenticated')
+    try {
+      const uid = auth.currentUser?.uid
+      if (!uid) throw new Error('Not authenticated')
 
-    const loadRef = doc(db, 'loads', loadId)
-    await updateDoc(loadRef, { status: 'completed', completedAt: serverTimestamp() })
-    return createTripPayout(uid, loadId)
+      const loadRef = doc(db, 'loads', loadId)
+      await updateDoc(loadRef, { status: 'completed', completedAt: serverTimestamp() })
+      return createTripPayout(uid, loadId)
+    } catch (err: unknown) {
+      throw mapFirebaseError(err)
+    }
   },
 
   async reportLocation(request: ReportLocationRequest): Promise<ReportLocationResponse> {
-    await setDoc(doc(db, 'trips', request.loadId, 'locations', String(request.recordedAt)), {
-      loadId: request.loadId,
-      lat: request.lat,
-      lng: request.lng,
-      accuracy: request.accuracy,
-      heading: request.heading,
-      speed: request.speed,
-      recordedAt: request.recordedAt,
-    })
-    return { accepted: true }
+    try {
+      await setDoc(doc(db, 'trips', request.loadId, 'locations', String(request.recordedAt)), {
+        loadId: request.loadId,
+        lat: request.lat,
+        lng: request.lng,
+        accuracy: request.accuracy,
+        heading: request.heading,
+        speed: request.speed,
+        recordedAt: request.recordedAt,
+      })
+      return { accepted: true }
+    } catch (err: unknown) {
+      throw mapFirebaseError(err)
+    }
   },
 }
