@@ -11,6 +11,12 @@ export default defineConfig({
         ['html', { open: 'never' }],
         ['json', { outputFile: 'e2e-results.json' }],
     ],
+    webServer: {
+        command: 'npx vite --port 5174',
+        url: 'http://localhost:5174',
+        reuseExistingServer: true,
+        timeout: 30_000,
+    },
     use: {
         baseURL: 'http://localhost:5174',
         viewport: { width: 390, height: 844 },
