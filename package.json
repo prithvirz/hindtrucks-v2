@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "customer"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -11,7 +15,10 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "dev:customer": "npm -w @hindtrucks/customer run dev",
+    "build:customer": "npm -w @hindtrucks/customer run build",
+    "typecheck:customer": "npm -w @hindtrucks/customer run typecheck"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.0",
