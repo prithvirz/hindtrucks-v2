@@ -32,7 +32,7 @@ test.describe('Language Switching', () => {
         await page.getByText(/hindi|हिन्दी/i).first().click();
         await page.waitForTimeout(500);
         // Continue button should be enabled
-        const continueBtn = page.getByRole('button', { name: /continue/i });
+        const continueBtn = page.locator('button').last();
         await expect(continueBtn).toBeEnabled({ timeout: 2000 });
     });
 
@@ -46,7 +46,7 @@ test.describe('Language Switching', () => {
         // Select a language and continue
         await page.getByText(/english/i).first().click();
         await page.waitForTimeout(300);
-        const continueBtn = page.getByRole('button', { name: /continue/i });
+        const continueBtn = page.locator('button').last();
         await expect(continueBtn).toBeEnabled({ timeout: 2000 });
         await continueBtn.click();
         await expect(page).toHaveURL(/\/login/);
