@@ -1,8 +1,18 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { renderWithProviders } from '../__tests__/test-utils'
+import { render } from '@testing-library/react'
 import LoadCard from './LoadCard'
 import type { Load } from '../data/mockLoads'
+
+vi.mock('../state/ProfileContext', () => ({
+    useProfile: () => ({
+        driver: {
+            trucks: [
+                { id: '1', regNumber: 'PB10 AB 4521', type: '19 ft Container', capacity: '9 Ton', isActive: true },
+            ],
+        },
+    }),
+}))
 
 const mockLoad: Load = {
     id: 'L1042',
@@ -23,47 +33,47 @@ const mockLoad: Load = {
 
 describe('LoadCard', () => {
     it('renders route from → to', () => {
-        renderWithProviders(<LoadCard load={mockLoad} />)
+        render(<LoadCard load={mockLoad} />)
         expect(screen.getByText('Delhi')).toBeInTheDocument()
         expect(screen.getByText('Jaipur')).toBeInTheDocument()
     })
 
     it('renders goods type and weight', () => {
-        renderWithProviders(<LoadCard load={mockLoad} />)
+        render(<LoadCard load={mockLoad} />)
         expect(screen.getByText('goods.electronics')).toBeInTheDocument()
         expect(screen.getByText('9 common.ton')).toBeInTheDocument()
     })
 
     it('renders price formatted in INR', () => {
-        renderWithProviders(<LoadCard load={mockLoad} />)
+        render(<LoadCard load={mockLoad} />)
         expect(screen.getByText('₹18,500')).toBeInTheDocument()
     })
 
     it('renders distance', () => {
-        renderWithProviders(<LoadCard load={mockLoad} />)
+        render(<LoadCard load={mockLoad} />)
         expect(screen.getByText('281 common.km')).toBeInTheDocument()
     })
 
     it('shows verified badge for verified shipper', () => {
-        renderWithProviders(<LoadCard load={mockLoad} />)
+        render(<LoadCard load={mockLoad} />)
         expect(screen.getByText('common.verified')).toBeInTheDocument()
     })
 
     it('does not show verified badge when shipper not verified', () => {
         const unverified = { ...mockLoad, shipperVerified: false }
-        renderWithProviders(<LoadCard load={unverified} />)
+        render(<LoadCard load={unverified} />)
         expect(screen.queryByText('common.verified')).not.toBeInTheDocument()
     })
 
     it('calls onClick when clicked', async () => {
         const onClick = vi.fn()
-        renderWithProviders(<LoadCard load={mockLoad} onClick={onClick} />)
+        render(<LoadCard load={mockLoad} onClick={onClick} />)
         await userEvent.click(screen.getByRole('button'))
         expect(onClick).toHaveBeenCalledTimes(1)
     })
 
     it('renders load image with lazy loading', () => {
-        renderWithProviders(<LoadCard load={mockLoad} />)
+        render(<LoadCard load={mockLoad} />)
         const img = document.querySelector('img')
         expect(img).not.toBeNull()
         expect(img).toHaveAttribute('src', mockLoad.image)

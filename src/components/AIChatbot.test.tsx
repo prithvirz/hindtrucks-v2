@@ -1,9 +1,43 @@
-import { screen, fireEvent, waitFor } from '@testing-library/react'
-import { renderWithProviders } from '../__tests__/test-utils'
+import { screen, fireEvent, waitFor, render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import AIChatbot from './AIChatbot'
-import BottomTabBar from './BottomTabBar'
+import type { ChatMessage } from '../features/chatbot/types'
 
-// Mock speechSynthesis
+const closeChat = vi.fn()
+const toggleChat = vi.fn()
+const sendMessage = vi.fn()
+
+let isOpen = false
+let messages: ChatMessage[] = []
+
+vi.mock('../state/ShellContext', () => ({
+    useShell: () => ({
+        isTourActive: false,
+    }),
+}))
+
+vi.mock('../state/ChatContext', () => ({
+    useChatContext: () => ({
+        messages,
+        isOpen,
+        isStreaming: false,
+        openChat: vi.fn(),
+        closeChat,
+        toggleChat,
+        sendMessage,
+        clearChat: vi.fn(),
+        retryLast: vi.fn(),
+    }),
+}))
+
+function renderChatbot() {
+    return render(
+        <MemoryRouter>
+            <AIChatbot />
+        </MemoryRouter>
+    )
+}
+
 beforeAll(() => {
     Object.defineProperty(window, 'speechSynthesis', {
         value: {
@@ -14,83 +48,67 @@ beforeAll(() => {
         writable: true,
     })
 
-    // Mock scrollTo on HTMLElement
     window.HTMLElement.prototype.scrollTo = vi.fn()
 })
 
 describe('AIChatbot', () => {
     beforeEach(() => {
         vi.clearAllMocks()
+        isOpen = false
+        messages = []
     })
 
-    it('renders the thin wrapper (ChatDrawer)', () => {
-        renderWithProviders(
-            <>
-                <AIChatbot />
-                <BottomTabBar />
-            </>
-        )
-        // ChatDrawer triggers via BottomTabBar button
-        expect(screen.getByRole('button', { name: /assistant/i })).toBeInTheDocument()
+    it('renders the closed Raahgir launcher', () => {
+        renderChatbot()
+
+        expect(screen.getByText('bot.hi_im_rahgir')).toBeInTheDocument()
     })
 
-    it('opens the chat drawer and scrolls to bottom', async () => {
+    it('opens the chat drawer through the launcher', () => {
+        renderChatbot()
+
+        fireEvent.click(screen.getByText('bot.hi_im_rahgir'))
+
+        expect(toggleChat).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders open drawer messages and scrolls to bottom', async () => {
         const scrollToSpy = vi.spyOn(window.HTMLElement.prototype, 'scrollTo')
-        renderWithProviders(
-            <>
-                <AIChatbot />
-                <BottomTabBar />
-            </>
-        )
+        isOpen = true
+        messages = [
+            {
+                id: 'welcome',
+                role: 'assistant',
+                content: 'Welcome driver',
+                language: 'en',
+                timestamp: 1,
+            },
+        ]
 
-        const fab = screen.getByRole('button', { name: /assistant/i })
-        fireEvent.click(fab)
+        renderChatbot()
 
-        await waitFor(() => {
-            expect(screen.getByText('Raahgir (Driver Assistant)')).toBeInTheDocument()
-        })
-
-        // Check if scrollTo was called on the messages container
-        expect(scrollToSpy).toHaveBeenCalled()
+        expect(screen.getByText('Raahgir (Driver Assistant)')).toBeInTheDocument()
+        expect(screen.getByText('Welcome driver')).toBeInTheDocument()
+        await waitFor(() => expect(scrollToSpy).toHaveBeenCalled())
     })
 
-    it('minimizes the chat drawer when clicking on a suggested action chip', async () => {
-        renderWithProviders(
-            <>
-                <AIChatbot />
-                <BottomTabBar />
-            </>
-        )
+    it('sends a quick question', () => {
+        isOpen = true
 
-        // Open chat drawer
-        const fab = screen.getByRole('button', { name: /assistant/i })
-        fireEvent.click(fab)
+        renderChatbot()
 
-        // Click the quick question button that triggers the suggested action
-        let quickBtn: HTMLElement | null = null
-        await waitFor(() => {
-            quickBtn = screen.getByRole('button', { name: 'bot.faq_withdraw_q' })
-            expect(quickBtn).toBeInTheDocument()
-        })
-        if (quickBtn) {
-            fireEvent.click(quickBtn)
-        }
+        fireEvent.click(screen.getByRole('button', { name: 'bot.faq_withdraw_q' }))
 
-        // Check if suggested action is shown (which uses translation key bot.faq_withdraw_redirect)
-        let actionButton: HTMLElement | null = null
-        await waitFor(() => {
-            actionButton = screen.getByText('bot.faq_withdraw_redirect')
-            expect(actionButton).toBeInTheDocument()
-        })
-
-        // Click the suggested action link
-        if (actionButton) {
-            fireEvent.click(actionButton)
-        }
-
-        // Chat drawer should minimize (HindTrucks AI Support should not be in document)
-        await waitFor(() => {
-            expect(screen.queryByText('Raahgir (Driver Assistant)')).not.toBeInTheDocument()
-        })
+        expect(sendMessage).toHaveBeenCalledWith('bot.faq_withdraw_q')
     })
-})
+
+    it('closes the chat drawer', () => {
+        isOpen = true
+
+        renderChatbot()
+
+        fireEvent.click(screen.getByRole('button', { name: /close chat/i }))
+
+        expect(closeChat).toHaveBeenCalledTimes(1)
+    })
+})

@@ -82,6 +82,7 @@ export function useChatHistory() {
                 .slice(-MAX_MESSAGES)
 
             setMessages(sorted)
+            db.close()
         } catch {
             // Silently fail
         }
@@ -95,8 +96,14 @@ export function useChatHistory() {
             store.put(msg)
 
             await new Promise<void>((resolve, reject) => {
-                tx.oncomplete = () => resolve()
-                tx.onerror = () => reject(tx.error)
+                tx.oncomplete = () => {
+                    db.close()
+                    resolve()
+                }
+                tx.onerror = () => {
+                    db.close()
+                    reject(tx.error)
+                }
             })
         } catch {
             // Silently fail — offline/mock mode
@@ -111,8 +118,14 @@ export function useChatHistory() {
             store.clear()
 
             await new Promise<void>((resolve, reject) => {
-                tx.oncomplete = () => resolve()
-                tx.onerror = () => reject(tx.error)
+                tx.oncomplete = () => {
+                    db.close()
+                    resolve()
+                }
+                tx.onerror = () => {
+                    db.close()
+                    reject(tx.error)
+                }
             })
 
             setMessages([])
