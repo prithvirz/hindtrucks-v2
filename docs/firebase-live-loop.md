@@ -90,11 +90,11 @@ npm -w @hindtrucks/customer run dev -- --port 5180
 - **Loads not appearing in driver app**: Check Firestore console — the `loads` collection should have docs with `status: "available"`
 - **Booking status not updating**: Check that the driver's `acceptLoad` wrote `status: "accepted"` and `driverUid` to the Firestore doc
 - **Firebase config errors**: Verify both `.env` files have all 6 `VITE_FIREBASE_*` values matching the Firebase project config
-- **Firestore permission denied**: The deployed rules allow all reads/writes on `loads` — if you see permission errors, check `firebase deploy --only firestore:rules` was run
+- **Firestore permission denied**: The deployed rules validate the `loads` document shape and allowed status transitions. If expected booking-loop writes are denied, check `firestore.rules` and run `firebase deploy --only firestore:rules`.
 - **Port conflicts**: Driver default is 5173, customer default is 5174. Use `--port` flag if needed.
 
 ## Architecture Notes
 
-- **Identity**: Phone number (from localStorage) is used as `shipperUid` (customer) and `driverUid` (driver). No Firebase Auth.
+- **Identity**: Phone number (from localStorage) is used as `shipperUid` (customer) and `driverUid` (driver). No Firebase Auth yet, so rules can validate shape/transitions but cannot prove user ownership.
 - **Firestore collection**: Single top-level `loads` collection. Doc fields include all `Load` fields + `status`, `shipperUid`, `driverUid`, `driver` (DriverInfo|null), `createdAt` (serverTimestamp), `step` (0..4), `position` (TruckPosition|null).
 - **Service modes**: Both apps support 3 modes via `VITE_API_MODE`: `mock` (default, local data), `real` (API stubs), `firebase` (Firestore). In firebase mode, only loads/trip/booking/tracking use Firestore; auth/profile/earnings/chat stay on mock/local implementations.
