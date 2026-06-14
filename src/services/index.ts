@@ -21,8 +21,11 @@ import { earningsService as realEarningsService } from './real/earningsService'
 import { profileService as realProfileService } from './real/profileService'
 import { chatService as realChatService } from './real/chatService'
 
-const MODE: 'mock' | 'real' =
-    (import.meta.env.VITE_API_MODE as 'mock' | 'real') || 'mock'
+import { firebaseLoadsService } from './firebase/loadsService'
+import { firebaseTripService } from './firebase/tripService'
+
+const MODE: 'mock' | 'real' | 'firebase' =
+    (import.meta.env.VITE_API_MODE as 'mock' | 'real' | 'firebase') || 'mock'
 
 let _auth: IAuthService
 let _loads: ILoadsService
@@ -32,6 +35,17 @@ let _profile: IProfileService
 let _chat: IChatService
 
 function getServices() {
+    if (MODE === 'firebase') {
+        return {
+            auth: mockAuthService,
+            loads: firebaseLoadsService,
+            trip: firebaseTripService,
+            earnings: mockEarningsService,
+            profile: mockProfileService,
+            chat: mockChatService,
+        }
+    }
+
     if (MODE === 'mock') {
         return {
             auth: mockAuthService,

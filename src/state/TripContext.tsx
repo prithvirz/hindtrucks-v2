@@ -50,6 +50,26 @@ export function TripProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('ht_active_trips', JSON.stringify(activeTrips))
     }, [activeTrips])
 
+    // Rehydrate an in-progress trip from the service (firebase: queried from
+    // Firestore by driverUid) so a reload restores the active trip instead of
+    // dropping to the empty state. Guarded so it never clobbers a load the
+    // driver just accepted in this session.
+    useEffect(() => {
+        if (!isLoggedIn) return
+        let active = true
+        import('../services/index')
+            .then(({ tripService }) => tripService.getActiveTrip())
+            .then((res) => {
+                if (!active || !res.activeLoad || res.tripStep <= 0) return
+                setActiveLoad((prev) => prev ?? res.activeLoad)
+                setTripStep((prev) => (prev > 0 ? prev : res.tripStep))
+            })
+            .catch(() => {})
+        return () => {
+            active = false
+        }
+    }, [isLoggedIn])
+
     // Self-cleanup on logout
     useEffect(() => {
         if (!isLoggedIn) {
@@ -64,9 +84,10 @@ export function TripProvider({ children }: { children: ReactNode }) {
     const acceptLoad = async (load: Load) => {
         setError(null)
         setIsLoading(true)
-        // Fire-and-forget service call in background
+        // Persist acceptance (firebase: writes status=accepted + driver to the
+        // load doc so the customer sees the assignment). Optimistic UI below.
         import('../services/index')
-            .then(({ tripService }) => tripService.advanceStep({ currentStep: 0 }))
+            .then(({ loadsService }) => loadsService.acceptLoad({ loadId: load.id }))
             .catch((err) => {
                 if (err instanceof ApiError) setError(err)
             })

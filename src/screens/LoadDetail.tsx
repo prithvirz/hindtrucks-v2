@@ -16,7 +16,8 @@ import {
 } from 'lucide-react'
 import TopBar from '../components/TopBar'
 import Button from '../components/Button'
-import { MOCK_LOADS } from '../data/mockLoads'
+import type { Load } from '../data/mockLoads'
+import { loadsService } from '../services/index'
 import { useTrip } from '../state/TripContext'
 import { useProfile } from '../state/ProfileContext'
 import { inr } from '../lib/format'
@@ -29,7 +30,40 @@ export default function LoadDetail() {
   const { acceptLoad, acceptLoadOwner } = useTrip()
   const { driver, setOnline, setActiveTruck, role, drivers } = useProfile()
   const [assignOpen, setAssignOpen] = useState(false)
-  const load = MOCK_LOADS.find((l) => l.id === id)
+  const [load, setLoad] = useState<Load | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let active = true
+    if (!id) {
+      setLoading(false)
+      return
+    }
+    setLoading(true)
+    loadsService
+      .getLoadDetail({ loadId: id })
+      .then((res) => {
+        if (active) setLoad(res.load)
+      })
+      .catch(() => {
+        if (active) setLoad(null)
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+    return () => {
+      active = false
+    }
+  }, [id])
+
+  if (loading) {
+    return (
+      <div className="h-full flex flex-col">
+        <TopBar title={t('loadDetail.title')} back fallbackTo="/loads" />
+        <p className="p-5 text-ink-muted">{t('common.loading')}</p>
+      </div>
+    )
+  }
 
   if (!load) {
     return (

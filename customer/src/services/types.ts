@@ -1,6 +1,6 @@
-import type { Load, GoodsKey, LoadStatus, TripStep, TruckPosition } from '@hindtrucks/shared'
+import type { Load, GoodsKey, LoadStatus, TripStep, TruckPosition, DriverInfo } from '@hindtrucks/shared'
 
-export type { Load, GoodsKey, LoadStatus, TripStep, TruckPosition }
+export type { Load, GoodsKey, LoadStatus, TripStep, TruckPosition, DriverInfo }
 
 // ── Auth ──
 
@@ -32,14 +32,6 @@ export interface IAuthService {
 }
 
 // ── Bookings ──
-
-/** Brief info about the driver who accepted a booking. */
-export interface DriverInfo {
-  name: string
-  phone: string
-  truckReg: string
-  rating: number
-}
 
 /** A load the shipper has posted, plus its marketplace status + driver. */
 export interface Booking extends Load {

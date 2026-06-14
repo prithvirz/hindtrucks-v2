@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ⚠️ OPEN DEV RULES — tighten before production!
+    // Currently allows unrestricted read/write on the `loads` collection
+    // for development/testing purposes only.
+    // TODO: Before production, restrict to:
+    //   - Shippers can only create/update their own bookings (shipperUid == request.auth.uid)
+    //   - Drivers can only update loads they've accepted (driverUid == request.auth.uid)
+    //   - Unauthenticated users cannot write
+    match /loads/{loadId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}

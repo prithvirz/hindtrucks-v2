@@ -49,3 +49,11 @@ export interface TruckPosition {
 
 /** 0 = none, 1..4 = pickup / loaded / in-transit / delivered. */
 export type TripStep = 0 | 1 | 2 | 3 | 4
+
+/** Brief info about the driver who accepted a load. */
+export interface DriverInfo {
+  name: string
+  phone: string
+  truckReg: string
+  rating: number
+}

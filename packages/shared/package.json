@@ -8,6 +8,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./ui": "./src/ui/index.ts",
+    "./firebase": "./src/firebase/index.ts",
     "./tailwind-preset": "./tailwind-preset.cjs",
     "./tokens.css": "./src/tokens.css"
   },
