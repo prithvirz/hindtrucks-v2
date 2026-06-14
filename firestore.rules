@@ -66,6 +66,10 @@ service cloud.firestore {
         && data.position == null;
     }
 
+    function isOwner(uidField) {
+      return request.auth != null && uidField == request.auth.uid;
+    }
+
     function validLoadUpdate(before, after) {
       return validLoadShape(after)
         && after.fromCity == before.fromCity
@@ -99,8 +103,13 @@ service cloud.firestore {
 
     match /loads/{loadId} {
       allow read: if true;
-      allow create: if validLoadCreate(request.resource.data);
-      allow update: if validLoadUpdate(resource.data, request.resource.data);
+      allow create: if validLoadCreate(request.resource.data)
+        && isOwner(request.resource.data.shipperUid);
+      allow update: if validLoadUpdate(resource.data, request.resource.data)
+        && (
+          isOwner(resource.data.shipperUid)
+          || isOwner(request.resource.data.driverUid)
+        );
       allow delete: if false;
     }
   }

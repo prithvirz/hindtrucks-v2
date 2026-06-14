@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { authService } from '../services'
 
 interface AuthValue {
   isLoggedIn: boolean
@@ -16,8 +17,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    setPhone(localStorage.getItem('htc_phone'))
-    setReady(true)
+    let active = true
+    authService
+      .checkSession()
+      .then((session) => {
+        if (!active) return
+        setPhone(session.valid ? session.phone ?? null : null)
+      })
+      .catch(() => {
+        if (active) setPhone(null)
+      })
+      .finally(() => {
+        if (active) setReady(true)
+      })
+    return () => {
+      active = false
+    }
   }, [])
 
   const value = useMemo<AuthValue>(
@@ -31,9 +46,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setPhone(p)
       },
       logout: () => {
+        authService.logout().catch(() => { /* silent */ })
         localStorage.removeItem('htc_phone')
         localStorage.removeItem('htc_bookings')
         localStorage.removeItem('htc_profile')
+        localStorage.removeItem('htc_firebase_uid')
         setPhone(null)
       },
     }),

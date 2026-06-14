@@ -8,7 +8,7 @@ import type {
     Load as DriverLoad,
 } from '../types'
 import type { Load as SharedLoad, TripStep } from '@hindtrucks/shared'
-import { db, loadsCollection, loadDoc, docToLoad } from '@hindtrucks/shared/firebase'
+import { auth, db, loadsCollection, loadDoc, docToLoad } from '@hindtrucks/shared/firebase'
 import { getDocs, updateDoc, query, where } from 'firebase/firestore'
 import { toDriverLoad } from './utils'
 import { completeTripPayout } from '../mock/earningsService'
@@ -20,14 +20,14 @@ async function getActiveLoadForDriver(): Promise<{
     step: TripStep
     docId: string
 } | null> {
-    const myPhone = localStorage.getItem('ht_phone')
-    if (!myPhone) return null
+    const uid = auth.currentUser?.uid
+    if (!uid) return null
 
     // Single-field equality only — avoids a composite (driverUid + status) index.
     // Filter to the active statuses client-side.
     const q = query(
         loadsCollection(db),
-        where('driverUid', '==', myPhone),
+        where('driverUid', '==', uid),
     )
     const snap = await getDocs(q)
     const docSnap = snap.docs.find((d) => {

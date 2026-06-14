@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
 import { getFirestore, collection, doc, Timestamp, serverTimestamp } from 'firebase/firestore'
 import type { Firestore, DocumentSnapshot, DocumentData } from 'firebase/firestore'
 import type { Load, LoadStatus, TripStep, TruckPosition, DriverInfo } from '../types'
@@ -36,6 +37,7 @@ const firebaseConfig = {
 // ── Init ──
 
 export const app = initializeApp(firebaseConfig)
+export const auth = getAuth(app)
 export const db = getFirestore(app)
 
 // ── Collection helpers ──

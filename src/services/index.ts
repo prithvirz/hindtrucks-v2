@@ -21,6 +21,7 @@ import { earningsService as realEarningsService } from './real/earningsService'
 import { profileService as realProfileService } from './real/profileService'
 import { chatService as realChatService } from './real/chatService'
 
+import { firebaseAuthService } from './firebase/authService'
 import { firebaseLoadsService } from './firebase/loadsService'
 import { firebaseTripService } from './firebase/tripService'
 
@@ -37,7 +38,7 @@ let _chat: IChatService
 function getServices() {
     if (MODE === 'firebase') {
         return {
-            auth: mockAuthService,
+            auth: firebaseAuthService,
             loads: firebaseLoadsService,
             trip: firebaseTripService,
             earnings: mockEarningsService,

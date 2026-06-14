@@ -1,6 +1,6 @@
 import type { IBookingService, Booking, NewBookingRequest } from '../types'
 import type { LoadStatus } from '@hindtrucks/shared'
-import { db, loadsCollection, loadDoc, loadToDocData, docToLoad } from '@hindtrucks/shared/firebase'
+import { auth, db, loadsCollection, loadDoc, loadToDocData, docToLoad } from '@hindtrucks/shared/firebase'
 import { addDoc, getDocs, getDoc, updateDoc, query, where } from 'firebase/firestore'
 import { goodsImage } from '../../lib/assets'
 
@@ -10,9 +10,16 @@ function getPhone(): string {
     return phone
 }
 
+function getUid(): string {
+    const uid = auth.currentUser?.uid
+    if (!uid) throw new Error('Not authenticated — no Firebase user')
+    return uid
+}
+
 export const firebaseBookingService: IBookingService = {
     async createBooking(req: NewBookingRequest): Promise<Booking> {
         const phone = getPhone()
+        const uid = getUid()
         const now = Date.now()
 
         const load = {
@@ -30,14 +37,14 @@ export const firebaseBookingService: IBookingService = {
             shipperName: 'You',
             shipperVerified: true,
             image: goodsImage[req.goods] ?? goodsImage.default,
-            shipperUid: phone,
+            shipperUid: uid,
             status: 'available' as LoadStatus,
             createdAt: now,
         }
 
         const docData = loadToDocData(load, {
             status: 'available',
-            shipperUid: phone,
+            shipperUid: uid,
             driver: null,
             step: 0,
             position: null,
@@ -70,13 +77,13 @@ export const firebaseBookingService: IBookingService = {
     },
 
     async getMyBookings(): Promise<Booking[]> {
-        const phone = getPhone()
+        const uid = getUid()
 
         // Single-field equality only — avoids a composite (shipperUid + createdAt)
         // index. Sort client-side by createdAt desc below.
         const q = query(
             loadsCollection(db),
-            where('shipperUid', '==', phone),
+            where('shipperUid', '==', uid),
         )
 
         const snap = await getDocs(q)
