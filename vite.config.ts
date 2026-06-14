@@ -1,8 +1,12 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode }) => {
+  // Read .env / .env.local (dotenv populates import.meta.env, not process.env),
+  // so VITE_API_MODE set in .env.local is honoured by the define below.
+  const env = loadEnv(mode, process.cwd(), '')
+  return {
   plugins: [
     react(),
     VitePWA({
@@ -30,12 +34,21 @@ export default defineConfig(({ mode }) => ({
     }),
   ],
   define: {
-    'import.meta.env.VITE_API_MODE': JSON.stringify(process.env.VITE_API_MODE || 'mock'),
-    'import.meta.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL || '/api'),
+    'import.meta.env.VITE_API_MODE': JSON.stringify(env.VITE_API_MODE || 'mock'),
+    'import.meta.env.VITE_API_BASE_URL': JSON.stringify(env.VITE_API_BASE_URL || '/api'),
     __BUNDLED_DEV__: 'false',
     __SERVER_FORWARD_CONSOLE__: 'false',
   },
   server: { host: true, allowedHosts: true },
+  // The shared package is consumed as source via @fs, so `firebase/firestore` is
+  // discovered late and triggers a mid-session re-optimize. That splits the
+  // singleton @firebase/app registry (firestore component ends up on a different
+  // app instance than getFirestore queries) → "Service firestore is not available".
+  // Pre-declaring the entry points forces Vite to bundle them in the first pass.
+  optimizeDeps: {
+    include: ['firebase/app', 'firebase/firestore'],
+  },
+  resolve: { dedupe: ['firebase', '@firebase/app'] },
   build: {
     rollupOptions: {
       output: {
@@ -53,4 +66,5 @@ export default defineConfig(({ mode }) => ({
       },
     },
   },
-}))
+  }
+})

@@ -68,8 +68,7 @@ test.describe('AI Chatbot', () => {
         await page.locator('#chatbot-button').click();
         await page.waitForTimeout(800);
         await expect(page.getByRole('heading', { name: 'Raahgir (Driver Assistant)' })).toBeVisible({ timeout: 3000 });
-        // When drawer is open, FAB shows X icon — clicking it toggles chat closed
-        await page.locator('#chatbot-button').click();
+        await page.getByRole('button', { name: /close chat/i }).click();
         await page.waitForTimeout(500);
         // Chat drawer should be hidden
         await expect(page.getByRole('heading', { name: 'Raahgir (Driver Assistant)' })).not.toBeVisible({ timeout: 3000 });

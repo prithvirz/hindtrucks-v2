@@ -1,0 +1,107 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function validStatus(status) {
+      return status in ['available', 'accepted', 'in_transit', 'completed', 'cancelled'];
+    }
+
+    function validStep(step) {
+      return step is int && step >= 0 && step <= 4;
+    }
+
+    function validLoadShape(data) {
+      return data.keys().hasOnly([
+          'fromCity',
+          'fromArea',
+          'toCity',
+          'toArea',
+          'goods',
+          'weightTon',
+          'distanceKm',
+          'price',
+          'advance',
+          'truckType',
+          'shipperName',
+          'shipperVerified',
+          'image',
+          'shipperUid',
+          'status',
+          'driverUid',
+          'driver',
+          'createdAt',
+          'step',
+          'position'
+        ])
+        && data.fromCity is string
+        && data.fromArea is string
+        && data.toCity is string
+        && data.toArea is string
+        && data.goods in ['electronics', 'furniture', 'containers', 'parcels']
+        && (data.weightTon is int || data.weightTon is float)
+        && data.weightTon > 0
+        && (data.distanceKm is int || data.distanceKm is float)
+        && data.distanceKm >= 0
+        && (data.price is int || data.price is float)
+        && data.price > 0
+        && (data.advance is int || data.advance is float)
+        && data.advance >= 0
+        && data.truckType is string
+        && data.shipperName is string
+        && data.shipperVerified is bool
+        && data.image is string
+        && (!data.keys().hasAny(['shipperUid']) || data.shipperUid == null || data.shipperUid is string)
+        && validStatus(data.status)
+        && (!data.keys().hasAny(['driverUid']) || data.driverUid == null || data.driverUid is string)
+        && (!data.keys().hasAny(['driver']) || data.driver == null || data.driver is map)
+        && (!data.keys().hasAny(['position']) || data.position == null || data.position is map)
+        && validStep(data.step);
+    }
+
+    function validLoadCreate(data) {
+      return validLoadShape(data)
+        && data.status == 'available'
+        && data.driverUid == null
+        && data.driver == null
+        && data.step == 0
+        && data.position == null;
+    }
+
+    function validLoadUpdate(before, after) {
+      return validLoadShape(after)
+        && after.fromCity == before.fromCity
+        && after.fromArea == before.fromArea
+        && after.toCity == before.toCity
+        && after.toArea == before.toArea
+        && after.goods == before.goods
+        && after.weightTon == before.weightTon
+        && after.distanceKm == before.distanceKm
+        && after.price == before.price
+        && after.advance == before.advance
+        && after.truckType == before.truckType
+        && (
+          (!before.keys().hasAny(['shipperUid']) && !after.keys().hasAny(['shipperUid']))
+          || (before.keys().hasAny(['shipperUid']) && after.keys().hasAny(['shipperUid']) && after.shipperUid == before.shipperUid)
+        )
+        && (
+          (before.status == 'available' && after.status in ['accepted', 'cancelled'])
+          || (before.status == 'accepted' && after.status in ['accepted', 'in_transit', 'completed'])
+          || (before.status == 'in_transit' && after.status in ['in_transit', 'completed'])
+          || (before.status == 'completed' && after.status == 'completed')
+          || (before.status == 'cancelled' && after.status == 'cancelled')
+        )
+        && (
+          (before.status == 'available' && after.status == 'accepted' && after.driverUid is string && after.driver is map && after.step == 1)
+          || (before.status == 'available' && after.status == 'cancelled' && after.driverUid == null && after.driver == null && after.step == 0)
+          || (before.status in ['accepted', 'in_transit'] && after.step >= before.step && after.step <= 4)
+          || (before.status in ['completed', 'cancelled'] && after.step == before.step)
+        );
+    }
+
+    match /loads/{loadId} {
+      allow read: if true;
+      allow create: if validLoadCreate(request.resource.data);
+      allow update: if validLoadUpdate(resource.data, request.resource.data);
+      allow delete: if false;
+    }
+  }
+}

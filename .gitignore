@@ -15,3 +15,7 @@ Thumbs.db
 .agents/
 playwright-report/
 test-results/
+coverage/
+.serena/
+e2e-results.json
+e2e-test-report.md

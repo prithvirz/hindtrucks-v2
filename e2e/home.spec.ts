@@ -42,12 +42,16 @@ test.describe('Home Screen', () => {
         await expect(leaderItems.first()).toBeVisible({ timeout: 3000 });
     });
 
-    test('displays refer card', async ({ page }) => {
-        await expect(page.locator('#refer-card')).toBeVisible({ timeout: 5000 });
+    test('displays nearby loads state', async ({ page }) => {
+        await page.getByRole('heading', { name: /nearby loads/i }).scrollIntoViewIfNeeded();
+        await expect(
+            page.locator('.load-card').first().or(page.getByText(/go online to see loads near you/i))
+        ).toBeVisible({ timeout: 5000 });
     });
 
     test('displays nearby loads section', async ({ page }) => {
-        await expect(page.getByRole('heading', { name: /loads near you/i })).toBeVisible({ timeout: 5000 });
+        await page.getByRole('heading', { name: /nearby loads/i }).scrollIntoViewIfNeeded();
+        await expect(page.getByRole('heading', { name: /nearby loads/i })).toBeVisible({ timeout: 5000 });
     });
 
     test('shows active trips section when trips exist', async ({ page }) => {

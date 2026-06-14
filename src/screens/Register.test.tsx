@@ -1,6 +1,25 @@
 import { screen, fireEvent, act } from '@testing-library/react'
-import { renderWithProviders } from '../__tests__/test-utils'
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
 import Register from './Register'
+
+const initializeProfile = vi.fn()
+
+vi.mock('../state/ProfileContext', () => ({
+    useProfile: () => ({ initializeProfile }),
+}))
+
+function renderRegister() {
+    return {
+        user: userEvent.setup(),
+        ...render(
+            <MemoryRouter>
+                <Register />
+            </MemoryRouter>
+        ),
+    }
+}
 
 describe('Register Screen', () => {
     afterEach(() => {
@@ -8,31 +27,31 @@ describe('Register Screen', () => {
     })
 
     it('renders register screen header and elements', () => {
-        renderWithProviders(<Register />)
+        renderRegister()
         expect(screen.getByRole('heading', { name: 'Complete Verification' })).toBeInTheDocument()
         expect(screen.getByText('Welcome to HindTrucks!')).toBeInTheDocument()
     })
 
     it('renders role selectors for Driver and Fleet Owner', () => {
-        renderWithProviders(<Register />)
+        renderRegister()
         expect(screen.getByText('Driver', { selector: 'p' })).toBeInTheDocument()
         expect(screen.getByText('Fleet Owner', { selector: 'p' })).toBeInTheDocument()
     })
 
     it('disables Next: Truck Details button when inputs are empty', () => {
-        renderWithProviders(<Register />)
+        renderRegister()
         const btn = screen.getByRole('button', { name: 'Next: Truck Details' })
         expect(btn).toBeDisabled()
     })
 
     it('shows license field in Driver mode and hides company name', () => {
-        renderWithProviders(<Register />)
+        renderRegister()
         expect(screen.getByPlaceholderText('e.g. DL-14201234567')).toBeInTheDocument()
         expect(screen.queryByPlaceholderText('e.g. Shergill Logistics')).not.toBeInTheDocument()
     })
 
     it('shows company name field in Fleet Owner mode and hides license', async () => {
-        const { user } = renderWithProviders(<Register />)
+        const { user } = renderRegister()
         
         const ownerCard = screen.getByText('Fleet Owner', { selector: 'p' })
         await user.click(ownerCard)
@@ -43,7 +62,7 @@ describe('Register Screen', () => {
 
     it('enables and navigates 3-step registration in Driver mode', async () => {
         vi.useFakeTimers()
-        renderWithProviders(<Register />)
+        renderRegister()
 
         // Step 1: Personal Details
         const nameInput = screen.getByPlaceholderText('e.g. Rajesh Kumar')
@@ -90,7 +109,7 @@ describe('Register Screen', () => {
 
     it('enables and navigates 3-step registration in Fleet Owner mode', () => {
         vi.useFakeTimers()
-        renderWithProviders(<Register />)
+        renderRegister()
 
         // Select Fleet Owner
         const ownerCard = screen.getByText('Fleet Owner', { selector: 'p' })

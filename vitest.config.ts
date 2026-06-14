@@ -10,6 +10,8 @@ export default defineConfig({
         setupFiles: ['./src/__tests__/setup.ts'],
         include: ['src/**/*.test.{ts,tsx}'],
         exclude: ['node_modules', 'dist', 'e2e'],
+        fileParallelism: false,
+        maxWorkers: 1,
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html', 'lcov'],

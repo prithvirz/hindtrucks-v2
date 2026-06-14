@@ -1,0 +1,119 @@
+{
+  "app": { "name": "HindTrucks" },
+  "common": {
+    "back": "Back",
+    "next": "Next",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "save": "Save",
+    "loading": "Loading…",
+    "retry": "Retry",
+    "call": "Call",
+    "km": "km",
+    "ton": "Ton"
+  },
+  "language": {
+    "title": "Choose your language",
+    "subtitle": "You can change this anytime",
+    "continueIn": "Continue in {{lang}}",
+    "suggested": "Suggested"
+  },
+  "login": {
+    "title": "Book a truck in minutes",
+    "subtitle": "Enter your mobile number to start",
+    "phoneLabel": "Mobile number",
+    "phonePlaceholder": "98765 43210",
+    "sendOtp": "Send OTP",
+    "terms": "By continuing you agree to our Terms & Privacy Policy"
+  },
+  "otp": {
+    "title": "Verify your number",
+    "subtitle": "Enter the 6-digit code sent to {{phone}}",
+    "verify": "Verify",
+    "resend": "Resend code",
+    "resendIn": "Resend in {{seconds}}s",
+    "change": "Change number"
+  },
+  "book": {
+    "title": "Book a Truck",
+    "greeting": "Where are you shipping?",
+    "pickup": "Pickup",
+    "drop": "Drop",
+    "pickupCity": "Pickup city",
+    "pickupArea": "Pickup area / locality",
+    "dropCity": "Drop city",
+    "dropArea": "Drop area / locality",
+    "goodsType": "Type of goods",
+    "weight": "Weight (tons)",
+    "truckType": "Truck type",
+    "distance": "Distance",
+    "price": "Your offer (₹)",
+    "advance": "Advance at pickup (₹)",
+    "review": "Review booking",
+    "post": "Post booking",
+    "posting": "Posting…",
+    "fillAll": "Please fill all fields",
+    "posted": "Booking posted! Drivers can now accept it."
+  },
+  "goods": {
+    "electronics": "Electronics",
+    "furniture": "Furniture",
+    "containers": "Containers",
+    "parcels": "Parcels"
+  },
+  "bookings": {
+    "title": "My Bookings",
+    "active": "Active",
+    "past": "Past",
+    "empty": "No bookings yet",
+    "emptyHint": "Post your first load to get started",
+    "newBooking": "New booking",
+    "postedAgo": "Posted {{time}}",
+    "track": "Track",
+    "viewDetails": "View details"
+  },
+  "status": {
+    "available": "Finding a driver",
+    "accepted": "Driver assigned",
+    "in_transit": "On the way",
+    "completed": "Delivered",
+    "cancelled": "Cancelled"
+  },
+  "detail": {
+    "title": "Booking details",
+    "route": "Route",
+    "payment": "Payment",
+    "total": "Total fare",
+    "advance": "Advance at pickup",
+    "balance": "Balance on delivery",
+    "driver": "Driver",
+    "noDriver": "Waiting for a driver to accept",
+    "callDriver": "Call driver",
+    "cancel": "Cancel booking",
+    "cancelConfirm": "Cancel this booking?",
+    "cancelled": "Booking cancelled"
+  },
+  "track": {
+    "title": "Live tracking",
+    "driverEnRoute": "Your truck is on the way",
+    "awaitingDriver": "Waiting for the driver to start",
+    "noLocation": "Live location not available yet",
+    "speed": "{{speed}} km/h",
+    "delivered": "Delivered",
+    "progress": "{{percent}}% of route covered"
+  },
+  "profile": {
+    "title": "Profile",
+    "name": "Your name",
+    "company": "Company (optional)",
+    "phone": "Mobile number",
+    "language": "Language",
+    "logout": "Log out",
+    "saved": "Saved"
+  },
+  "tabs": {
+    "book": "Book",
+    "bookings": "Bookings",
+    "profile": "Profile"
+  }
+}

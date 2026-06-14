@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom'
 import { cleanup } from '@testing-library/react'
+import 'fake-indexeddb/auto'
 
 // ── i18n mocks ───────────────────────────────────────────────
 vi.mock('i18next', () => ({
@@ -72,6 +73,21 @@ Object.defineProperty(window, 'IntersectionObserver', {
 })
 
 window.scrollTo = vi.fn() as unknown as typeof window.scrollTo
+
+Object.defineProperty(window, 'Notification', {
+    writable: true,
+    configurable: true,
+    value: {
+        permission: 'denied',
+        requestPermission: vi.fn().mockResolvedValue('denied'),
+    },
+})
+
+Object.defineProperty(globalThis, 'Notification', {
+    writable: true,
+    configurable: true,
+    value: window.Notification,
+})
 
 // ── Cleanup ──────────────────────────────────────────────────
 afterEach(() => {

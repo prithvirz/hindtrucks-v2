@@ -1,0 +1,165 @@
+/* Shared design tokens + app-shell utilities. Import once per app after the
+   Tailwind directives. Mirrors the driver app so both look identical. */
+
+:root {
+  --color-canvas: #EAECF0;
+  --color-surface-grey: #F6F7F9;
+  --color-surface: #FFFFFF;
+  --color-surface-sunken: #EEF0F3;
+  --color-hairline: #ECEEF1;
+  --color-ink: #0B0B0F;
+  --color-ink-muted: #6B7280;
+  --color-ink-faint: #9CA3AF;
+
+  --color-accent-soft: #FFF3EA;
+  --color-info-soft: #EAF1FE;
+  --color-success-soft: #E8F5EC;
+  --color-success: #16A34A;
+  --color-overlay: rgba(11, 11, 15, 0.4);
+  --safe-top: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --safe-right: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
+  --safe-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  --safe-left: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+  --app-bottom-nav-height: 5.75rem;
+  --app-edge-x: clamp(1rem, 4vw, 1.25rem);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    min-height: 100%;
+  }
+  html {
+    background: var(--color-canvas);
+    overflow: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-family: 'Inter', 'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Telugu',
+      'Noto Sans Gurmukhi', 'Noto Sans Bengali', 'Noto Sans Gujarati', 'Noto Sans Kannada',
+      'Noto Sans Malayalam', 'Noto Sans Oriya', system-ui, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: manipulation;
+  }
+  * {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+  button, input, select, textarea {
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+  }
+}
+
+@layer utilities {
+  .app-viewport {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  .app-shell {
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+  }
+  .app-scroll {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .app-x {
+    padding-left: max(var(--app-edge-x), var(--safe-left));
+    padding-right: max(var(--app-edge-x), var(--safe-right));
+  }
+  .pb-tabs {
+    padding-bottom: calc(var(--app-bottom-nav-height) + var(--safe-bottom) + 1rem);
+  }
+  .pb-action {
+    padding-bottom: calc(5.25rem + var(--safe-bottom));
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .safe-bottom {
+    padding-bottom: max(var(--safe-bottom), 12px);
+  }
+  .safe-top {
+    padding-top: var(--safe-top);
+  }
+  .safe-top-padding {
+    padding-top: calc(var(--safe-top) + 1.25rem);
+  }
+  .home-safe-top {
+    padding-top: calc(var(--safe-top) + 1.5rem);
+  }
+  .nums {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+  .boxed-border {
+    border: 1px solid var(--color-hairline) !important;
+  }
+  .boxed-shadow-sm {
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+  }
+  .boxed-shadow {
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.09) !important;
+  }
+  .boxed-rounded {
+    border-radius: 20px !important;
+  }
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-surface-sunken);
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 1.4s infinite;
+  }
+}
+
+@media (min-width: 640px) {
+  :root {
+    --app-bottom-nav-height: 5.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

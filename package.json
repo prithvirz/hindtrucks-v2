@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "customer"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -11,12 +15,16 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "dev:customer": "npm -w @hindtrucks/customer run dev",
+    "build:customer": "npm -w @hindtrucks/customer run build",
+    "typecheck:customer": "npm -w @hindtrucks/customer run typecheck"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.0",
     "@capacitor/core": "^8.4.0",
     "@capacitor/geolocation": "^8.2.0",
+    "firebase": "^12.14.0",
     "i18next": "^23.16.5",
     "i18next-browser-languagedetector": "^8.0.0",
     "idb": "^8.0.3",
@@ -42,6 +50,7 @@
     "@vitest/coverage-v8": "^4.1.8",
     "@vitest/ui": "^4.1.8",
     "autoprefixer": "^10.4.20",
+    "fake-indexeddb": "^6.2.5",
     "jsdom": "^29.1.1",
     "msw": "^2.14.6",
     "postcss": "^8.4.49",

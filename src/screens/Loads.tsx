@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { PackageOpen } from 'lucide-react'
 import TopBar from '../components/TopBar'
 import LoadCard from '../components/LoadCard'
-import { MOCK_LOADS } from '../data/mockLoads'
+import type { Load } from '../data/mockLoads'
+import { loadsService } from '../services/index'
 import { useProfile } from '../state/ProfileContext'
 import { isTruckCompatible } from '../lib/matching'
 
@@ -12,16 +13,28 @@ export default function Loads() {
   const nav = useNavigate()
   const { t } = useTranslation()
   const { driver, role } = useProfile()
+  const [loads, setLoads] = useState<Load[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedTruckId, setSelectedTruckId] = useState<string>('all')
 
   useEffect(() => {
-    const id = setTimeout(() => setLoading(false), 650)
-    return () => clearTimeout(id)
+    let active = true
+    setLoading(true)
+    loadsService
+      .getLoads()
+      .then((res) => {
+        if (active) setLoads(res.data)
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+    return () => {
+      active = false
+    }
   }, [])
 
   // Filter loads based on chosen truck pill
-  const filteredLoads = MOCK_LOADS.filter((load) => {
+  const filteredLoads = loads.filter((load) => {
     if (selectedTruckId === 'all') {
       if (role === 'owner') {
         const activeTrucks = (driver.trucks || []).filter((t) => t.isActive !== false)

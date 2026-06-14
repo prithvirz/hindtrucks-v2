@@ -41,3 +41,67 @@ Use **graphify** to explore architecture and file relationships — `graphify-ou
 - **Source files use 2-space indent; config files use 4-space.** Match the file you edit.
 - Vitest setup: `src/__tests__/setup.ts` (jsdom + Testing Library + jest-dom). MSW available for service mocking.
 - Conventional Commits (`feat:`/`fix:`/`chore:`), one logical change per commit.
+
+## Active Task & Handoff
+
+### Status: VERIFIED END-TO-END — Firebase Booking Loop
+
+The full booking loop (customer post → driver accept → step updates → customer
+tracking) was verified live against Firestore on 2026-06-14. Getting there
+required fixing several gaps the earlier "COMPLETE" status missed — see
+"Live-loop fixes" below.
+
+### Live-loop fixes (2026-06-14):
+- [`vite.config.ts`](vite.config.ts): driver `define` hardcoded `VITE_API_MODE`
+  to `process.env` (undefined under dotenv → always `mock`); switched to
+  `loadEnv` so `.env.local=firebase` is honoured. Added `optimizeDeps.include`
+  for `firebase/app`+`firebase/firestore` and `resolve.dedupe` to fix a
+  "Service firestore is not available" crash (split `@firebase/app` singleton
+  from late `@fs` discovery of the shared package).
+- Driver screens bypassed the service layer entirely. Wired
+  [`Loads.tsx`](src/screens/Loads.tsx) and [`LoadDetail.tsx`](src/screens/LoadDetail.tsx)
+  to `loadsService`, and [`TripContext.acceptLoad`](src/state/TripContext.tsx)
+  to `loadsService.acceptLoad` (persists `status:accepted`+driver+`step:1`).
+- Added trip rehydration in `TripContext` via `tripService.getActiveTrip()` so
+  a reload restores the active trip instead of dropping to the empty state.
+- Replaced two composite-index-requiring queries with single-field `where` +
+  client-side sort/filter (customer `getMyBookings`, driver
+  `getActiveLoadForDriver`) — Firestore had no composite indexes, so both
+  silently returned empty.
+- Installed missing `fake-indexeddb` dev dep (test harness couldn't load).
+- All 136 driver tests pass; both apps typecheck clean.
+
+### Status (prior): COMPLETE — Firebase Join Implementation
+
+### Completed:
+- Installed `firebase` SDK at repo root (hoisted via npm workspaces)
+- Created shared Firebase init module at [`packages/shared/src/firebase/index.ts`](packages/shared/src/firebase/index.ts) (app init, db, docToLoad/loadToDocData converters, collection helpers)
+- Added `DriverInfo` interface to [`packages/shared/src/types.ts`](packages/shared/src/types.ts)
+- Added `"./firebase"` export to [`packages/shared/package.json`](packages/shared/package.json)
+- Created customer Firestore services: `bookingService`, `trackingService`, `authService`, `profileService` in `customer/src/services/firebase/`
+- Updated customer service switcher to 3-way: mock|real|firebase
+- Created driver Firestore services: `loadsService`, `tripService` in `src/services/firebase/` with `toDriverLoad` adapter in `utils.ts`
+- Updated driver service switcher to 3-way: mock|real|firebase (only loads+trip use Firestore; auth/earnings/profile/chat stay mock)
+- Created `customer/.env` with VITE_API_MODE=firebase + Firebase config values
+- Created `.env.firebase` template at repo root for driver firebase mode
+- Created `firestore.rules` (open dev rules) and `firebase.json`, deployed to hindtruck project
+- Both apps typecheck and build cleanly (no regression in mock mode)
+- Documented live loop verification at [`docs/firebase-live-loop.md`](docs/firebase-live-loop.md)
+
+### Next Steps:
+- Tighten Firestore security rules before production (currently open read/write)
+- De-duplicate the seeded `loads` docs (the collection has duplicate mock seeds)
+- Add Firebase Auth for proper identity (currently using phone numbers from localStorage)
+- Move driver earnings/chat to Firestore if needed
+- Add real-time listeners (onSnapshot) instead of polling for tracking
+- Add composite Firestore indexes if query performance needs optimization
+- Deploy apps to hosting (out of current scope)
+
+### Next Agent Prompt:
+> The Firebase booking loop is wired and verified end-to-end (see the handoff
+> section in [`CLAUDE.md`](CLAUDE.md)). To run it locally: driver needs
+> `VITE_API_MODE=firebase` (set in `.env.local`), customer already has it in
+> `customer/.env`. Start both dev servers and follow
+> [`docs/firebase-live-loop.md`](docs/firebase-live-loop.md). Remaining hardening
+> is in "Next Steps".
+

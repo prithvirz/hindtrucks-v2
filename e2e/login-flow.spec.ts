@@ -39,7 +39,7 @@ test.describe('Login Flow', () => {
         // Fill each OTP digit
         if (otpCount >= 4) {
             for (let i = 0; i < 4; i++) {
-                await otpInputs.nth(i).fill('1');
+                await otpInputs.nth(i).fill(String(i + 1));
             }
         } else {
             // Fallback: find all inputs on the page
@@ -116,7 +116,7 @@ test.describe('Login Flow', () => {
         const otpCount = await otpInputs.count();
         if (otpCount >= 4) {
             for (let i = 0; i < 4; i++) {
-                await otpInputs.nth(i).fill('1');
+                await otpInputs.nth(i).fill(String(i + 1));
             }
         } else {
             await page.keyboard.type('1111');
