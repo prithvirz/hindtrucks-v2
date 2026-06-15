@@ -46,6 +46,17 @@ export default function Otp() {
     }
   }
 
+  const resend = async () => {
+    if (seconds > 0 || !phone) return
+    setError(null)
+    try {
+      await authService.sendOtp({ phone })
+      setSeconds(30)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to resend OTP')
+    }
+  }
+
   return (
     <div className="flex flex-1 flex-col">
       <TopBar title="" back />
@@ -66,7 +77,7 @@ export default function Otp() {
 
         <button
           disabled={seconds > 0}
-          onClick={() => setSeconds(30)}
+          onClick={resend}
           className="mt-4 self-start text-sm font-bold text-accent disabled:text-ink-faint"
         >
           {seconds > 0 ? t('otp.resendIn', { seconds }) : t('otp.resend')}

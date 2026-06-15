@@ -2,7 +2,15 @@
 
 ## Prerequisites
 - Firebase project `hindtruck` is active and Firestore is enabled
-- Firebase Authentication has Anonymous sign-in enabled
+- Firebase Authentication has the **Phone** sign-in provider enabled
+  (Console → Authentication → Sign-in method → Phone → Enable)
+- For local demos without real SMS, add a **test phone number** under
+  Phone provider → "Phone numbers for testing", e.g. `+91 99999 99999` → code
+  `123456`, and set `VITE_FIREBASE_AUTH_TEST_MODE=true` in the app's `.env`
+  (disables reCAPTCHA so test numbers work on localhost). `localhost` is an
+  authorized domain by default. **Never** set this flag in production.
+- Real SMS at scale additionally needs the Blaze plan + App Check; flip
+  `VITE_FIREBASE_AUTH_TEST_MODE` off and use real numbers — no code change.
 - Both `.env` files have the correct `VITE_FIREBASE_*` values
 - `npm install` has been run at the repo root
 
@@ -96,6 +104,6 @@ npm -w @hindtrucks/customer run dev -- --port 5180
 
 ## Architecture Notes
 
-- **Identity**: Demo OTP still collects the phone number for display/profile state, but Firebase Anonymous Auth supplies the UID used in `shipperUid` and `driverUid`. Firestore rules enforce creates/updates against `request.auth.uid`.
+- **Identity**: Firebase **Phone Auth** verifies the number (`signInWithPhoneNumber` + invisible reCAPTCHA + OTP `confirm`); the resulting non-anonymous `uid` is used in `shipperUid`/`driverUid`. The 10-digit number is still kept as display/profile/registration state. Firestore rules enforce creates/updates against `request.auth.uid`. Local demos verify against Console test numbers (see Prerequisites).
 - **Firestore collection**: Single top-level `loads` collection. Doc fields include all `Load` fields + `status`, `shipperUid`, `driverUid`, `driver` (DriverInfo|null), `createdAt` (serverTimestamp), `step` (0..4), `position` (TruckPosition|null).
 - **Service modes**: Both apps support 3 modes via `VITE_API_MODE`: `mock` (default, local data), `real` (API stubs), `firebase` (Firestore). In firebase mode, only loads/trip/booking/tracking use Firestore; auth/profile/earnings/chat stay on mock/local implementations.

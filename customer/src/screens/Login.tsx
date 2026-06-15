@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Truck } from 'lucide-react'
 import { Button } from '@hindtrucks/shared'
+import { RECAPTCHA_CONTAINER_ID } from '@hindtrucks/shared/firebase'
 import { authService } from '../services'
 
 export default function Login() {
@@ -54,6 +55,8 @@ export default function Login() {
         </div>
         {error && <p className="mt-2 text-sm font-medium text-red-500">{error}</p>}
       </div>
+
+      <div id={RECAPTCHA_CONTAINER_ID} />
 
       <div className="app-x safe-bottom pt-2">
         <Button full size="xl" disabled={!valid} loading={busy} onClick={submit}>

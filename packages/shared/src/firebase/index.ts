@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
+import { getAuth, RecaptchaVerifier } from 'firebase/auth'
 import { getFirestore, collection, doc, Timestamp, serverTimestamp } from 'firebase/firestore'
 import type { Firestore, DocumentSnapshot, DocumentData } from 'firebase/firestore'
 import type { Load, LoadStatus, TripStep, TruckPosition, DriverInfo } from '../types'
@@ -39,6 +39,29 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
 export const db = getFirestore(app)
+
+// ── Phone Auth (reCAPTCHA) ──
+
+/** DOM id the apps must render an (invisible) reCAPTCHA container under. */
+export const RECAPTCHA_CONTAINER_ID = 'recaptcha-container'
+
+// When VITE_FIREBASE_AUTH_TEST_MODE is set, disable real reCAPTCHA so Firebase
+// Console "test phone numbers" (fixed codes, no SMS) work on localhost. Never
+// enable this in production — it bypasses anti-abuse verification.
+if (import.meta.env.VITE_FIREBASE_AUTH_TEST_MODE === 'true') {
+    auth.settings.appVerificationDisabledForTesting = true
+}
+
+/**
+ * Create an invisible reCAPTCHA verifier bound to the shared auth instance.
+ * Build this lazily inside sendOtp (never at module load) so test/mock runs,
+ * which never call phone auth, don't touch the DOM.
+ */
+export function newRecaptchaVerifier(
+    containerId: string = RECAPTCHA_CONTAINER_ID,
+): RecaptchaVerifier {
+    return new RecaptchaVerifier(auth, containerId, { size: 'invisible' })
+}
 
 /**
  * Resolve the current Firebase user's uid, waiting for auth state to restore.

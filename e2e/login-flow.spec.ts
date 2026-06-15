@@ -31,23 +31,11 @@ test.describe('Login Flow', () => {
         await expect(sendOtp).toBeEnabled({ timeout: 2000 });
         await sendOtp.click();
 
-        // 5. OTP screen
+        // 5. OTP screen — single 6-digit input
         await expect(page).toHaveURL(/\/otp/, { timeout: 5000 });
-        // OTP inputs: 4 <input inputMode="numeric"> elements
-        const otpInputs = page.locator('input[inputmode="numeric"]');
-        const otpCount = await otpInputs.count();
-        // Fill each OTP digit
-        if (otpCount >= 4) {
-            for (let i = 0; i < 4; i++) {
-                await otpInputs.nth(i).fill(String(i + 1));
-            }
-        } else {
-            // Fallback: find all inputs on the page
-            const inputs = page.locator('input');
-            const inputCount = await inputs.count();
-            // Type into the OTP area
-            await page.keyboard.type('1111');
-        }
+        const otpInput = page.locator('input[inputmode="numeric"]').first();
+        await expect(otpInput).toBeVisible();
+        await otpInput.fill('123456');
 
         // 6. Click Verify & Continue — OTP does not auto-verify
         const verifyBtn = page.getByRole('button', { name: /verify/i });
@@ -111,16 +99,10 @@ test.describe('Login Flow', () => {
 
         await expect(page).toHaveURL(/\/otp/, { timeout: 5000 });
 
-        // Fill OTP
-        const otpInputs = page.locator('input[inputmode="numeric"]');
-        const otpCount = await otpInputs.count();
-        if (otpCount >= 4) {
-            for (let i = 0; i < 4; i++) {
-                await otpInputs.nth(i).fill(String(i + 1));
-            }
-        } else {
-            await page.keyboard.type('1111');
-        }
+        // Fill OTP — single 6-digit input
+        const otpInput = page.locator('input[inputmode="numeric"]').first();
+        await expect(otpInput).toBeVisible();
+        await otpInput.fill('123456');
 
         // Click Verify & Continue — OTP does not auto-verify
         const verifyBtn = page.getByRole('button', { name: /verify/i });
