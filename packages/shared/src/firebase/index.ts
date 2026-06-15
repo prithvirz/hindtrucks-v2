@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
 import { getFirestore, collection, doc, Timestamp, serverTimestamp } from 'firebase/firestore'
 import type { Firestore, DocumentSnapshot, DocumentData } from 'firebase/firestore'
 import type { Load, LoadStatus, TripStep, TruckPosition, DriverInfo } from '../types'
@@ -36,7 +37,21 @@ const firebaseConfig = {
 // ── Init ──
 
 export const app = initializeApp(firebaseConfig)
+export const auth = getAuth(app)
 export const db = getFirestore(app)
+
+/**
+ * Resolve the current Firebase user's uid, waiting for auth state to restore.
+ *
+ * `auth.currentUser` is null synchronously on page load until the persisted
+ * session is rehydrated. Callers that run on app start (rehydration, the first
+ * Firestore query after reload) must await this instead of reading
+ * `auth.currentUser` directly, or they race the restore and see no user.
+ */
+export async function currentUid(): Promise<string | null> {
+    await auth.authStateReady()
+    return auth.currentUser?.uid ?? null
+}
 
 // ── Collection helpers ──
 

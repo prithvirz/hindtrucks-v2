@@ -8,7 +8,7 @@ import type {
     AcceptLoadResponse,
 } from '../types'
 import type { Load as SharedLoad, DriverInfo } from '@hindtrucks/shared'
-import { db, loadsCollection, loadDoc, docToLoad } from '@hindtrucks/shared/firebase'
+import { currentUid, db, loadsCollection, loadDoc, docToLoad } from '@hindtrucks/shared/firebase'
 import { getDocs, getDoc, updateDoc, query, where } from 'firebase/firestore'
 import { DRIVER } from '../../data/mockLoads'
 import { toDriverLoad } from './utils'
@@ -63,6 +63,10 @@ export const firebaseLoadsService: ILoadsService = {
     },
 
     async acceptLoad(request: AcceptLoadRequest): Promise<AcceptLoadResponse> {
+        const uid = await currentUid()
+        if (!uid) {
+            throw new Error('Driver is not authenticated. Please log in first.')
+        }
         const myPhone = localStorage.getItem('ht_phone')
         if (!myPhone) {
             throw new Error('Driver phone not found. Please log in first.')
@@ -78,7 +82,7 @@ export const firebaseLoadsService: ILoadsService = {
         const docRef = loadDoc(db, request.loadId)
         await updateDoc(docRef, {
             status: 'accepted',
-            driverUid: myPhone,
+            driverUid: uid,
             driver: driverInfo,
             step: 1,
         })

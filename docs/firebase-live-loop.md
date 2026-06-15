@@ -2,6 +2,7 @@
 
 ## Prerequisites
 - Firebase project `hindtruck` is active and Firestore is enabled
+- Firebase Authentication has Anonymous sign-in enabled
 - Both `.env` files have the correct `VITE_FIREBASE_*` values
 - `npm install` has been run at the repo root
 
@@ -95,6 +96,6 @@ npm -w @hindtrucks/customer run dev -- --port 5180
 
 ## Architecture Notes
 
-- **Identity**: Phone number (from localStorage) is used as `shipperUid` (customer) and `driverUid` (driver). No Firebase Auth yet, so rules can validate shape/transitions but cannot prove user ownership.
+- **Identity**: Demo OTP still collects the phone number for display/profile state, but Firebase Anonymous Auth supplies the UID used in `shipperUid` and `driverUid`. Firestore rules enforce creates/updates against `request.auth.uid`.
 - **Firestore collection**: Single top-level `loads` collection. Doc fields include all `Load` fields + `status`, `shipperUid`, `driverUid`, `driver` (DriverInfo|null), `createdAt` (serverTimestamp), `step` (0..4), `position` (TruckPosition|null).
 - **Service modes**: Both apps support 3 modes via `VITE_API_MODE`: `mock` (default, local data), `real` (API stubs), `firebase` (Firestore). In firebase mode, only loads/trip/booking/tracking use Firestore; auth/profile/earnings/chat stay on mock/local implementations.
