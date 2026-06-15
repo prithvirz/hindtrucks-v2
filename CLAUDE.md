@@ -88,14 +88,24 @@ required fixing several gaps the earlier "COMPLETE" status missed — see
 - Both apps typecheck and build cleanly (no regression in mock mode)
 - Documented live loop verification at [`docs/firebase-live-loop.md`](docs/firebase-live-loop.md)
 
+### Done since (branches `feat/phone-otp-auth`, `feat/firestore-hardening`):
+- **Firebase Auth**: real phone OTP (`signInWithPhoneNumber` + invisible reCAPTCHA)
+  replaces anonymous sign-in in both apps. `VITE_FIREBASE_AUTH_TEST_MODE=true`
+  bypasses reCAPTCHA for Console test numbers (local only — never prod).
+- **Firestore rules**: `loads` reads now require `request.auth` (was public);
+  create/update already owner-scoped + shape-validated. Deployed to `hindtruck`.
+- **Real-time tracking**: `ITrackingService.subscribeTripStatus` — firebase uses
+  `onSnapshot`, mock polls 4s. `TrackShipment` subscribes instead of polling.
+- **Indexes**: `firestore.indexes.json` declares (shipperUid ASC, createdAt DESC);
+  `getMyBookings` orders server-side. Deployed.
+
 ### Next Steps:
-- Tighten Firestore security rules before production (currently open read/write)
-- De-duplicate the seeded `loads` docs (the collection has duplicate mock seeds)
-- Add Firebase Auth for proper identity (currently using phone numbers from localStorage)
-- Move driver earnings/chat to Firestore if needed
-- Add real-time listeners (onSnapshot) instead of polling for tracking
-- Add composite Firestore indexes if query performance needs optimization
-- Deploy apps to hosting (out of current scope)
+- De-duplicate the seeded `loads` docs — script ready at
+  [`scripts/dedupe-loads.mjs`](scripts/dedupe-loads.mjs) (dry-run by default).
+  Needs admin creds: `gcloud auth application-default login` (client deletes are
+  forbidden by rules), then `node scripts/dedupe-loads.mjs [--apply]`.
+- Move driver earnings/chat to Firestore if needed (still mock).
+- Deploy apps to hosting (out of current scope).
 
 ### Next Agent Prompt:
 > The Firebase booking loop is wired and verified end-to-end (see the handoff
