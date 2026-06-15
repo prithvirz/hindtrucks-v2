@@ -1,6 +1,6 @@
 import type { IBookingService, Booking, NewBookingRequest } from '../types'
 import type { LoadStatus } from '@hindtrucks/shared'
-import { auth, db, loadsCollection, loadDoc, loadToDocData, docToLoad } from '@hindtrucks/shared/firebase'
+import { currentUid, db, loadsCollection, loadDoc, loadToDocData, docToLoad } from '@hindtrucks/shared/firebase'
 import { addDoc, getDocs, getDoc, updateDoc, query, where } from 'firebase/firestore'
 import { goodsImage } from '../../lib/assets'
 
@@ -10,8 +10,8 @@ function getPhone(): string {
     return phone
 }
 
-function getUid(): string {
-    const uid = auth.currentUser?.uid
+async function getUid(): Promise<string> {
+    const uid = await currentUid()
     if (!uid) throw new Error('Not authenticated — no Firebase user')
     return uid
 }
@@ -19,7 +19,7 @@ function getUid(): string {
 export const firebaseBookingService: IBookingService = {
     async createBooking(req: NewBookingRequest): Promise<Booking> {
         const phone = getPhone()
-        const uid = getUid()
+        const uid = await getUid()
         const now = Date.now()
 
         const load = {
@@ -77,7 +77,7 @@ export const firebaseBookingService: IBookingService = {
     },
 
     async getMyBookings(): Promise<Booking[]> {
-        const uid = getUid()
+        const uid = await getUid()
 
         // Single-field equality only — avoids a composite (shipperUid + createdAt)
         // index. Sort client-side by createdAt desc below.

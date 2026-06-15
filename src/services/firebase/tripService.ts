@@ -8,7 +8,7 @@ import type {
     Load as DriverLoad,
 } from '../types'
 import type { Load as SharedLoad, TripStep } from '@hindtrucks/shared'
-import { auth, db, loadsCollection, loadDoc, docToLoad } from '@hindtrucks/shared/firebase'
+import { currentUid, db, loadsCollection, loadDoc, docToLoad } from '@hindtrucks/shared/firebase'
 import { getDocs, updateDoc, query, where } from 'firebase/firestore'
 import { toDriverLoad } from './utils'
 import { completeTripPayout } from '../mock/earningsService'
@@ -20,7 +20,7 @@ async function getActiveLoadForDriver(): Promise<{
     step: TripStep
     docId: string
 } | null> {
-    const uid = auth.currentUser?.uid
+    const uid = await currentUid()
     if (!uid) return null
 
     // Single-field equality only — avoids a composite (driverUid + status) index.
