@@ -1,5 +1,5 @@
-import { signInAnonymously, signOut } from 'firebase/auth'
-import { auth } from '@hindtrucks/shared/firebase'
+import { signInWithPhoneNumber, signOut, type ConfirmationResult } from 'firebase/auth'
+import { auth, newRecaptchaVerifier } from '@hindtrucks/shared/firebase'
 import type {
     IAuthService,
     SendOtpRequest,
@@ -9,8 +9,6 @@ import type {
     LogoutRequest,
     SessionCheckResponse,
 } from '../types'
-
-const delay = () => new Promise<void>((r) => setTimeout(r, 250))
 
 function authToken(uid: string) {
     const now = Date.now()
@@ -26,9 +24,21 @@ function authToken(uid: string) {
     }
 }
 
+// The ConfirmationResult returned by signInWithPhoneNumber must survive between
+// the sendOtp and verifyOtp calls (the IAuthService contract is stateless), so
+// hold it module-level for the in-flight verification.
+let pendingConfirmation: ConfirmationResult | null = null
+
 export const firebaseAuthService: IAuthService = {
-    async sendOtp(_request: SendOtpRequest): Promise<SendOtpResponse> {
-        await delay()
+    async sendOtp(request: SendOtpRequest): Promise<SendOtpResponse> {
+        const verifier = newRecaptchaVerifier()
+        try {
+            pendingConfirmation = await signInWithPhoneNumber(auth, request.phone, verifier)
+        } catch (err) {
+            // Free the widget so a retry can mount a fresh one.
+            verifier.clear()
+            throw err instanceof Error ? err : new Error('Failed to send OTP')
+        }
         return {
             success: true,
             retryAfterSeconds: 30,
@@ -37,22 +47,27 @@ export const firebaseAuthService: IAuthService = {
     },
 
     async verifyOtp(request: VerifyOtpRequest): Promise<VerifyOtpResponse> {
-        await delay()
+        if (!pendingConfirmation) {
+            throw new Error('No OTP request in progress. Please request a new code.')
+        }
         if (!/^\d{6}$/.test(request.otp)) {
             throw new Error('Invalid OTP')
         }
 
-        const credential = auth.currentUser ?? (await signInAnonymously(auth)).user
-        localStorage.setItem('ht_firebase_uid', credential.uid)
+        const credential = await pendingConfirmation.confirm(request.otp)
+        pendingConfirmation = null
+        const { uid } = credential.user
+        localStorage.setItem('ht_firebase_uid', uid)
 
         return {
             success: true,
-            tokens: authToken(credential.uid),
+            tokens: authToken(uid),
             isNewUser: false,
         }
     },
 
     async logout(_request?: LogoutRequest): Promise<void> {
+        pendingConfirmation = null
         localStorage.removeItem('ht_firebase_uid')
         if (auth.currentUser) {
             await signOut(auth)

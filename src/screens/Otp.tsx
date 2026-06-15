@@ -1,40 +1,52 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import TopBar from '../components/TopBar'
 import Button from '../components/Button'
 import { useAuth } from '../state/AuthContext'
+import { authService } from '../services'
 
 export default function Otp() {
   const nav = useNavigate()
   const { t } = useTranslation()
-  const { login } = useAuth()
-  const { state } = useLocation() as { state?: { phone?: string; code?: string } }
-  const phone = '+91 ' + (state?.phone || '98765 43210')
+  const { verifyOtp, isLoading, error } = useAuth()
+  const { state } = useLocation() as { state?: { phone?: string } }
+  const phone = state?.phone
 
-  const [digits, setDigits] = useState(['', '', '', ''])
-  const refs = useRef<(HTMLInputElement | null)[]>([])
+  const [code, setCode] = useState('')
+  const [seconds, setSeconds] = useState(30)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const code = digits.join('')
-  const complete = code.length === 4
+  useEffect(() => {
+    if (!phone) nav('/login', { replace: true })
+  }, [phone, nav])
 
-  function setAt(i: number, v: string) {
-    const d = v.replace(/\D/g, '').slice(-1)
-    setDigits((prev) => {
-      const next = [...prev]
-      next[i] = d
-      return next
-    })
-    if (d && i < 3) refs.current[i + 1]?.focus()
+  useEffect(() => {
+    inputRef.current?.focus()
+    const tick = setInterval(() => setSeconds((s) => (s > 0 ? s - 1 : 0)), 1000)
+    return () => clearInterval(tick)
+  }, [])
+
+  const complete = /^\d{6}$/.test(code)
+
+  async function verify() {
+    if (!complete || !phone) return
+    try {
+      await verifyOtp(phone, code)
+      nav('/home', { replace: true })
+    } catch {
+      // error surfaced via context
+    }
   }
 
-  function onKey(i: number, e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Backspace' && !digits[i] && i > 0) refs.current[i - 1]?.focus()
-  }
-
-  function verify() {
-    login(state?.phone || '98765 43210')
-    nav('/home', { replace: true })
+  async function resend() {
+    if (!phone || seconds > 0) return
+    try {
+      await authService.sendOtp({ phone: `+91${phone}` })
+      setSeconds(30)
+    } catch {
+      // ignore — user can retry
+    }
   }
 
   return (
@@ -45,32 +57,31 @@ export default function Otp() {
           {t('otp.subtitle', { phone })}
         </p>
 
-        <div className="flex gap-3 justify-center mt-8">
-          {digits.map((d, i) => (
-            <input
-              key={i}
-              ref={(el) => (refs.current[i] = el)}
-              value={d}
-              autoFocus={i === 0}
-              inputMode="numeric"
-              onChange={(e) => setAt(i, e.target.value)}
-              onKeyDown={(e) => onKey(i, e)}
-              className={`h-16 w-14 text-center text-2xl font-extrabold nums bg-surface-grey outline-none transition-all rounded-xl ring-1 ring-hairline focus:bg-surface-sunken focus:ring-2 focus:ring-accent/40 focus:shadow-glow [&:-webkit-autofill]:shadow-[0_0_0_1000px_transparent_inset] ${d ? 'text-accent' : 'text-ink'
-                }`}
-            />
-          ))}
-        </div>
+        <input
+          ref={inputRef}
+          type="tel"
+          inputMode="numeric"
+          value={code}
+          onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+          placeholder="••••••"
+          className="mt-8 h-16 w-full text-center text-3xl font-extrabold nums tracking-[0.5em] bg-surface-grey outline-none transition-all rounded-xl ring-1 ring-hairline focus:bg-surface-sunken focus:ring-2 focus:ring-accent/40 focus:shadow-glow text-ink placeholder:text-ink-faint placeholder:tracking-[0.4em]"
+        />
 
-        <div className="flex items-center justify-between mt-6">
-          <span className="text-xs text-accent font-black animate-pulse">
-            {state?.code ? `💡 OTP Code is ${state.code}` : t('otp.hint')}
-          </span>
-          <button className="text-sm font-black text-accent hover:underline">{t('otp.resend')}</button>
+        {error && <p className="mt-3 text-sm font-bold text-danger">{error.message}</p>}
+
+        <div className="flex items-center justify-end mt-6">
+          <button
+            disabled={seconds > 0}
+            onClick={resend}
+            className="text-sm font-black text-accent hover:underline disabled:text-ink-faint disabled:no-underline"
+          >
+            {seconds > 0 ? t('otp.resendIn', { seconds }) : t('otp.resend')}
+          </button>
         </div>
       </div>
 
       <div className="p-5 border-t border-hairline safe-bottom">
-        <Button full disabled={!complete} onClick={verify}>
+        <Button full disabled={!complete} loading={isLoading} onClick={verify}>
           {t('otp.verify')}
         </Button>
       </div>

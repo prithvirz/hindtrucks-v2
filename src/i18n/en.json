@@ -30,14 +30,15 @@
     "subtitle": "We'll send you a one-time code (OTP)",
     "phoneLabel": "Mobile number",
     "sendOtp": "Send OTP",
+    "sending": "Sending...",
     "terms": "By continuing you agree to our Terms & Privacy Policy"
   },
   "otp": {
     "title": "Verify your number",
-    "subtitle": "Enter the 4-digit code sent to {{phone}}",
+    "subtitle": "Enter the 6-digit code sent to {{phone}}",
     "resend": "Resend code",
     "verify": "Verify & Continue",
-    "hint": "Demo: type any 4 digits"
+    "resendIn": "Resend in {{seconds}}s"
   },
   "tabs": {
     "home": "Home",

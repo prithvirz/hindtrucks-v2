@@ -4,17 +4,33 @@ import { useTranslation } from 'react-i18next'
 import { Phone, ShieldCheck } from 'lucide-react'
 import Button from '../components/Button'
 import { images } from '../lib/assets'
+import { authService } from '../services'
+import { RECAPTCHA_CONTAINER_ID } from '@hindtrucks/shared/firebase'
 
 export default function Login() {
   const nav = useNavigate()
   const { t } = useTranslation()
   const [phone, setPhone] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const valid = phone.replace(/\D/g, '').length === 10
+  const digits = phone.replace(/\D/g, '')
+  const valid = digits.length === 10
 
-  function handleSendOtp() {
-    const code = '4821'
-    nav('/otp', { state: { phone, code } })
+  async function handleSendOtp() {
+    if (!valid) return
+    setBusy(true)
+    setError(null)
+    try {
+      // E.164 only for the Firebase SMS call; app identity stays the raw
+      // 10-digit number (the registration guard + profile key off it).
+      await authService.sendOtp({ phone: `+91${digits}` })
+      nav('/otp', { state: { phone: digits } })
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to send OTP')
+    } finally {
+      setBusy(false)
+    }
   }
 
   return (
@@ -51,11 +67,15 @@ export default function Login() {
           <ShieldCheck size={15} className="text-success" />
           <span>{t('login.terms')}</span>
         </div>
+
+        {error && <p className="mt-3 text-sm font-bold text-danger">{error}</p>}
       </div>
 
+      <div id={RECAPTCHA_CONTAINER_ID} />
+
       <div className="p-5 border-t border-hairline safe-bottom">
-        <Button full disabled={!valid} onClick={handleSendOtp}>
-          {t('login.sendOtp')}
+        <Button full disabled={!valid || busy} onClick={handleSendOtp}>
+          {busy ? t('login.sending') : t('login.sendOtp')}
         </Button>
       </div>
     </div>
