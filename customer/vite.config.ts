@@ -6,7 +6,10 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
-    base: './',
+    // Absolute base so deep links / refreshes (e.g. /bookings/:id, /track/:id)
+    // resolve assets from the web root instead of the route path. Matches the
+    // driver app and works in both hosting (with SPA rewrites) and Capacitor.
+    base: '/',
     plugins: [
       react(),
       VitePWA({

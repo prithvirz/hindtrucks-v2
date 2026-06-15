@@ -15,12 +15,18 @@ interface AuthState {
 
 const AuthCtx = createContext<AuthState | null>(null)
 
+// Phone identity must be a consistent format across the app — login stores bare
+// 10 digits, but checkSession/profile may return a "+91 98765 43210" form.
+// Normalize to bare 10 digits so the registration guard and profile keys match
+// regardless of source.
+const normalizePhone = (p: string | null | undefined) => (p || '').replace(/\D/g, '').slice(-10)
+
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [isLoggedIn, setLoggedIn] = useState<boolean>(
         () => localStorage.getItem('ht_auth') === '1',
     )
     const [phone, setPhone] = useState<string>(
-        () => localStorage.getItem('ht_phone') || (localStorage.getItem('ht_auth') === '1' ? '9876543210' : ''),
+        () => normalizePhone(localStorage.getItem('ht_phone')) || (localStorage.getItem('ht_auth') === '1' ? '9876543210' : ''),
     )
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<ApiError | null>(null)
@@ -49,7 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                         localStorage.removeItem('ht_auth_token')
                         localStorage.removeItem('ht_phone')
                     } else if (session.phone) {
-                        setPhone(session.phone)
+                        setPhone(normalizePhone(session.phone))
                     }
                 })
                 .catch(() => {
@@ -60,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const login = (p: string) => {
         setError(null)
-        setPhone(p)
+        setPhone(normalizePhone(p))
         setLoggedIn(true)
     }
 
@@ -72,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const result = await authService.verifyOtp({ phone: p, otp })
             if (result.success) {
                 localStorage.setItem('ht_auth_token', result.tokens.access.token)
-                setPhone(p)
+                setPhone(normalizePhone(p))
                 setLoggedIn(true)
             }
         } catch (err) {

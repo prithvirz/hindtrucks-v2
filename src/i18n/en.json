@@ -1,5 +1,7 @@
 {
-  "app": { "name": "HindTrucks" },
+  "app": {
+    "name": "HindTrucks"
+  },
   "common": {
     "continue": "Continue",
     "next": "Next",
@@ -14,7 +16,8 @@
     "call": "Call",
     "viewAll": "View all",
     "loading": "Loading…",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "all": "All"
   },
   "language": {
     "title": "Choose your language",
@@ -209,4 +212,3 @@
     "listening": "Listening... Speak now"
   }
 }
-
