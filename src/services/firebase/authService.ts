@@ -38,7 +38,7 @@ export const firebaseAuthService: IAuthService = {
 
     async verifyOtp(request: VerifyOtpRequest): Promise<VerifyOtpResponse> {
         await delay()
-        if (!request.otp || request.otp.length < 4) {
+        if (!/^\d{6}$/.test(request.otp)) {
             throw new Error('Invalid OTP')
         }
 
@@ -62,6 +62,6 @@ export const firebaseAuthService: IAuthService = {
     async checkSession(): Promise<SessionCheckResponse> {
         const uid = auth.currentUser?.uid ?? localStorage.getItem('ht_firebase_uid')
         const phone = localStorage.getItem('ht_phone') ?? undefined
-        return { valid: Boolean(uid), phone }
+        return { valid: Boolean(uid && phone), phone }
     },
 }
