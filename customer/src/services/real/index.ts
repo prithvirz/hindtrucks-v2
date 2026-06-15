@@ -23,6 +23,7 @@ export const realBookingService: IBookingService = {
 
 export const realTrackingService: ITrackingService = {
   getTripStatus: notWired,
+  subscribeTripStatus: notWired,
 }
 
 export const realProfileService: IProfileService = {

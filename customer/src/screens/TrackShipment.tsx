@@ -18,10 +18,8 @@ export default function TrackShipment() {
   useEffect(() => {
     if (!id) return
     bookingService.getBooking(id).then(setBooking).catch(() => {})
-    const poll = () => trackingService.getTripStatus(id).then(setStatus).catch(() => {})
-    poll()
-    const timer = setInterval(poll, 4000)
-    return () => clearInterval(timer)
+    const unsubscribe = trackingService.subscribeTripStatus(id, setStatus)
+    return unsubscribe
   }, [id])
 
   const from = booking ? lookupCity(booking.fromCity) : null

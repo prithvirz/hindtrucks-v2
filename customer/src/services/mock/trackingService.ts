@@ -1,4 +1,4 @@
-import type { ITrackingService, TripStatus, TripStep } from '../types'
+import type { ITrackingService, TripStatus, TripStep, TripStatusCallback } from '../types'
 import { loadBookings } from './store'
 import { lookupCity } from '../../data/cityCoords'
 
@@ -53,5 +53,16 @@ export const mockTrackingService: ITrackingService = {
     }
 
     return { loadId, step, position, driver: booking.driver ?? null, progress }
+  },
+
+  // Mock has no real-time source, so emulate live updates by polling the
+  // derived status. Fires immediately, then every 4s until unsubscribed.
+  subscribeTripStatus(loadId: string, onUpdate: TripStatusCallback): () => void {
+    const tick = () => {
+      this.getTripStatus(loadId).then(onUpdate).catch(() => {})
+    }
+    tick()
+    const timer = setInterval(tick, 4000)
+    return () => clearInterval(timer)
   },
 }

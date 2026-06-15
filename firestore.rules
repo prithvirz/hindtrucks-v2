@@ -102,7 +102,10 @@ service cloud.firestore {
     }
 
     match /loads/{loadId} {
-      allow read: if true;
+      // Loads are a shared marketplace — any authenticated user (driver browsing
+      // available loads, customer tracking their booking) may read. Anonymous
+      // access is denied now that both apps sign in via phone OTP.
+      allow read: if request.auth != null;
       allow create: if validLoadCreate(request.resource.data)
         && isOwner(request.resource.data.shipperUid);
       allow update: if validLoadUpdate(resource.data, request.resource.data)

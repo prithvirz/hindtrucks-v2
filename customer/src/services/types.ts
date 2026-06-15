@@ -71,8 +71,15 @@ export interface TripStatus {
   progress: number
 }
 
+export type TripStatusCallback = (status: TripStatus) => void
+
 export interface ITrackingService {
   getTripStatus(loadId: string): Promise<TripStatus>
+  /**
+   * Subscribe to live trip updates for a load. Fires once with the current
+   * status, then again on every change. Returns an unsubscribe function.
+   */
+  subscribeTripStatus(loadId: string, onUpdate: TripStatusCallback): () => void
 }
 
 // ── Profile ──
