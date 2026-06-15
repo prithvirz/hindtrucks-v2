@@ -1,7 +1,7 @@
 import type { IBookingService, Booking, NewBookingRequest } from '../types'
 import type { LoadStatus } from '@hindtrucks/shared'
 import { currentUid, db, loadsCollection, loadDoc, loadToDocData, docToLoad } from '@hindtrucks/shared/firebase'
-import { addDoc, getDocs, getDoc, updateDoc, query, where } from 'firebase/firestore'
+import { addDoc, getDocs, getDoc, updateDoc, query, where, orderBy } from 'firebase/firestore'
 import { goodsImage } from '../../lib/assets'
 
 function getPhone(): string {
@@ -79,11 +79,12 @@ export const firebaseBookingService: IBookingService = {
     async getMyBookings(): Promise<Booking[]> {
         const uid = await getUid()
 
-        // Single-field equality only — avoids a composite (shipperUid + createdAt)
-        // index. Sort client-side by createdAt desc below.
+        // Server-side ordering via the (shipperUid ASC, createdAt DESC) composite
+        // index declared in firestore.indexes.json.
         const q = query(
             loadsCollection(db),
             where('shipperUid', '==', uid),
+            orderBy('createdAt', 'desc'),
         )
 
         const snap = await getDocs(q)
@@ -116,7 +117,6 @@ export const firebaseBookingService: IBookingService = {
             })
         })
 
-        bookings.sort((a, b) => b.createdAt - a.createdAt)
         return bookings
     },
 
