@@ -17,7 +17,9 @@
     "viewAll": "View all",
     "loading": "Loading…",
     "cancel": "Cancel",
-    "all": "All"
+    "all": "All",
+    "maybe_later": "Maybe Later",
+    "enable": "Enable"
   },
   "language": {
     "title": "Choose your language",
@@ -209,6 +211,41 @@
     "redirecting_in": "Opening in {{count}}s...",
     "go_now": "Go Now",
     "placeholder": "Type message or tap Mic...",
-    "listening": "Listening... Speak now"
+    "listening": "Listening... Speak now",
+    "need_help": "Need help?",
+    "hi_im_rahgir": "Hi, I'm Rahgir."
+  },
+  "notifications": {
+    "center": {
+      "title": "Notifications",
+      "empty": "No notifications yet",
+      "empty_subtitle": "You'll see trip updates, new loads, and earnings here."
+    },
+    "permission": {
+      "title": "Stay Updated",
+      "subtitle": "Get notified when new loads are available, your trip status changes, or earnings are credited."
+    },
+    "types": {
+      "new_load": "New loads available",
+      "accepted": "Load accepted confirmation",
+      "status_update": "Trip status changes",
+      "earnings": "Earnings credited"
+    }
+  },
+  "offline": {
+    "title": "No Connection",
+    "description": "This feature requires an internet connection. Please check your connection and try again.",
+    "retry": "Retry",
+    "banner": "You're offline. Changes will sync when connected."
+  },
+  "gps": {
+    "deniedTitle": "Location Access Denied",
+    "deniedMessage": "Please enable location access in your device settings to use GPS tracking.",
+    "continueWithoutGps": "Continue Without GPS",
+    "permissionTitle": "Enable GPS Tracking",
+    "permissionMessage": "Allow location access to track your trip progress and provide accurate ETAs.",
+    "requesting": "Requesting...",
+    "allow": "Allow Location",
+    "skip": "Skip"
   }
 }
