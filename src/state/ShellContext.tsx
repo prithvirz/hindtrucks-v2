@@ -25,6 +25,7 @@ interface ShellState {
     // Push notification state
     pushPermissionState: NotificationPermissionState
     subscribeToPush: () => Promise<boolean>
+    dismissPushPrompt: () => void
     unsubscribeFromPush: () => Promise<void>
     pushNotifications: PushNotification[]
     unreadPushCount: number
@@ -60,6 +61,7 @@ export function ShellProvider({ children }: { children: ReactNode }) {
     const {
         permissionState: pushPermissionState,
         subscribe: subscribeToPush,
+        dismissPermissionPrompt: dismissPushPrompt,
         unsubscribe: unsubscribeFromPush,
         notifications: pushNotifications,
         unreadCount: unreadPushCount,
@@ -140,6 +142,7 @@ export function ShellProvider({ children }: { children: ReactNode }) {
                 setOfflineQueueSize,
                 pushPermissionState,
                 subscribeToPush,
+                dismissPushPrompt,
                 unsubscribeFromPush,
                 pushNotifications,
                 unreadPushCount,

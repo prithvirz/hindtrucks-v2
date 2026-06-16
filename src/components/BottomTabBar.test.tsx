@@ -46,6 +46,7 @@ const mockShellValue = {
     deletePushNotification: vi.fn(),
     activePushBanner: null,
     dismissPushBanner: vi.fn(),
+    dismissPushPrompt: vi.fn(),
 }
 
 describe('BottomTabBar', () => {

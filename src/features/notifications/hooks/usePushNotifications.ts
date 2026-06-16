@@ -16,6 +16,8 @@ interface UsePushNotificationsReturn {
     permissionState: ReturnType<typeof useNotificationPermission>['permissionState'];
     isSubscribed: boolean;
     subscribe: () => Promise<boolean>;
+    /** Persist that the prompt was shown/declined so it respects the cooldown. */
+    dismissPermissionPrompt: () => void;
     unsubscribe: () => Promise<void>;
     notifications: PushNotification[];
     unreadCount: number;
@@ -165,6 +167,7 @@ export function usePushNotifications(): UsePushNotificationsReturn {
         permissionState,
         isSubscribed,
         subscribe,
+        dismissPermissionPrompt: markPrompted,
         unsubscribe,
         notifications,
         unreadCount,

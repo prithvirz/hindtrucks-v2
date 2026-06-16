@@ -78,6 +78,7 @@ function Shell() {
     dismissNotification,
     pushPermissionState,
     subscribeToPush,
+    dismissPushPrompt,
     activePushBanner,
     dismissPushBanner,
   } = useShell()
@@ -88,7 +89,10 @@ function Shell() {
   // Show permission prompt after login when needsPrompt is true
   const handlePermissionPromptDismiss = useCallback(() => {
     setShowPermissionPrompt(false)
-  }, [])
+    // Persist the dismissal so it respects the cooldown instead of re-prompting
+    // on every reload/navigation.
+    dismissPushPrompt()
+  }, [dismissPushPrompt])
 
   const handlePermissionPromptEnable = useCallback(async (): Promise<boolean> => {
     const result = await subscribeToPush()
