@@ -10,6 +10,11 @@ export default defineConfig(({ mode }) => {
   plugins: [
     react(),
     VitePWA({
+      // The demo build is what ships inside the Capacitor APK. A service worker
+      // there only causes stale-cache white screens across app updates (the SW
+      // keeps serving an old index.html), so ship a self-destroying SW that
+      // unregisters any previously-installed one and clears its caches.
+      selfDestroying: mode === 'demo',
       registerType: 'prompt',
       injectRegister: null,
       includeAssets: ['favicon.svg'],
