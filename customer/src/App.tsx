@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import { PhoneFrame } from '@hindtrucks/shared'
 import { AuthProvider, useAuth } from './state/AuthContext'
@@ -49,12 +49,12 @@ function Shell() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AuthProvider>
         <BookingsProvider>
           <Shell />
         </BookingsProvider>
       </AuthProvider>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
