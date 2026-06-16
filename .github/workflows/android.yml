@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main, master ]
 
+# Run JS-based actions on Node 24 so the Node 20 deprecation warning is gone.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   build-driver:
     runs-on: ubuntu-latest
@@ -35,11 +39,16 @@ jobs:
     - name: Sync Capacitor
       run: npx cap sync android
 
-    - name: Build Android APK
+    - name: Build Android APK (retry to absorb transient SDK/network flakes)
       run: |
         cd android
         chmod +x gradlew
-        ./gradlew assembleDebug
+        ok=0
+        for attempt in 1 2 3; do
+          if ./gradlew assembleDebug; then ok=1; break; fi
+          echo "gradle attempt $attempt failed; retrying..." && sleep 10
+        done
+        [ "$ok" = 1 ] || { echo "all gradle attempts failed"; exit 1; }
 
     - name: Upload Driver APK
       uses: actions/upload-artifact@v4
@@ -77,11 +86,16 @@ jobs:
     - name: Sync Capacitor (customer)
       run: cd customer && npx cap sync android
 
-    - name: Build Customer Android APK
+    - name: Build Customer Android APK (retry to absorb transient flakes)
       run: |
         cd customer/android
         chmod +x gradlew
-        ./gradlew assembleDebug
+        ok=0
+        for attempt in 1 2 3; do
+          if ./gradlew assembleDebug; then ok=1; break; fi
+          echo "gradle attempt $attempt failed; retrying..." && sleep 10
+        done
+        [ "$ok" = 1 ] || { echo "all gradle attempts failed"; exit 1; }
 
     - name: Upload Customer APK
       uses: actions/upload-artifact@v4

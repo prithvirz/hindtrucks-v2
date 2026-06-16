@@ -40,6 +40,7 @@
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.4.0",
     "@playwright/test": "^1.60.0",
     "@testing-library/jest-dom": "^6.9.1",
