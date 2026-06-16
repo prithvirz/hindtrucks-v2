@@ -22,6 +22,8 @@ export async function subscribeToPush(): Promise<PushSubscriptionData | null> {
     }
 
     const registration = await navigator.serviceWorker.ready;
+    // Android WebView (Capacitor) exposes a registration without pushManager.
+    if (!registration?.pushManager) return null;
 
     let subscription = await registration.pushManager.getSubscription();
 
@@ -52,6 +54,7 @@ export async function unsubscribeFromPush(): Promise<void> {
     if (!('serviceWorker' in navigator)) return;
 
     const registration = await navigator.serviceWorker.ready;
+    if (!registration?.pushManager) return;
     const subscription = await registration.pushManager.getSubscription();
 
     if (subscription) {

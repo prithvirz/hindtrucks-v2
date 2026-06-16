@@ -123,15 +123,15 @@ export function usePushNotifications(): UsePushNotificationsReturn {
         setActiveBanner(null);
     }, []);
 
-    // Check subscription status on mount
+    // Check subscription status on mount. Guarded: the Android WebView (Capacitor)
+    // resolves serviceWorker.ready to a registration with no pushManager, so this
+    // must not throw — push is simply unavailable there.
     useEffect(() => {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.ready.then((registration) => {
-                registration.pushManager.getSubscription().then((sub) => {
-                    setIsSubscribed(!!sub);
-                });
-            });
-        }
+        if (!('serviceWorker' in navigator)) return;
+        navigator.serviceWorker.ready
+            .then((registration) => registration?.pushManager?.getSubscription())
+            .then((sub) => setIsSubscribed(!!sub))
+            .catch(() => { /* push unsupported (e.g. WebView) — ignore */ });
     }, []);
 
     // Load stored notifications on mount
