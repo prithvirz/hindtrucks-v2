@@ -1,5 +1,5 @@
 // HindTrucks v2 - deployed via Cloudflare Pages Git integration
-import { Suspense, lazy, useState, useCallback, useEffect } from 'react'
+import { Suspense, useState, useCallback, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { AppProviders } from './state/AppProviders'
@@ -13,17 +13,21 @@ import { OfflineIndicator } from './features/offline/components/OfflineIndicator
 import { PermissionPrompt } from './features/notifications/components/PermissionPrompt'
 import { NotificationBanner } from './features/notifications/components/NotificationBanner'
 
-const Splash = lazy(() => import('./screens/Splash'))
-const LanguagePicker = lazy(() => import('./screens/LanguagePicker'))
-const Login = lazy(() => import('./screens/Login'))
-const Otp = lazy(() => import('./screens/Otp'))
-const Home = lazy(() => import('./screens/Home'))
-const Loads = lazy(() => import('./screens/Loads'))
-const LoadDetail = lazy(() => import('./screens/LoadDetail'))
-const ActiveTrip = lazy(() => import('./screens/ActiveTrip'))
-const Earnings = lazy(() => import('./screens/Earnings'))
-const Profile = lazy(() => import('./screens/Profile'))
-const Register = lazy(() => import('./screens/Register'))
+// Screens are imported directly (not lazy) — the Capacitor WebView fails to
+// load per-route dynamic chunks reliably, causing a white screen after the
+// first navigation. Bundling them with the entry (as the customer app does)
+// avoids that. The bundle is local in the APK, so the size cost is negligible.
+import Splash from './screens/Splash'
+import LanguagePicker from './screens/LanguagePicker'
+import Login from './screens/Login'
+import Otp from './screens/Otp'
+import Home from './screens/Home'
+import Loads from './screens/Loads'
+import LoadDetail from './screens/LoadDetail'
+import ActiveTrip from './screens/ActiveTrip'
+import Earnings from './screens/Earnings'
+import Profile from './screens/Profile'
+import Register from './screens/Register'
 
 // Tabs that should show the bottom navigation bar.
 const TAB_ROUTES = ['/home', '/loads', '/earnings', '/profile']
